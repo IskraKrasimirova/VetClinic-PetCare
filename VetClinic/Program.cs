@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using VetClinic.Infrastructure;
+using VetClinic.Extensions;
 using VetClinic.Data;
 using VetClinic.Core;
 using VetClinic.ModelBinders;

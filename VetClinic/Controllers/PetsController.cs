@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VetClinic.Data;
 using VetClinic.Data.Models;
-using VetClinic.Infrastructure;
+using VetClinic.Extensions;
 using VetClinic.Core.Models.Pets;
 
 namespace VetClinic.Controllers

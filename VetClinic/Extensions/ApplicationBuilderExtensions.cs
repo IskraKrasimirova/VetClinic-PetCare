@@ -2,7 +2,7 @@
 using VetClinic.Data;
 using VetClinic.Data.Seeding;
 
-namespace VetClinic.Infrastructure
+namespace VetClinic.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

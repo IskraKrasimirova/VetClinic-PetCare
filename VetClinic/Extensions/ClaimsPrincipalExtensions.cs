@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using static VetClinic.Common.GlobalConstants;
 
-namespace VetClinic.Infrastructure
+namespace VetClinic.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
