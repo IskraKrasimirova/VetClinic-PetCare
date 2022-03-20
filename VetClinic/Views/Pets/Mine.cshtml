@@ -1,0 +1,29 @@
+﻿@using VetClinic.Core.Models.Pets
+@model IEnumerable<PetListingViewModel>
+
+@{
+    ViewBag.Title = "My Pets";
+}
+
+<div class="row">
+@foreach (var pet in Model)
+{
+        <div class="col-md-4 ">
+            <div class="card mb-3" style="width: 16rem">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@pet.Name</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@pet.PetType</li>
+                        <li class="list-group-item">@pet.Breed</li>
+                        <li class="list-group-item">@pet.DateOfBirth</li>
+                        <li class="list-group-item">@pet.Gender</li>
+                        <li class="list-group-item">@pet.Description</li>
+                    </ul>
+                    <a asp-controller="Pets" asp-action="Details" asp-route-petId="@pet.Id class="btn btn-outline-primary">
+                        View More
+                    </a>
+                </div>
+            </div>
+        </div>
+}
+</div>

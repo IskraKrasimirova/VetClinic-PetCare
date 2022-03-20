@@ -162,9 +162,9 @@ namespace VetClinic.Areas.Identity.Pages.Account
                                 UserId = user.Id,
                                 FullName = this.Input.FulltName,
                             });
-                        await this._data.SaveChangesAsync();
                         await this._userManager.AddToRoleAsync(user, ClientRoleName);
                         await this._signInManager.SignInAsync(user, isPersistent: false);
+                        await this._data.SaveChangesAsync();
 
                         return this.LocalRedirect(returnUrl);
                     }

@@ -4,6 +4,7 @@ using VetClinic.Data;
 using VetClinic.Data.Models;
 using VetClinic.Extensions;
 using VetClinic.Core.Models.Pets;
+using static VetClinic.Common.GlobalConstants;
 
 namespace VetClinic.Controllers
 {
@@ -47,9 +48,8 @@ namespace VetClinic.Controllers
             return View(pets);
         }
 
-        [HttpPost]
-        [Authorize]
-        public IActionResult Add(AddPetFormModel pet)
+        [Authorize(Roles = ClientRoleName)]
+        public IActionResult Mine()
         {
             var clientId = this.data.Clients
                 .Where(c => c.UserId == this.User.GetId())
@@ -60,6 +60,33 @@ namespace VetClinic.Controllers
             {
                 return BadRequest();
             }
+
+            var myPets = this.data.Pets
+                .Where(p => p.ClientId == clientId)
+                .Select(p => new PetListingViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth,
+                    PetType = p.PetType.Name,
+                    Breed = p.Breed,
+                    Gender = p.Gender.ToString()
+                })
+                .ToList();
+
+            return View(myPets);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Add(AddPetFormModel pet)
+        {
+            var clientId = this.data.Clients
+                .Where(c => c.UserId == this.User.GetId())
+                .Select(c => c.Id)
+                .FirstOrDefault();
+
+            var client = this.data.Clients.Find(clientId);
 
             if (!data.PetTypes.Any(t => t.Id == pet.PetTypeId))
             {
@@ -85,9 +112,31 @@ namespace VetClinic.Controllers
             };
 
             data.Pets.Add(petData);
+            client.Pets.Add(petData);
+
+            //if (this.UserIsDoctor())
+            //{
+            //    var doctorId = this.data.Doctors
+            //    .Where(d => d.UserId == this.User.GetId())
+            //    .Select(d => d.Id)
+            //    .FirstOrDefault();
+
+            //    var doctor = this.data.Doctors.Find(doctorId);
+
+            //    var petDoctor = new PetDoctor
+            //    {
+            //        DoctorId = doctorId,
+            //        PetId = petData.Id
+            //    };
+
+            //    doctor.PetDoctors.Add(petDoctor);
+            //    petData.PetDoctors.Add(petDoctor);
+            //    data.PetDoctors.Add(petDoctor);
+            //}
+
             data.SaveChanges();
 
-            return RedirectToAction("All", "Pets");
+            return RedirectToAction("Mine", "Pets");
         }
 
         private bool UserIsClient()
@@ -95,6 +144,13 @@ namespace VetClinic.Controllers
             return this.data
                 .Clients
                 .Any(c => c.UserId == this.User.GetId());
+        }
+
+        private bool UserIsDoctor()
+        {
+            return this.data
+                .Doctors
+                .Any(d => d.UserId == this.User.GetId());
         }
 
         private ICollection<PetTypeServiceModel> GetPetTypes()
