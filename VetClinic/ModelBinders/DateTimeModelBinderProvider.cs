@@ -6,9 +6,9 @@ namespace VetClinic.ModelBinders
     {
         private readonly string customDateFormat;
 
-        public DateTimeModelBinderProvider(string _customDateFormat)
+        public DateTimeModelBinderProvider(string customDateFormat)
         {
-            customDateFormat = _customDateFormat;
+            this.customDateFormat = customDateFormat;
         }
 
         public IModelBinder? GetBinder(ModelBinderProviderContext context)

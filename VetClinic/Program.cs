@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using VetClinic.Extensions;
-using VetClinic.Data;
-using VetClinic.Core;
-using VetClinic.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VetClinic.Common;
+using VetClinic.Data;
 using VetClinic.Data.Models;
+using VetClinic.Extensions;
+using VetClinic.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
-        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.NormalDateFormat));
+        //options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.NormalDateFormat));
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); 
     });
 

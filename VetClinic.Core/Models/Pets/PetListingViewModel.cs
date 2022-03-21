@@ -1,4 +1,6 @@
-﻿namespace VetClinic.Core.Models.Pets
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VetClinic.Core.Models.Pets
 {
     public class PetListingViewModel
     {
@@ -6,6 +8,7 @@
 
         public string Name { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         public string Breed { get; set; }

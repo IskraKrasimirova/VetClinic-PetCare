@@ -1,16 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using VetClinic.Core.CustomAttributes;
 using VetClinic.Data.Enums;
 using static VetClinic.Data.ModelConstants.Pet;
+using static VetClinic.Common.GlobalConstants.FormattingConstants;
+
 
 namespace VetClinic.Core.Models.Pets
 {
-    public class AddPetFormModel
+    public class PetFormModel
     {
         [Required]
         [StringLength(NameMaxLength,MinimumLength = NameMinLength)]
         public string Name { get; set; }
 
         [Display(Name = "Date Of Birth")]
+        [DataType(DataType.Date)]
+        [IsBeforeAttribute(MaxDate,ErrorMessage = "The Date of Birth must be before the current date")]
         public DateTime DateOfBirth { get; set; }
 
         [Required]

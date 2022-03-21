@@ -5,6 +5,8 @@ using VetClinic.Data.Models;
 using VetClinic.Extensions;
 using VetClinic.Core.Models.Pets;
 using static VetClinic.Common.GlobalConstants;
+using static VetClinic.Common.GlobalConstants.FormattingConstants;
+using System.Globalization;
 
 namespace VetClinic.Controllers
 {
@@ -25,7 +27,7 @@ namespace VetClinic.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(new AddPetFormModel
+            return View(new PetFormModel
             {
                 PetTypes = GetPetTypes()
             });
@@ -79,7 +81,7 @@ namespace VetClinic.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddPetFormModel pet)
+        public IActionResult Add(PetFormModel pet)
         {
             var clientId = this.data.Clients
                 .Where(c => c.UserId == this.User.GetId())
@@ -104,6 +106,10 @@ namespace VetClinic.Controllers
             {
                 Name = pet.Name,
                 DateOfBirth = pet.DateOfBirth,
+                //DateTime.ParseExact(
+                //            pet.DateOfBirth.ToString(),
+                //            NormalDateFormat,
+                //            CultureInfo.InvariantCulture),
                 Breed = pet.Breed,
                 Gender = pet.Gender,
                 Description = pet.Description,
