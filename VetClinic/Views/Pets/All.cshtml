@@ -1,13 +1,40 @@
-﻿@using VetClinic.Core.Models.Pets
-@model IEnumerable<PetListingViewModel>
+﻿@model AllPetsViewModel
 
 @{
     ViewBag.Title = "All Pets";
 }
 
-<div class="row">
-@foreach (var pet in Model)
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="PetTypeName"></label>
+                <select asp-for="PetTypeName" class="form-control">
+                    <option value="">All</option>
+
+                    @foreach (var petType in Model.PetTypes)
+                    {
+                        <option value="@petType">@petType</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Dog Basset, etc...">
+        </div>
+    </div>
+</form>
+
+@if (!Model.Pets.Any())
 {
+    <h2 class="text-center">No pets found by the given criteria!</h2>
+}
+
+<div class="row">
+    @foreach (var pet in Model.Pets)
+    {
         <div class="col-md-4 ">
             <div class="card mb-3" style="width: 16rem">
                 <div class="card-body text-center">
@@ -25,5 +52,5 @@
                 </div>
             </div>
         </div>
-}
+    }
 </div>

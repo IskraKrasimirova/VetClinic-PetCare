@@ -33,21 +33,50 @@ namespace VetClinic.Controllers
             });
         }
 
-        public IActionResult All()
+        [Authorize(Roles = DoctorRoleName)]
+        public IActionResult All(string petType, string searchTerm)
         {
-            var pets = this.data.Pets
+            var petsQuery = this.data.Pets.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(petType))
+            {
+                petsQuery = petsQuery.Where(p => p.PetType.Name == petType);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                petsQuery = petsQuery.Where(p => 
+                p.PetType.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                (p.PetType.Name + " " + p.Breed).ToLower().Contains(searchTerm.ToLower()) ||
+                p.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            var pets = petsQuery
+                .OrderBy(p => p.Name)
                 .Select(p => new PetListingViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    DateOfBirth = p.DateOfBirth,
+                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString()
                 })
                 .ToList();
 
-            return View(pets);
+            var petPetTypes = this.data.Pets
+                .Select(p => p.PetType.Name)
+                .Distinct()
+                .OrderBy(pt => pt)
+                .ToList();
+
+            return View(new AllPetsViewModel
+            {
+                PetTypes = petPetTypes,
+                Pets = pets,
+                SearchTerm = searchTerm,
+                PetTypeName = petType
+            });
         }
 
         [Authorize(Roles = ClientRoleName)]
@@ -69,7 +98,7 @@ namespace VetClinic.Controllers
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    DateOfBirth = p.DateOfBirth,
+                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat,CultureInfo.InvariantCulture),
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString()
