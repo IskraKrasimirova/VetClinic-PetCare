@@ -20,8 +20,8 @@ namespace VetClinic.ModelBinders
             if (valueResult != ValueProviderResult.None && !String.IsNullOrEmpty(valueResult.FirstValue))
             {
                 DateTime actualValue = DateTime.MinValue;
-                bool success = false;
                 string dateValue = valueResult.FirstValue;
+                bool success = false;
 
                 try
                 {
@@ -33,6 +33,7 @@ namespace VetClinic.ModelBinders
                     try
                     {
                         actualValue = DateTime.Parse(dateValue, new CultureInfo("bg-bg"));
+                        success = true;
                     }
                     catch (Exception e)
                     {

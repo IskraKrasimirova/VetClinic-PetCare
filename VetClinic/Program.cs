@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using VetClinic.Common;
+using static VetClinic.Common.GlobalConstants;
 using VetClinic.Data;
 using VetClinic.Data.Models;
 using VetClinic.Extensions;
@@ -31,7 +31,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
-        //options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.NormalDateFormat));
+        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.NormalDateFormat));
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); 
     });
 

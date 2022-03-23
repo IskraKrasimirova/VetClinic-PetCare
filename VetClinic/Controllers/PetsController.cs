@@ -34,30 +34,35 @@ namespace VetClinic.Controllers
         }
 
         [Authorize(Roles = DoctorRoleName)]
-        public IActionResult All(string petType, string searchTerm)
+        public IActionResult All([FromQuery]AllPetsViewModel query)
         {
             var petsQuery = this.data.Pets.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(petType))
+            if (!string.IsNullOrWhiteSpace(query.PetTypeName))
             {
-                petsQuery = petsQuery.Where(p => p.PetType.Name == petType);
+                petsQuery = petsQuery.Where(p => p.PetType.Name == query.PetTypeName);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
                 petsQuery = petsQuery.Where(p => 
-                p.PetType.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                (p.PetType.Name + " " + p.Breed).ToLower().Contains(searchTerm.ToLower()) ||
-                p.Description.ToLower().Contains(searchTerm.ToLower()));
+                p.PetType.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                (p.PetType.Name + " " + p.Breed).ToLower().Contains(query.SearchTerm.ToLower()) ||
+                p.Description.ToLower().Contains(query.SearchTerm.ToLower()));
             }
 
+            var totalPets = petsQuery.Count();
+
             var pets = petsQuery
+                .Skip((query.CurrentPage -1)*AllPetsViewModel.PetsPerPage)
+                .Take(AllPetsViewModel.PetsPerPage)
                 .OrderBy(p => p.Name)
                 .Select(p => new PetListingViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    //p.DateOfBirth,
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString()
@@ -70,13 +75,11 @@ namespace VetClinic.Controllers
                 .OrderBy(pt => pt)
                 .ToList();
 
-            return View(new AllPetsViewModel
-            {
-                PetTypes = petPetTypes,
-                Pets = pets,
-                SearchTerm = searchTerm,
-                PetTypeName = petType
-            });
+            query.TotalPets = totalPets;
+            query.Pets = pets;  
+            query.PetTypes = petPetTypes;   
+
+            return View(query);
         }
 
         [Authorize(Roles = ClientRoleName)]
@@ -98,7 +101,12 @@ namespace VetClinic.Controllers
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat,CultureInfo.InvariantCulture),
+                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    //DateTime.ParseExact(
+                    //            p.DateOfBirth.ToString(),
+                    //            NormalDateFormat,
+                    //            CultureInfo.InvariantCulture),
+                    //p.DateOfBirth,
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString()
