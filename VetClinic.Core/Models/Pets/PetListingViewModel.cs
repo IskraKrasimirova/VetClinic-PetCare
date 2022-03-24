@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace VetClinic.Core.Models.Pets
+﻿namespace VetClinic.Core.Models.Pets
 {
     public class PetListingViewModel
     {

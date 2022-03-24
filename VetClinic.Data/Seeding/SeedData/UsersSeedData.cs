@@ -8,7 +8,7 @@
         {
             public const string Email = "doctor@vetclinic.com";
             public const string FullName = "DoctorFullName";
-            public const string Username = "Doctor";
+            public const string Username = "doctor@vetclinic.com";
             public const string PhoneNumber = "0888888888";
             public const string Password = DefaultPassword;
             public const string Description = "Vet Clinic Consultations";
@@ -19,7 +19,7 @@
         {
             public const string Email = "client@client.com";
             public const string FullName = "ClientFullName";
-            public const string Username = "Client";
+            public const string Username = "client@client.com";
             public const string PhoneNumber = "0777777777";
             public const string Password = DefaultPassword;
         }
@@ -27,8 +27,9 @@
         public class Admin
         {
             public const string Email = "admin@vetclinic.com";
-            public const string Username = "Administrator";
+            public const string Username = "admin@vetclinic.com";
             public const string FullName = "Administrator";
+            public const string PhoneNumber = "0999999999";
             public const string Password = DefaultPassword;
         }
     }

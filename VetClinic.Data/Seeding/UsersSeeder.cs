@@ -42,7 +42,8 @@ namespace VetClinic.Data.Seeding
             {
                 Email = UsersSeedData.Admin.Email,
                 UserName = UsersSeedData.Admin.Username,
-                FullName = UsersSeedData.Admin.FullName
+                FullName = UsersSeedData.Admin.FullName,
+                PhoneNumber = UsersSeedData.Admin.PhoneNumber,
             };
 
             await userManager.CreateAsync
