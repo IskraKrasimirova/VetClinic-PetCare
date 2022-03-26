@@ -1,4 +1,4 @@
-﻿namespace VetClinic.Core.Models.Pets
+﻿namespace VetClinic.Core.Models.PetTypes
 {
     public class PetTypeServiceModel
     {

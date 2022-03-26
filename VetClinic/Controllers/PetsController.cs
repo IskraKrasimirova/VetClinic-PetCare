@@ -1,83 +1,82 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VetClinic.Data;
-using VetClinic.Data.Models;
-using VetClinic.Extensions;
+using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
+using VetClinic.Extensions;
 using static VetClinic.Common.GlobalConstants;
-using static VetClinic.Common.GlobalConstants.FormattingConstants;
-using System.Globalization;
 
 namespace VetClinic.Controllers
 {
     public class PetsController : Controller
     {
-        private readonly VetClinicDbContext data;
+        private readonly IPetService petService;
+        private readonly IPetTypeService petTypeService;
 
-        public PetsController(VetClinicDbContext data)
+        public PetsController(IPetService petService, IPetTypeService petTypeService)
         {
-            this.data = data;
+            this.petService = petService;
+            this.petTypeService = petTypeService;
         }
 
         [Authorize]
         public IActionResult Add()
         {
-            if (!UserIsClient())
+            if (!this.User.IsClient())
             {
                 return RedirectToAction("Index", "Home");
             }
 
             return View(new PetFormModel
             {
-                PetTypes = GetPetTypes()
+                PetTypes = this.petTypeService.GetPetTypes()
             });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Add(PetFormModel pet)
+        {
+            var clientId = petService.GetClientId(this.User.GetId());
+
+            if (!petService.PetTypeExists(pet.PetTypeId))
+            {
+                this.ModelState.AddModelError(nameof(pet.PetTypeId), "Pet type does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                pet.PetTypes = this.petTypeService.GetPetTypes();
+
+                return View(pet);
+            }
+
+            var petId = petService.AddPet(
+                pet.Name,
+                pet.DateOfBirth,
+                pet.Breed,
+                pet.Gender.ToString(),
+                pet.Description,
+                pet.PetTypeId,
+                clientId);
+
+            return RedirectToAction("Mine", "Pets");
+            //return RedirectToAction("Details", "Pets");
         }
 
         [Authorize(Roles = DoctorRoleName)]
         public IActionResult All([FromQuery]AllPetsViewModel query)
         {
-            var petsQuery = this.data.Pets.AsQueryable();
+            var queryResult = petService.All(
+                query.SearchTerm,
+                query.PetTypeName,
+                query.CurrentPage,
+                AllPetsViewModel.PetsPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.PetTypeName))
-            {
-                petsQuery = petsQuery.Where(p => p.PetType.Name == query.PetTypeName);
-            }
+            var petPetTypes = petService.AllPetTypes();
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                petsQuery = petsQuery.Where(p => 
-                p.PetType.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                (p.PetType.Name + " " + p.Breed).ToLower().Contains(query.SearchTerm.ToLower()) ||
-                p.Description.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            var totalPets = petsQuery.Count();
-
-            var pets = petsQuery
-                .Skip((query.CurrentPage -1)*AllPetsViewModel.PetsPerPage)
-                .Take(AllPetsViewModel.PetsPerPage)
-                .OrderBy(p => p.Name)
-                .Select(p => new PetListingViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
-                    //p.DateOfBirth,
-                    PetType = p.PetType.Name,
-                    Breed = p.Breed,
-                    Gender = p.Gender.ToString()
-                })
-                .ToList();
-
-            var petPetTypes = this.data.Pets
-                .Select(p => p.PetType.Name)
-                .Distinct()
-                .OrderBy(pt => pt)
-                .ToList();
-
-            query.TotalPets = totalPets;
-            query.Pets = pets;  
-            query.PetTypes = petPetTypes;   
+            query.TotalPets = queryResult.TotalPets;
+            query.Pets = queryResult.Pets;
+            query.PetTypes = petPetTypes;
 
             return View(query);
         }
@@ -85,126 +84,18 @@ namespace VetClinic.Controllers
         [Authorize(Roles = ClientRoleName)]
         public IActionResult Mine()
         {
-            var clientId = this.data.Clients
-                .Where(c => c.UserId == this.User.GetId())
-                .Select(c => c.Id)
-                .FirstOrDefault();
+            var clientId = petService.GetClientId(this.User.GetId());
 
             if (clientId == null)
             {
                 return BadRequest();
             }
 
-            var myPets = this.data.Pets
-                .Where(p => p.ClientId == clientId)
-                .Select(p => new PetListingViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
-                    //DateTime.ParseExact(
-                    //            p.DateOfBirth.ToString(),
-                    //            NormalDateFormat,
-                    //            CultureInfo.InvariantCulture),
-                    //p.DateOfBirth,
-                    PetType = p.PetType.Name,
-                    Breed = p.Breed,
-                    Gender = p.Gender.ToString()
-                })
-                .ToList();
+            var myPets = petService.ByClient(clientId);
 
             return View(myPets);
         }
 
-        [HttpPost]
-        [Authorize]
-        public IActionResult Add(PetFormModel pet)
-        {
-            var clientId = this.data.Clients
-                .Where(c => c.UserId == this.User.GetId())
-                .Select(c => c.Id)
-                .FirstOrDefault();
-
-            var client = this.data.Clients.Find(clientId);
-
-            if (!data.PetTypes.Any(t => t.Id == pet.PetTypeId))
-            {
-                this.ModelState.AddModelError(nameof(pet.PetTypeId), "Pet type does not exist.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                pet.PetTypes = GetPetTypes();
-
-                return View(pet);
-            }
-
-            var petData = new Pet()
-            {
-                Name = pet.Name,
-                DateOfBirth = pet.DateOfBirth,
-                //DateTime.ParseExact(
-                //            pet.DateOfBirth.ToString(),
-                //            NormalDateFormat,
-                //            CultureInfo.InvariantCulture),
-                Breed = pet.Breed,
-                Gender = pet.Gender,
-                Description = pet.Description,
-                PetTypeId = pet.PetTypeId,
-                ClientId = clientId 
-            };
-
-            data.Pets.Add(petData);
-            client.Pets.Add(petData);
-
-            //if (this.UserIsDoctor())
-            //{
-            //    var doctorId = this.data.Doctors
-            //    .Where(d => d.UserId == this.User.GetId())
-            //    .Select(d => d.Id)
-            //    .FirstOrDefault();
-
-            //    var doctor = this.data.Doctors.Find(doctorId);
-
-            //    var petDoctor = new PetDoctor
-            //    {
-            //        DoctorId = doctorId,
-            //        PetId = petData.Id
-            //    };
-
-            //    doctor.PetDoctors.Add(petDoctor);
-            //    petData.PetDoctors.Add(petDoctor);
-            //    data.PetDoctors.Add(petDoctor);
-            //}
-
-            data.SaveChanges();
-
-            return RedirectToAction("Mine", "Pets");
-        }
-
-        private bool UserIsClient()
-        {
-            return this.data
-                .Clients
-                .Any(c => c.UserId == this.User.GetId());
-        }
-
-        private bool UserIsDoctor()
-        {
-            return this.data
-                .Doctors
-                .Any(d => d.UserId == this.User.GetId());
-        }
-
-        private ICollection<PetTypeServiceModel> GetPetTypes()
-        {
-            return data.PetTypes
-                .Select(p => new PetTypeServiceModel
-                {
-                    Id = p.Id,
-                    Name = p.Name
-                })
-                .ToList();
-        }
+        
     }
 }

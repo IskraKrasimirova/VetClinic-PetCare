@@ -6,6 +6,9 @@ using VetClinic.Data;
 using VetClinic.Data.Models;
 using VetClinic.Extensions;
 using VetClinic.ModelBinders;
+using VetClinic.Core.Contracts;
+using PetService = VetClinic.Core.Services.PetService;
+using VetClinic.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +37,9 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.NormalDateFormat));
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); 
     });
+
+builder.Services.AddTransient<IPetService, PetService>();
+builder.Services.AddTransient<IPetTypeService, PetTypeService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

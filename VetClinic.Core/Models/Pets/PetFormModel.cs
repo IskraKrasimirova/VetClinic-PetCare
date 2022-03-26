@@ -3,7 +3,7 @@ using VetClinic.Core.CustomAttributes;
 using VetClinic.Data.Enums;
 using static VetClinic.Data.ModelConstants.Pet;
 using static VetClinic.Common.GlobalConstants.FormattingConstants;
-
+using VetClinic.Core.Models.PetTypes;
 
 namespace VetClinic.Core.Models.Pets
 {
@@ -30,6 +30,6 @@ namespace VetClinic.Core.Models.Pets
 
         [Display(Name = "Pet Type")]
         public int PetTypeId { get; set; }
-        public ICollection<PetTypeServiceModel>? PetTypes { get; set; }
+        public IEnumerable<PetTypeServiceModel>? PetTypes { get; set; }
     }
 }
