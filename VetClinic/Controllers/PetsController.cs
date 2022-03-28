@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
+using VetClinic.Data.Enums;
 using VetClinic.Extensions;
 using static VetClinic.Common.GlobalConstants;
+using static VetClinic.Common.GlobalConstants.FormattingConstants;
+
 
 namespace VetClinic.Controllers
 {
@@ -23,7 +27,7 @@ namespace VetClinic.Controllers
         {
             if (!this.User.IsClient())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Register", "Home");
             }
 
             return View(new PetFormModel
@@ -37,6 +41,11 @@ namespace VetClinic.Controllers
         public IActionResult Add(PetFormModel pet)
         {
             var clientId = petService.GetClientId(this.User.GetId());
+
+            if (clientId == null)
+            {
+                return RedirectToAction("Register", "Home");
+            }
 
             if (!petService.PetTypeExists(pet.PetTypeId))
             {
@@ -96,6 +105,78 @@ namespace VetClinic.Controllers
             return View(myPets);
         }
 
-        
+        [Authorize]
+        public IActionResult Edit(string id)
+        {
+            if (!this.User.IsClient() && !this.User.IsDoctor())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var pet = petService.Details(id);
+
+            var clientId = petService.GetClientId(this.User.GetId());
+
+            if (pet.ClientId != clientId && !this.User.IsDoctor())
+            {
+                return Unauthorized();
+            }
+
+            return View(new PetFormModel
+            {
+                Name = pet.Name,
+                DateOfBirth = DateTime.ParseExact(pet.DateOfBirth, NormalDateFormat, CultureInfo.InvariantCulture),
+                Breed = pet.Breed,
+                Gender = (Gender)Enum.Parse(typeof(Gender), pet.Gender),
+                Description = pet.Description,
+                PetTypeId = pet.PetTypeId,
+                PetTypes = this.petTypeService.GetPetTypes()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(string id, PetFormModel pet)
+        {
+            if (!this.User.IsClient() && !this.User.IsDoctor())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var clientId = petService.GetClientId(this.User.GetId());
+
+            if (!petService.PetTypeExists(pet.PetTypeId))
+            {
+                this.ModelState.AddModelError(nameof(pet.PetTypeId), "Pet type does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                pet.PetTypes = this.petTypeService.GetPetTypes();
+
+                return View(pet);
+            }
+
+            if (!this.petService.IsByOwner(id, clientId) && !this.User.IsDoctor())
+            {
+                return Unauthorized();
+            }
+
+            var isEdited = petService.Edit(
+                id,
+                pet.Name,
+                pet.DateOfBirth,
+                pet.Breed,
+                pet.Gender.ToString(),
+                pet.Description,
+                pet.PetTypeId);
+
+            if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Mine", "Pets");
+        }
     }
 }

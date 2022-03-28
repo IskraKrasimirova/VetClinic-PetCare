@@ -13,6 +13,5 @@
         public string Gender { get; set; }
 
         public string PetType { get; set; }
-        public string Description { get; set; }
     }
 }

@@ -42,21 +42,11 @@ namespace VetClinic.Core.Services
 
             var totalPets = petsQuery.Count();
 
-            var pets = petsQuery
-                .Skip((currentPage - 1) * AllPetsViewModel.PetsPerPage)
-                .Take(AllPetsViewModel.PetsPerPage)
-                .OrderBy(p => p.Name)
-                .Select(p => new PetListingViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
-                    //p.DateOfBirth,
-                    PetType = p.PetType.Name,
-                    Breed = p.Breed,
-                    Gender = p.Gender.ToString()
-                })
-                .ToList();
+            var pets = GetPets(petsQuery
+                .Skip((currentPage - 1) * petsPerPage)
+                .Take(petsPerPage)
+                .OrderBy(p => p.Name));
+
 
             var petPetTypes = AllPetTypes();
 
@@ -82,23 +72,8 @@ namespace VetClinic.Core.Services
 
         public IEnumerable<PetListingViewModel> ByClient(string clientId)
         {
-            return this.data.Pets
-                .Where(p => p.ClientId == clientId)
-                .Select(p => new PetListingViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
-                    //DateTime.ParseExact(
-                    //            p.DateOfBirth.ToString(),
-                    //            NormalDateFormat,
-                    //            CultureInfo.InvariantCulture),
-                    //p.DateOfBirth,
-                    PetType = p.PetType.Name,
-                    Breed = p.Breed,
-                    Gender = p.Gender.ToString()
-                })
-                .ToList();
+            return GetPets(this.data.Pets
+                .Where(p => p.ClientId == clientId));
         }
 
         public string GetClientId(string userId)
@@ -134,7 +109,7 @@ namespace VetClinic.Core.Services
                 //            NormalDateFormat,
                 //            CultureInfo.InvariantCulture),
                 Breed = breed,
-                Gender = (Gender)Enum.Parse(typeof(Gender) ,gender),
+                Gender = (Gender)Enum.Parse(typeof(Gender), gender),
                 Description = description,
                 PetTypeId = petTypeId,
                 ClientId = clientId
@@ -147,5 +122,81 @@ namespace VetClinic.Core.Services
 
             return pet.Id;
         }
+
+        public bool Edit(
+            string id, 
+            string name, 
+            DateTime dateOfBirth, 
+            string breed, 
+            string gender, 
+            string description, 
+            int petTypeId
+            )
+        {
+            var pet = this.data.Pets.Find(id);
+
+            if ( pet == null )
+            {
+                return false;
+            }
+
+            pet.Name = name;
+            pet.DateOfBirth = dateOfBirth;
+            pet.Breed = breed;
+            pet.Gender = (Gender)Enum.Parse(typeof(Gender), gender);
+            pet.Description = description;
+            pet.PetTypeId = petTypeId;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public PetDetailsServiceModel Details(string id)
+        {
+            return this.data.Pets
+                .Where(p => p.Id == id)
+                .Select(p => new PetDetailsServiceModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    PetType = p.PetType.Name,
+                    Breed = p.Breed,
+                    Gender = p.Gender.ToString(),
+                    Description = p.Description,
+                    ClientId = p.ClientId,
+                    ClientName = p.Client.FullName,
+                    UserId = p.Client.UserId
+                })
+                .FirstOrDefault();
+        }
+
+        public bool IsByOwner(string id, string clientId)
+        {
+            return this.data.Pets.Any(p => p.Id == id && p.ClientId == clientId);
+        }
+
+        private IEnumerable<PetListingViewModel> GetPets(IQueryable<Pet> petQuery)
+        {
+            return petQuery
+                .Select(p => new PetListingViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    //DateTime.ParseExact(
+                    //            p.DateOfBirth.ToString(),
+                    //            NormalDateFormat,
+                    //            CultureInfo.InvariantCulture),
+                    //p.DateOfBirth,
+                    PetType = p.PetType.Name,
+                    Breed = p.Breed,
+                    Gender = p.Gender.ToString()
+                })
+                .ToList();
+        }
+
+        
     }
 }

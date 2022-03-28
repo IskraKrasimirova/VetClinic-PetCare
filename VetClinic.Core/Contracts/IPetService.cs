@@ -28,5 +28,18 @@ namespace VetClinic.Core.Contracts
             string description,
             int petTypeId,
             string clientId);
+
+        bool Edit(
+            string id,
+            string name,
+            DateTime dateOfBirth,
+            string breed,
+            string gender,
+            string description,
+            int petTypeId);
+
+        PetDetailsServiceModel Details(string id);
+
+        bool IsByOwner(string id, string clientId);
     }
 }
