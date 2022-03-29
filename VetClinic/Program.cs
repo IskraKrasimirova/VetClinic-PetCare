@@ -41,6 +41,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddTransient<IPetService, PetService>();
 builder.Services.AddTransient<IPetTypeService, PetTypeService>();
 builder.Services.AddTransient<IClientService, ClientService>();
+builder.Services.AddTransient<IDepartmentService, DepartmentService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
@@ -69,6 +70,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllerRoute(
+    name: "Areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
