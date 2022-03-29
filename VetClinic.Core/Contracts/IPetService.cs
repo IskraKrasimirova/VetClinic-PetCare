@@ -14,8 +14,6 @@ namespace VetClinic.Core.Contracts
 
         IEnumerable<string> AllPetTypes();
 
-        string GetClientId(string userId);
-
         IEnumerable<PetListingViewModel> ByClient(string clientId);
 
         bool PetTypeExists(int petTypeId);
@@ -39,6 +37,8 @@ namespace VetClinic.Core.Contracts
             int petTypeId);
 
         PetDetailsServiceModel Details(string id);
+
+        bool Delete(string id, string clientId);
 
         bool IsByOwner(string id, string clientId);
     }

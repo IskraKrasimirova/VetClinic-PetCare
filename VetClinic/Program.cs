@@ -40,6 +40,7 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddTransient<IPetService, PetService>();
 builder.Services.AddTransient<IPetTypeService, PetTypeService>();
+builder.Services.AddTransient<IClientService, ClientService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

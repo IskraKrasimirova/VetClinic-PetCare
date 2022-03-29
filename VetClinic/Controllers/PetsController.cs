@@ -15,11 +15,13 @@ namespace VetClinic.Controllers
     {
         private readonly IPetService petService;
         private readonly IPetTypeService petTypeService;
+        private readonly IClientService clientService;
 
-        public PetsController(IPetService petService, IPetTypeService petTypeService)
+        public PetsController(IPetService petService, IPetTypeService petTypeService, IClientService clientService)
         {
             this.petService = petService;
             this.petTypeService = petTypeService;
+            this.clientService = clientService;
         }
 
         [Authorize]
@@ -40,7 +42,7 @@ namespace VetClinic.Controllers
         [Authorize]
         public IActionResult Add(PetFormModel pet)
         {
-            var clientId = petService.GetClientId(this.User.GetId());
+            var clientId = clientService.GetClientId(this.User.GetId());
 
             if (clientId == null)
             {
@@ -69,7 +71,7 @@ namespace VetClinic.Controllers
                 clientId);
 
             return RedirectToAction("Mine", "Pets");
-            //return RedirectToAction("Details", "Pets");
+            //return RedirectToAction("Details", new { id = petId});
         }
 
         [Authorize(Roles = DoctorRoleName)]
@@ -93,7 +95,7 @@ namespace VetClinic.Controllers
         [Authorize(Roles = ClientRoleName)]
         public IActionResult Mine()
         {
-            var clientId = petService.GetClientId(this.User.GetId());
+            var clientId = clientService.GetClientId(this.User.GetId());
 
             if (clientId == null)
             {
@@ -115,7 +117,7 @@ namespace VetClinic.Controllers
 
             var pet = petService.Details(id);
 
-            var clientId = petService.GetClientId(this.User.GetId());
+            var clientId = clientService.GetClientId(this.User.GetId());
 
             if (pet.ClientId != clientId && !this.User.IsDoctor())
             {
@@ -143,7 +145,7 @@ namespace VetClinic.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var clientId = petService.GetClientId(this.User.GetId());
+            var clientId = clientService.GetClientId(this.User.GetId());
 
             if (!petService.PetTypeExists(pet.PetTypeId))
             {
@@ -172,6 +174,45 @@ namespace VetClinic.Controllers
                 pet.PetTypeId);
 
             if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            //return RedirectToAction("Mine", "Pets"); 
+            return RedirectToAction("Details", new { id });
+        }
+
+        [Authorize]
+        public IActionResult Details(string id, string information)
+        {
+            var pet = this.petService.Details(id);
+
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            return View(pet);
+        }
+
+        [Authorize(Roles = ClientRoleName)]
+        public IActionResult Delete(string id)
+        {
+            if (!this.User.IsClient())
+            {
+                return BadRequest();
+            }
+
+            var clientId = clientService.GetClientId(this.User.GetId());
+
+            if (!this.petService.IsByOwner(id, clientId))
+            {
+                return Unauthorized();
+            }
+
+            var isDeleted = this.petService.Delete(id, clientId);
+
+            if (!isDeleted)
             {
                 return BadRequest();
             }

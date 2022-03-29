@@ -76,14 +76,6 @@ namespace VetClinic.Core.Services
                 .Where(p => p.ClientId == clientId));
         }
 
-        public string GetClientId(string userId)
-        {
-            return this.data.Clients
-                .Where(c => c.UserId == userId)
-                .Select(c => c.Id)
-                .FirstOrDefault();
-        }
-
         public bool PetTypeExists(int petTypeId)
         {
             return this.data.PetTypes.Any(t => t.Id == petTypeId);
@@ -170,6 +162,31 @@ namespace VetClinic.Core.Services
                     UserId = p.Client.UserId
                 })
                 .FirstOrDefault();
+        }
+
+        public bool Delete(string id, string clientId)
+        {
+            var owner = this.data.Clients.Find(clientId);
+
+            if (owner == null)
+            {
+                return false;
+            }
+
+            var pet = this.data.Pets
+                .Where(p => p.Id == id && p.ClientId == clientId)
+                .FirstOrDefault();
+
+            if (pet == null)
+            {
+                return false;
+            }
+
+            owner.Pets.Remove(pet);
+            this.data.Pets.Remove(pet);
+            this.data.SaveChanges();
+
+            return true;
         }
 
         public bool IsByOwner(string id, string clientId)
