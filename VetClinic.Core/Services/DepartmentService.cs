@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VetClinic.Core.Contracts;
+using VetClinic.Core.Models.Departments;
 using VetClinic.Data;
 using VetClinic.Data.Models;
 
@@ -36,6 +37,25 @@ namespace VetClinic.Core.Services
         {
             return this.data.Departments
                 .Any(d => d.Name == name);
+        }
+
+        public IEnumerable<DepartmentListingViewModel> GetAllDepartments()
+        {
+            if (!this.data.Departments.Any())
+            {
+                return null;
+            }
+
+            var allDepartments = this.data.Departments
+                .Select(d => new DepartmentListingViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    Description = d.Description
+                })
+                .ToList();
+
+            return allDepartments;
         }
     }
 }

@@ -153,6 +153,7 @@ namespace VetClinic.Core.Services
                     Id = p.Id,
                     Name = p.Name,
                     DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    PetTypeId = p.PetTypeId,
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString(),

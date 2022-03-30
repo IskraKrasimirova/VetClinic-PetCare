@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VetClinic.Core.Models.Departments;
 
 namespace VetClinic.Core.Contracts
 {
@@ -11,5 +12,7 @@ namespace VetClinic.Core.Contracts
         int Create(string name, string description);
 
         bool DepartmentExists(string name);
+
+        IEnumerable<DepartmentListingViewModel> GetAllDepartments();
     }
 }
