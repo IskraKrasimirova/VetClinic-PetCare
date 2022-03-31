@@ -4,11 +4,13 @@
     ViewBag.Title = "All Departments";
 }
 
-<div class="row">
+<div class="row mb-5">
+    <h2 class="heading-margin mb-5 text-center">@ViewBag.Title</h2>
     @foreach (var department in Model)
     {
-        <div class="col-md-4 ">
+        <div class="col-md-4">
             <div class="card mb-3" style="width: 16rem">
+                <img class="card-img-fluid" src="@department.Image" alt="@department.Name Image">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@department.Name</h5>
                     <ul class="list-group list-group-flush">

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using static VetClinic.Data.ModelConstants.Departmenet;
 
 namespace VetClinic.Core.Models.Departments
@@ -13,6 +8,8 @@ namespace VetClinic.Core.Models.Departments
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; }
+
+        public string Image { get; set; }
 
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; }

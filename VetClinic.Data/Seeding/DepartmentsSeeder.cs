@@ -15,6 +15,7 @@ namespace VetClinic.Data.Seeding
                 var examinationAndConsultation = new Department()
                 {
                     Name = DepartmentsSeedData.ExaminationAndConsultation.Name,
+                    Image = DepartmentsSeedData.ExaminationAndConsultation.Image,
                     Description = DepartmentsSeedData.ExaminationAndConsultation.Description,
                 };
                 allDepartments.Add(examinationAndConsultation);
@@ -22,6 +23,7 @@ namespace VetClinic.Data.Seeding
                 var internalMedicine = new Department()
                 {
                     Name = DepartmentsSeedData.InternalMedicine.Name,
+                    Image = DepartmentsSeedData.InternalMedicine.Image,
                     Description = DepartmentsSeedData.InternalMedicine.Description,
                 };
                 allDepartments.Add(internalMedicine);
@@ -29,6 +31,7 @@ namespace VetClinic.Data.Seeding
                 var surgery = new Department()
                 {
                     Name = DepartmentsSeedData.Surgery.Name,
+                    Image = DepartmentsSeedData.Surgery.Image,
                     Description = DepartmentsSeedData.Surgery.Description,
                 };
                 allDepartments.Add(surgery);
@@ -36,6 +39,7 @@ namespace VetClinic.Data.Seeding
                 var orthopedicsAndTraumatology = new Department()
                 {
                     Name = DepartmentsSeedData.OrthopedicsAndTraumatology.Name,
+                    Image = DepartmentsSeedData.OrthopedicsAndTraumatology.Image,
                     Description = DepartmentsSeedData.OrthopedicsAndTraumatology.Description,
                 };
                 allDepartments.Add(orthopedicsAndTraumatology);
@@ -43,6 +47,7 @@ namespace VetClinic.Data.Seeding
                 var dermatology = new Department()
                 {
                     Name = DepartmentsSeedData.Dermatology.Name,
+                    Image = DepartmentsSeedData.Dermatology.Image,
                     Description = DepartmentsSeedData.Dermatology.Description,
                 };
                 allDepartments.Add(dermatology);
@@ -50,6 +55,7 @@ namespace VetClinic.Data.Seeding
                 var emergencyMedicine = new Department()
                 {
                     Name = DepartmentsSeedData.EmergencyMedicine.Name,
+                    Image = DepartmentsSeedData.EmergencyMedicine.Image,
                     Description = DepartmentsSeedData.EmergencyMedicine.Description,
                 };
                 allDepartments.Add(emergencyMedicine);
@@ -57,6 +63,7 @@ namespace VetClinic.Data.Seeding
                 var grooming = new Department()
                 {
                     Name = DepartmentsSeedData.Grooming.Name,
+                    Image = DepartmentsSeedData.Grooming.Image,
                     Description = DepartmentsSeedData.Grooming.Description,
                 };
                 allDepartments.Add(grooming);
@@ -64,6 +71,7 @@ namespace VetClinic.Data.Seeding
                 var clinicalLaboratory = new Department()
                 {
                     Name = DepartmentsSeedData.ClinicalLaboratory.Name,
+                    Image = DepartmentsSeedData.ClinicalLaboratory.Image,
                     Description = DepartmentsSeedData.ClinicalLaboratory.Description,
                 };
                 allDepartments.Add(clinicalLaboratory);

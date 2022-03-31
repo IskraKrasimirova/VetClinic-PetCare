@@ -19,11 +19,12 @@ namespace VetClinic.Core.Services
             this.data = data;
         }
 
-        public int Create(string name, string description)
+        public int Create(string name, string image, string description)
         {
             var department = new Department
             {
                 Name = name,
+                Image = image,
                 Description = description
             };
 
@@ -51,6 +52,7 @@ namespace VetClinic.Core.Services
                 {
                     Id = d.Id,
                     Name = d.Name,
+                    Image = d.Image,
                     Description = d.Description
                 })
                 .ToList();

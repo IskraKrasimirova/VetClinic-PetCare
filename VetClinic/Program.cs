@@ -17,7 +17,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<VetClinicDbContext>(options =>
     {
         options.UseSqlServer(connectionString);
-        options.EnableSensitiveDataLogging();
+        //options.EnableSensitiveDataLogging();
     });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

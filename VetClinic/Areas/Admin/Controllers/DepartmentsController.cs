@@ -33,10 +33,11 @@ namespace VetClinic.Areas.Admin.Controllers
 
             var departmentId= this.departmentService.Create(
                 department.Name,
+                department.Image,
                 department.Description);
 
-            return RedirectToAction("Index", "Home");
-            //return RedirectToAction("All", "Departments");
+            //return RedirectToAction("Index", "Home");
+            return RedirectToAction("All", "Departments");
         }
     }
 }
