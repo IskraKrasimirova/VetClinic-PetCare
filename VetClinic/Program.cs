@@ -9,6 +9,7 @@ using VetClinic.ModelBinders;
 using VetClinic.Core.Contracts;
 using PetService = VetClinic.Core.Services.PetService;
 using VetClinic.Core.Services;
+using DoctorService = VetClinic.Core.Services.DoctorService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,8 @@ builder.Services.AddTransient<IPetService, PetService>();
 builder.Services.AddTransient<IPetTypeService, PetTypeService>();
 builder.Services.AddTransient<IClientService, ClientService>();
 builder.Services.AddTransient<IDepartmentService, DepartmentService>();
+builder.Services.AddTransient<IDoctorService, DoctorService>();
+builder.Services.AddTransient<IServiceService, ServiceService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
@@ -71,7 +74,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "Areas",
+    name: "Area",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",

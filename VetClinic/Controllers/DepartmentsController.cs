@@ -22,5 +22,17 @@ namespace VetClinic.Controllers
             }
             return View(allDepartments);
         }
+
+        public IActionResult Details(int id, string information)
+        {
+            var department = this.departmentService.Details(id);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
     }
 }

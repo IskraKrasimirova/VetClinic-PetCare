@@ -1,0 +1,19 @@
+﻿@model DepartmentDetailsServiceModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="col-md-4 ">
+    <div class="card mb-3" style="width: 16rem">
+        <div class="card-body text-center">
+            <h5 class="card-title text-center">@Model.Name</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">@Model.Image</li>
+                <li class="list-group-item">@Model.Description</li>
+            </ul>
+            <a asp-controller="Doctors" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Doctors</a>
+            <a asp-controller="Services" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Services</a>
+        </div>
+    </div>
+</div>

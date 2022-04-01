@@ -37,6 +37,52 @@ namespace VetClinic.Areas.Admin.Controllers
                 department.Description);
 
             //return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", new {id = departmentId});
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var department = departmentService.Details(id);
+
+            return View(new DepartmentFormModel
+            {
+                Name = department.Name,
+                Image = department.Image,
+                Description = department.Description,
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, DepartmentFormModel department)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(department);
+            }
+
+            var isEdited = departmentService.Edit(
+                id,
+                department.Name,
+                department.Image,
+                department.Description);
+
+            if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("All", "Departments");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var isDeleted = departmentService.Delete(id);
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
             return RedirectToAction("All", "Departments");
         }
     }
