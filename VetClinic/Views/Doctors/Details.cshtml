@@ -1,0 +1,23 @@
+﻿@model DoctorDetailsServiceModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="col-lg-8 col-md-12 offset-lg-2 ">
+    <div class="card mb-5" style="width: 36rem">
+        <div class="card-body text-center">
+            <h3 class="card-title text-center mb-5">@Model.FullName</h3>
+            <img class="d-block img-fluid mx-auto mb-5" src="@Model.ProfileImage" alt="@Model.FullName Image">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item mb-3">Department: @Model.Department</li>
+                <li class="list-group-item mb-3">@Model.Description</li>
+                <li class="list-group-item mb-3">Email: @Model.Email</li>
+                <li class="list-group-item mb-5">Phone Number: @Model.PhoneNumber</li>
+            </ul>
+            <div class="footer text-center mb-3">
+                <a asp-controller="Appointments" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Book</a>
+            </div>
+        </div>
+    </div>
+</div>

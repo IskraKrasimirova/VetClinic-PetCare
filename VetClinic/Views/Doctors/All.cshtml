@@ -1,0 +1,95 @@
+﻿@model AllDoctorsViewModel
+
+@{
+    ViewBag.Title = "Our Team";
+}
+
+<form method="get">
+    <div class="row mb-5">
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Department"></label>
+                <select asp-for="Department" class="form-control">
+                    <option value="">All</option>
+
+                    @foreach (var department in Model.Departments)
+                    {
+                        <option value="@department">@department</option>
+                    }
+                </select>
+            </div>
+            <input type="submit" class="btn btn-outline-primary mt-2" value="Search" />
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Doctor Name, Department, etc...">
+            <input type="submit" class="btn btn-outline-primary mt-2" value="Search" />
+        </div>
+    </div>
+</form>
+
+
+@if (!Model.Doctors.Any())
+{
+    <h2 class="text-center">No doctors found by the given criteria!</h2>
+    ViewBag.Title = null;
+}
+
+<div class="row mb-5">
+    <h2 class="heading-margin mb-5 text-center">@ViewBag.Title</h2>
+    @foreach (var doctor in Model.Doctors)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3" style="width: 16rem">
+                <img class="card-img-fluid" src="@doctor.ProfileImage" alt="@doctor.FullName Image">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@doctor.FullName</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@doctor.Department</li>
+                    </ul>
+                    <a asp-area="" asp-controller="Doctors" asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-outline-primary">View</a>
+                    @if (User.IsAdmin())
+                    {
+                        <a asp-area="Admin" asp-controller="Doctors" asp-action="Edit" asp-route-id="@doctor.Id" class="btn btn-outline-warning">Edit</a>
+                        <a asp-area="Admin" asp-controller="Doctors" asp-action="Delete" asp-route-id="@doctor.Id" class="btn btn-outline-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalDoctors / AllDoctorsViewModel.DoctorsPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Doctors"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-petTypeName="@Model.Department"
+           asp-route-searchTerm="@Model.SearchTerm"><<</a>
+    </div>
+    
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Doctors.Any();
+    }
+
+    <div class="col-md-6">
+        <a class="btn btn-primary float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
+           asp-controller="Doctors"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-petTypeName="@Model.Department"
+           asp-route-searchTerm="@Model.SearchTerm">>></a>
+    </div>
+</div>
