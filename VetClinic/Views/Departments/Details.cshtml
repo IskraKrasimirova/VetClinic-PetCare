@@ -4,16 +4,19 @@
     ViewBag.Title = "Details";
 }
 
-<div class="col-md-4 ">
-    <div class="card mb-3" style="width: 16rem">
+<div class="col-lg-8 col-md-12 offset-lg-2 ">
+    <div class="card mb-5" style="width: 36rem">
         <div class="card-body text-center">
-            <h5 class="card-title text-center">@Model.Name</h5>
+            <h3 class="card-title text-center mb-5">@Model.Name</h3>
+            @* <img class="card-img-fluid mx-auto mb-5" src="@Model.Image" alt="@Model.Name Image">*@
+            <img class="d-block img-fluid mx-auto mb-5" src="@Model.Image" alt="@Model.Name Image">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">@Model.Image</li>
-                <li class="list-group-item">@Model.Description</li>
+                <li class="list-group-item mb-5">@Model.Description</li>
             </ul>
-            <a asp-controller="Doctors" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Doctors</a>
-            <a asp-controller="Services" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Services</a>
+            <div class="footer text-center mb-3">
+                <a asp-controller="Doctors" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Doctors</a>
+                <a asp-controller="Services" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Services</a>
+            </div>
         </div>
     </div>
 </div>
