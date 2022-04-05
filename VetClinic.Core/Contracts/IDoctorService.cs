@@ -12,6 +12,8 @@ namespace VetClinic.Core.Contracts
         AllDoctorsViewModel All(string departmentName, string searchTerm, int currentPage = 1,
             int doctorsPerPage = int.MaxValue);
 
+        AvailableDoctorsServiceModel ByDepartment(AvailableDoctorsServiceModel query);
+
         IEnumerable<string> AllDepartments();
 
         DoctorDetailsServiceModel Details(string id);

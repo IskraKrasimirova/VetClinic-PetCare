@@ -35,6 +35,7 @@ namespace VetClinic.Core.Services
             {
                 doctorsQuery = doctorsQuery.Where(d =>
                 d.Department.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                d.FullName.ToLower().Contains(searchTerm.ToLower()) ||
                 d.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
@@ -57,6 +58,16 @@ namespace VetClinic.Core.Services
                 SearchTerm = searchTerm
             };
         }
+
+        public AvailableDoctorsServiceModel ByDepartment(AvailableDoctorsServiceModel query)
+        {
+            var doctorsQuery = this.data.Doctors.AsQueryable();
+
+            var doctors = GetAvailableDoctors(query, doctorsQuery);
+
+            return doctors;
+        }
+
 
         public IEnumerable<string> AllDepartments()
         {
@@ -92,9 +103,21 @@ namespace VetClinic.Core.Services
                     Id = d.Id,
                     FullName = d.FullName,
                     ProfileImage = d.ProfileImage,
-                    Department = d.Department.Name
+                    Department = d.Department.Name,
+                    DepartmentId = d.DepartmentId
                 })
                 .ToList();
         }
+
+        private AvailableDoctorsServiceModel GetAvailableDoctors(AvailableDoctorsServiceModel query, IQueryable<Doctor> doctorsQuery)
+        {
+            return new AvailableDoctorsServiceModel
+            {
+                DepartmentId = query.DepartmentId,
+                Doctors = GetDoctors(doctorsQuery
+                .Where(d => d.DepartmentId == query.DepartmentId))
+            };
+        }
+
     }
 }

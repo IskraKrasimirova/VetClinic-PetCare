@@ -14,7 +14,7 @@
                 <li class="list-group-item mb-5">@Model.Description</li>
             </ul>
             <div class="footer text-center mb-3">
-                <a asp-controller="Doctors" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Doctors</a>
+                <a asp-controller="Doctors" asp-action="Available" asp-route-departmentId="@Model.Id" class="btn btn-outline-primary">Doctors</a>
                 <a asp-controller="Services" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Services</a>
             </div>
         </div>

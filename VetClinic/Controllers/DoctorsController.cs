@@ -35,6 +35,16 @@ namespace VetClinic.Controllers
             return View(query);
         }
 
+        public IActionResult Available([FromQuery] AvailableDoctorsServiceModel query)
+        {
+            var queryResult = doctorService.ByDepartment(query);
+
+            query.DepartmentId = queryResult.DepartmentId;
+            query.Doctors = queryResult.Doctors;
+
+            return View(query);
+        }
+
         public IActionResult Details(string id, string information)
         {
             var doctor = this.doctorService.Details(id);
