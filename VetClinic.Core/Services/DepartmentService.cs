@@ -41,6 +41,14 @@ namespace VetClinic.Core.Services
                 .Any(d => d.Name == name);
         }
 
+        public IEnumerable<string> AllDepartments()
+        {
+            return this.data.Departments
+                .Select(d => d.Name)
+                .Distinct()
+                .ToList();
+        }
+
         public IEnumerable<DepartmentListingViewModel> GetAllDepartments()
         {
             if (!this.data.Departments.Any())

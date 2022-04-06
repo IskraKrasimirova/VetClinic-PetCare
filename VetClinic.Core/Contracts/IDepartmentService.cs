@@ -8,6 +8,8 @@ namespace VetClinic.Core.Contracts
 
         bool DepartmentExists(string name);
 
+        IEnumerable<string> AllDepartments();
+
         IEnumerable<DepartmentListingViewModel> GetAllDepartments();
 
         DepartmentDetailsServiceModel Details(int id);

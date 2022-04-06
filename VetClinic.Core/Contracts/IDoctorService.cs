@@ -14,8 +14,6 @@ namespace VetClinic.Core.Contracts
 
         AvailableDoctorsServiceModel ByDepartment(AvailableDoctorsServiceModel query);
 
-        IEnumerable<string> AllDepartments();
-
         DoctorDetailsServiceModel Details(string id);
     }
 }

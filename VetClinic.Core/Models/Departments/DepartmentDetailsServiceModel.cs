@@ -12,6 +12,6 @@ namespace VetClinic.Core.Models.Departments
     {
         public IEnumerable<DoctorServiceModel> Doctors { get; set; }
 
-        public IEnumerable<ServiceModel> Services { get; set; }
+        public IEnumerable<AllServicesViewModel> Services { get; set; }
     }
 }

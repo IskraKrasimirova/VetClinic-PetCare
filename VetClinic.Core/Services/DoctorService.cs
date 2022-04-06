@@ -46,7 +46,7 @@ namespace VetClinic.Core.Services
                 .Take(doctorsPerPage)
                 .OrderBy(d => d.DepartmentId));
 
-            var doctorsDepartments = AllDepartments();
+            var doctorsDepartments = departmentService.AllDepartments();
 
             return new AllDoctorsViewModel
             {
@@ -67,16 +67,7 @@ namespace VetClinic.Core.Services
 
             return doctors;
         }
-
-
-        public IEnumerable<string> AllDepartments()
-        {
-            return this.data.Departments
-                .Select(d => d.Name)
-                .Distinct()
-                .ToList();
-        }
-
+        
         public DoctorDetailsServiceModel Details(string id)
         {
             return this.data.Doctors

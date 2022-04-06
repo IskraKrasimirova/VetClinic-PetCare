@@ -1,0 +1,44 @@
+﻿@model AllServicesViewModel
+
+@{
+    ViewBag.Title = "All Services";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <h2 class="heading-margin mb-3 mt-3 text-center">@ViewBag.Title</h2>
+            <table class="table table-secondary table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>No</th>
+                        <th>Department</th>
+                        <th>Service</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var service in Model.Services)
+                    {
+                        <tr>
+                            <td>@service.Id</td>
+                            <td>@service.Department</td>
+                            <td>@service.Name</td>
+                            <td>@service.Description</td>
+                            <td>@service.Price</td>
+                            @if (User.IsAdmin())
+                            {
+                                <td>
+                                    <a asp-area="Admin" asp-controller="Service" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-outline-warning btn-sm float-right mb-2">Edit</a>
+                                    <a asp-area="Admin" asp-controller="Service" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-outline-danger btn-sm float-right">Delete</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

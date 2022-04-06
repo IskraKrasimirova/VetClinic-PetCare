@@ -12,10 +12,12 @@ namespace VetClinic.Controllers
         }
 
         private readonly IDoctorService doctorService;
+        private readonly IDepartmentService departmentService;
 
-        public DoctorsController(IDoctorService doctorService)
+        public DoctorsController(IDoctorService doctorService, IDepartmentService departmentService)
         {
             this.doctorService = doctorService;
+            this.departmentService = departmentService;
         }
 
         public IActionResult All([FromQuery] AllDoctorsViewModel query)
@@ -26,7 +28,7 @@ namespace VetClinic.Controllers
                 query.CurrentPage,
                 AllDoctorsViewModel.DoctorsPerPage);
 
-            var doctorsDepartments = doctorService.AllDepartments();
+            var doctorsDepartments = departmentService.AllDepartments();
 
             query.TotalDoctors = queryResult.TotalDoctors;
             query.Doctors = queryResult.Doctors;
