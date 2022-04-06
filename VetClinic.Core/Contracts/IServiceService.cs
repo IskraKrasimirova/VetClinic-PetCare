@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Models.Services;
+﻿using VetClinic.Core.Models.Services;
 
 namespace VetClinic.Core.Contracts
 {
@@ -11,6 +6,8 @@ namespace VetClinic.Core.Contracts
     {
         //IEnumerable<ServiceViewModel> GetAllServices();
 
-        AllServicesViewModel All(string departmentName);
+        AllServicesViewModel All(string departmentName, string searchTerm);
+
+        AvailableServicesViewModel ByDepartment(AvailableServicesViewModel query);
     }
 }

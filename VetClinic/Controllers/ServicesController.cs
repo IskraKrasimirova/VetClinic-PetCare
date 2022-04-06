@@ -28,11 +28,22 @@ namespace VetClinic.Controllers
 
         public IActionResult All([FromQuery] AllServicesViewModel query)
         {
-            var queryResult = service.All(query.Department);
+            var queryResult = service.All(query.Department, query.SearchTerm);
 
             var servicesDepartments = departmentService.AllDepartments();
 
             query.Departments = servicesDepartments;
+            query.Services = queryResult.Services;
+            query.SearchTerm = queryResult.SearchTerm;
+
+            return View(query);
+        }
+
+        public IActionResult Available([FromQuery] AvailableServicesViewModel query)
+        {
+            var queryResult = service.ByDepartment(query);
+
+            query.DepartmentId = queryResult.DepartmentId;
             query.Services = queryResult.Services;
 
             return View(query);

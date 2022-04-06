@@ -6,6 +6,8 @@
 
         public string Department { get; set; }
 
+        public string SearchTerm { get; set; }
+
         public IEnumerable<string> Departments { get; set; }
 
         public IEnumerable<ServiceViewModel> Services { get; set; }

@@ -44,7 +44,8 @@ namespace VetClinic.Core.Services
             var doctors = GetDoctors(doctorsQuery
                 .Skip((currentPage - 1) * doctorsPerPage)
                 .Take(doctorsPerPage)
-                .OrderBy(d => d.DepartmentId));
+                .OrderBy(d => d.DepartmentId)
+                .ThenBy(d => d.FullName));
 
             var doctorsDepartments = departmentService.AllDepartments();
 
@@ -109,6 +110,5 @@ namespace VetClinic.Core.Services
                 .Where(d => d.DepartmentId == query.DepartmentId))
             };
         }
-
     }
 }

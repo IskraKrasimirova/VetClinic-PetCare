@@ -42,13 +42,21 @@ namespace VetClinic.Core.Services
         //    return allServices;
         //}
 
-        public AllServicesViewModel All(string departmentName)
+        public AllServicesViewModel All(string departmentName, string searchTerm)
         {
             var servicesQuery = this.data.Services.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(departmentName))
             {
                 servicesQuery = servicesQuery.Where(s => s.Department.Name == departmentName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                servicesQuery = servicesQuery.Where(s =>
+                s.Department.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                s.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                s.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
             var services = GetServices(servicesQuery
@@ -65,7 +73,16 @@ namespace VetClinic.Core.Services
             };
         }
 
-        private IEnumerable<ServiceViewModel> GetServices(IOrderedQueryable<Service> serviceQuery)
+        public AvailableServicesViewModel ByDepartment(AvailableServicesViewModel query)
+        {
+            var servicesQuery = this.data.Services.AsQueryable();
+
+            var availableServices = GetAvailableServices(query, servicesQuery);
+
+            return availableServices;
+        }
+
+        private IEnumerable<ServiceViewModel> GetServices(IQueryable<Service> serviceQuery)
         {
             return serviceQuery
                 .Select(s => new ServiceViewModel
@@ -78,6 +95,16 @@ namespace VetClinic.Core.Services
                     DepartmentId = s.DepartmentId
                 })
                 .ToList();
+        }
+
+        private AvailableServicesViewModel GetAvailableServices(AvailableServicesViewModel query, IQueryable<Service> servicesQuery)
+        {
+            return new AvailableServicesViewModel
+            {
+                DepartmentId = query.DepartmentId,
+                Services = GetServices(servicesQuery
+                .Where(d => d.DepartmentId == query.DepartmentId))
+            };
         }
     }
 }

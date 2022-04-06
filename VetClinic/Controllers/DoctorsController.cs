@@ -33,6 +33,7 @@ namespace VetClinic.Controllers
             query.TotalDoctors = queryResult.TotalDoctors;
             query.Doctors = queryResult.Doctors;
             query.Departments = doctorsDepartments;
+            query.SearchTerm = queryResult.SearchTerm;
 
             return View(query);
         }
