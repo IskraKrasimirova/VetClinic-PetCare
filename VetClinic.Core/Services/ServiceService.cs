@@ -82,6 +82,36 @@ namespace VetClinic.Core.Services
             return availableServices;
         }
 
+        public bool ServiceExists(string name)
+        {
+            return this.data.Services
+                .Any(s => s.Name == name);
+        }
+
+        public int Create(
+            string name,
+            string description,
+            decimal price,
+            int departmentId)
+        {
+            var department = this.data.Departments.Find(departmentId);
+
+            var service = new Service
+            {
+                Name = name,
+                Description = description,
+                Price = price,
+                DepartmentId = departmentId
+            };
+
+            data.Services.Add(service);
+            department.Services.Add(service);
+
+            this.data.SaveChanges();
+
+            return service.Id;
+        }
+
         private IEnumerable<ServiceViewModel> GetServices(IQueryable<Service> serviceQuery)
         {
             return serviceQuery

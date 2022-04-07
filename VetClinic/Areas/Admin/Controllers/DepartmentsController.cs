@@ -36,7 +36,6 @@ namespace VetClinic.Areas.Admin.Controllers
                 department.Image,
                 department.Description);
 
-            //return RedirectToAction("Index", "Home");
             return RedirectToAction("Details", new {id = departmentId});
         }
 
@@ -71,7 +70,7 @@ namespace VetClinic.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("All", "Departments");
+            return RedirectToAction("Details", "Departments", new { Area = "", id  });
         }
 
         public IActionResult Delete(int id)
@@ -83,7 +82,7 @@ namespace VetClinic.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("All", "Departments");
+            return RedirectToAction("All", "Departments", new { Area = "" });
         }
     }
 }

@@ -62,14 +62,22 @@
                             @if (User.IsAdmin())
                             {
                                 <td>
-                                    <a asp-area="Admin" asp-controller="Service" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-outline-warning btn-sm float-right mb-2">Edit</a>
-                                    <a asp-area="Admin" asp-controller="Service" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-outline-danger btn-sm float-right">Delete</a>
+                                    <div class="d-grid gap-2 d-md-block float-right">
+                                        <a asp-area="Admin" asp-controller="Service" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-outline-warning btn-sm float-right mb-2">Edit</a>
+                                        <a asp-area="Admin" asp-controller="Service" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-outline-danger btn-sm float-right mb-2">Delete</a>
+                                    </div>
                                 </td>
                             }
                         </tr>
                     }
                 </tbody>
             </table>
+            @if (User.IsAdmin())
+            {
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a asp-area="Admin" asp-controller="Services" asp-action="Add" class="btn btn-outline-primary mt-3 mb-3">Add New Service</a>
+                </div>
+            }
         </div>
     </div>
 </div>

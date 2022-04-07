@@ -41,6 +41,12 @@ namespace VetClinic.Core.Services
                 .Any(d => d.Name == name);
         }
 
+        public bool DepartmentExists(int id)
+        {
+            return this.data.Departments
+                .Any(d => d.Id == id);
+        }
+
         public IEnumerable<string> AllDepartments()
         {
             return this.data.Departments

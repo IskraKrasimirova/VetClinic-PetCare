@@ -9,5 +9,9 @@ namespace VetClinic.Core.Contracts
         AllServicesViewModel All(string departmentName, string searchTerm);
 
         AvailableServicesViewModel ByDepartment(AvailableServicesViewModel query);
+
+        bool ServiceExists(string name);
+
+        int Create(string name, string description, decimal price, int departmentId);
     }
 }
