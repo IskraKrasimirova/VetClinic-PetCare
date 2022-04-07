@@ -122,8 +122,7 @@ namespace VetClinic.Core.Services
             string breed, 
             string gender, 
             string description, 
-            int petTypeId
-            )
+            int petTypeId)
         {
             var pet = this.data.Pets.Find(id);
 

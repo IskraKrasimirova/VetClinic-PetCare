@@ -112,6 +112,58 @@ namespace VetClinic.Core.Services
             return service.Id;
         }
 
+        public ServiceViewModel Details(int id)
+        {
+            return this.data.Services
+                .Where(s => s.Id == id)
+                .Select(s => new ServiceViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Price = s.Price,
+                    DepartmentId = s.DepartmentId,
+                    Department = s.Department.Name
+                })
+                .FirstOrDefault();
+        }
+
+        public bool Edit(int id, string name, string description, decimal price, int departmentId)
+        {
+            var service = this.data.Services.Find(id);
+
+            if (service == null)
+            {
+                return false;
+            }
+
+            service.Name = name;
+            service.Description = description;
+            service.Price = price;
+            service.DepartmentId = departmentId;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool Delete(int id)
+        {
+            var service = this.data.Services
+                .Where(s => s.Id == id)
+                .FirstOrDefault();
+
+            if (service == null)
+            {
+                return false;
+            }
+
+            this.data.Services.Remove(service);
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         private IEnumerable<ServiceViewModel> GetServices(IQueryable<Service> serviceQuery)
         {
             return serviceQuery

@@ -52,5 +52,73 @@ namespace VetClinic.Areas.Admin.Controllers
             return RedirectToAction("All", "Services", new {Area = ""});
             //return RedirectToAction("Details", new { id = serviceId });
         }
+
+        public IActionResult Edit(int id)
+        {
+            var serviceModel = service.Details(id);
+
+            return View(new ServiceFormModel
+            {
+                Name = serviceModel.Name,
+                Description = serviceModel.Description,
+                Price = serviceModel.Price,
+                DepartmentId = serviceModel.DepartmentId,
+                Departments = departmentService.GetAllDepartments()
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, ServiceFormModel serviceModel)
+        {
+            if (!departmentService.DepartmentExists(serviceModel.DepartmentId))
+            {
+                this.ModelState.AddModelError(nameof(serviceModel.DepartmentId), "Department does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                serviceModel.Departments = this.departmentService.GetAllDepartments();
+
+                return View(serviceModel);
+            }
+
+            var isEdited = service.Edit(
+                id,
+                serviceModel.Name,
+                serviceModel.Description,
+                serviceModel.Price,
+                serviceModel.DepartmentId);
+
+            if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Details", "Services", new { id });
+        }
+
+        public IActionResult Details(int id)
+        {
+            var serviceModel = this.service.Details(id);
+
+            if (serviceModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(serviceModel);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var isDeleted = service.Delete(id);
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("All", "Services", new { Area = "" });
+        }
     }
 }

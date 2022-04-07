@@ -13,5 +13,11 @@ namespace VetClinic.Core.Contracts
         bool ServiceExists(string name);
 
         int Create(string name, string description, decimal price, int departmentId);
+
+        ServiceViewModel Details(int id);
+
+        bool Edit(int id, string name, string description, decimal price, int departmentId);
+
+        bool Delete(int id);
     }
 }
