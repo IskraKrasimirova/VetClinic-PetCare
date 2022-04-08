@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Doctors;
 using VetClinic.Data;
@@ -96,6 +91,51 @@ namespace VetClinic.Core.Services
         {
             return this.data.Doctors
                 .Any(d => d.FullName == fullName && d.PhoneNumber == phoneNumber);
+        }
+
+        public bool Edit(
+                string id,
+                string fullName,
+                string profileImage,
+                string description,
+                string email,
+                string phoneNumber,
+                int departmentId)
+        {
+            var doctor = this.data.Doctors.Find(id);
+
+            if (doctor == null)
+            {
+                return false;
+            }
+
+            doctor.FullName = fullName;
+            doctor.ProfileImage = profileImage;
+            doctor.Description = description;
+            doctor.Email = email;
+            doctor.PhoneNumber = phoneNumber;
+            doctor.DepartmentId = departmentId;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool Delete(string id)
+        {
+            var doctor = this.data.Doctors
+                .Where(d => d.Id == id)
+                .FirstOrDefault();
+
+            if (doctor == null)
+            {
+                return false;
+            }
+
+            this.data.Doctors.Remove(doctor);
+            this.data.SaveChanges();
+
+            return true;
         }
 
         private IEnumerable<DoctorServiceModel> GetDoctors(IQueryable<Doctor> doctorQuery)

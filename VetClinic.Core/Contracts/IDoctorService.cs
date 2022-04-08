@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Models.Doctors;
+﻿using VetClinic.Core.Models.Doctors;
 
 namespace VetClinic.Core.Contracts
 {
@@ -21,12 +16,23 @@ namespace VetClinic.Core.Contracts
         string Register(DoctorFormModel doctorModel);
 
         string Create(
-            string fullName,
-            string profileImage, 
-            string phoneNumber, 
-            string email, 
-            string description, 
-            int departmentId,
-            string userId);
+                string fullName,
+                string profileImage,
+                string phoneNumber,
+                string email,
+                string description,
+                int departmentId,
+                string userId);
+
+        bool Edit(
+                string id,
+                string fullName,
+                string profileImage,
+                string description,
+                string email,
+                string phoneNumber,
+                int departmentId);
+
+        bool Delete(string id);
     }
 }

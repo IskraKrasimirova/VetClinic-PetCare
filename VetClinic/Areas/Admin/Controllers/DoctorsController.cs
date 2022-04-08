@@ -61,8 +61,68 @@ namespace VetClinic.Areas.Admin.Controllers
                 doctorModel.DepartmentId,
                 userId);
 
+            //return RedirectToAction("All", "Doctors", new { Area = "" });
+            return RedirectToAction("Details", new { Area = "", id = doctorId });
+        }
+
+        public IActionResult Edit(string id)
+        {
+            var doctor = doctorService.Details(id);
+
+            return View(new DoctorFormModel
+            {
+                FullName = doctor.FullName,
+                ProfileImage = doctor.ProfileImage,
+                Description = doctor.Description,
+                Email = doctor.Email,
+                PhoneNumber = doctor.PhoneNumber,
+                DepartmentId = doctor.DepartmentId,
+                Departments = departmentService.GetAllDepartments()
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(string id, DoctorFormModel doctor)
+        {
+            if (!departmentService.DepartmentExists(doctor.DepartmentId))
+            {
+                this.ModelState.AddModelError(nameof(doctor.DepartmentId), "Department does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                doctor.Departments = this.departmentService.GetAllDepartments();
+
+                return View(doctor);
+            }
+
+            var isEdited = doctorService.Edit(
+                id,
+                doctor.FullName,
+                doctor.ProfileImage,
+                doctor.Description,
+                doctor.Email,
+                doctor.PhoneNumber,
+                doctor.DepartmentId);
+
+            if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Details", "Doctors", new { Area = "", id });
+        }
+
+        public IActionResult Delete(string id)
+        {
+            var isDeleted = doctorService.Delete(id);
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
             return RedirectToAction("All", "Doctors", new { Area = "" });
-            //return RedirectToAction("Details", new { Area = "", id = doctorId });
         }
     }
 }
