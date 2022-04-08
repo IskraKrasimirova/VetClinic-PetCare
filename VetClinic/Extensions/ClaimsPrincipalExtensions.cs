@@ -11,10 +11,14 @@ namespace VetClinic.Extensions
         }
 
         public static bool IsClient(this ClaimsPrincipal user)
-            => user.IsInRole(ClientRoleName);
-
+        {
+          return user.IsInRole(ClientRoleName);
+        }
+           
         public static bool IsDoctor(this ClaimsPrincipal user)
-            => user.IsInRole(DoctorRoleName);
+        {
+            return user.IsInRole(DoctorRoleName);
+        }
 
         public static bool IsAdmin(this ClaimsPrincipal user)
         {

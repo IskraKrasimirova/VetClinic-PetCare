@@ -12,12 +12,12 @@ namespace VetClinic.Core.Models.Doctors
         public string FullName { get; set; }
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required]
         [StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]
-        [RegularExpression(PhoneNumberRegex)]
+        [RegularExpression(PhoneNumberRegex, ErrorMessage = "Invalid Phone Number")]
         public string PhoneNumber { get; set; }
 
         [Required]

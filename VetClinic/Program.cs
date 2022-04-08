@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static VetClinic.Common.GlobalConstants;
 using VetClinic.Data;
 using VetClinic.Data.Models;
 using VetClinic.Extensions;
 using VetClinic.ModelBinders;
 using VetClinic.Core.Contracts;
-using PetService = VetClinic.Core.Services.PetService;
 using VetClinic.Core.Services;
+using PetService = VetClinic.Core.Services.PetService;
 using DoctorService = VetClinic.Core.Services.DoctorService;
+using static VetClinic.Common.GlobalConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
