@@ -88,6 +88,7 @@ namespace VetClinic.Controllers
             query.TotalPets = queryResult.TotalPets;
             query.Pets = queryResult.Pets;
             query.PetTypes = petPetTypes;
+            query.SearchTerm = queryResult.SearchTerm;  
 
             return View(query);
         }

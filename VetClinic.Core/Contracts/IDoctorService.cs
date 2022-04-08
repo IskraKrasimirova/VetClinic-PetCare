@@ -15,5 +15,18 @@ namespace VetClinic.Core.Contracts
         AvailableDoctorsServiceModel ByDepartment(AvailableDoctorsServiceModel query);
 
         DoctorDetailsServiceModel Details(string id);
+
+        bool DoctorExists(string fullName, string phoneNumber);
+
+        string Register(DoctorFormModel doctorModel);
+
+        string Create(
+            string fullName,
+            string profileImage, 
+            string phoneNumber, 
+            string email, 
+            string description, 
+            int departmentId,
+            string userId);
     }
 }

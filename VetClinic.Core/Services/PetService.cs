@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Data;
@@ -36,7 +31,9 @@ namespace VetClinic.Core.Services
             {
                 petsQuery = petsQuery.Where(p =>
                 p.PetType.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                (p.PetType.Name + " " + p.Breed).ToLower().Contains(searchTerm.ToLower()) ||
+                p.Breed.ToLower().Contains(searchTerm.ToLower()) ||
+                p.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                p.Gender.ToString().ToLower().Contains(searchTerm.ToLower()) ||
                 p.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
@@ -57,7 +54,6 @@ namespace VetClinic.Core.Services
                 Pets = pets,
                 PetTypes = petPetTypes,
                 PetTypeName = petTypeName,
-                SearchTerm = searchTerm
             };
         }
 

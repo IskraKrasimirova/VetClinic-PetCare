@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,16 +8,21 @@ using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Doctors;
 using VetClinic.Data;
 using VetClinic.Data.Models;
+using static VetClinic.Common.GlobalConstants;
 
 namespace VetClinic.Core.Services
 {
     public class DoctorService : IDoctorService
     {
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly UserManager<User> userManager;
         private readonly VetClinicDbContext data;
         private readonly IDepartmentService departmentService;
 
-        public DoctorService(VetClinicDbContext data, IDepartmentService departmentService)
+        public DoctorService(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, VetClinicDbContext data, IDepartmentService departmentService)
         {
+            this.roleManager = roleManager;
+            this.userManager = userManager;
             this.data = data;
             this.departmentService = departmentService;
         }
@@ -56,7 +62,6 @@ namespace VetClinic.Core.Services
                 Doctors = doctors,
                 Departments = doctorsDepartments,
                 Department = departmentName,
-                SearchTerm = searchTerm
             };
         }
 
@@ -68,7 +73,7 @@ namespace VetClinic.Core.Services
 
             return doctors;
         }
-        
+
         public DoctorDetailsServiceModel Details(string id)
         {
             return this.data.Doctors
@@ -87,6 +92,12 @@ namespace VetClinic.Core.Services
                 .FirstOrDefault();
         }
 
+        public bool DoctorExists(string fullName, string phoneNumber)
+        {
+            return this.data.Doctors
+                .Any(d => d.FullName == fullName && d.PhoneNumber == phoneNumber);
+        }
+
         private IEnumerable<DoctorServiceModel> GetDoctors(IQueryable<Doctor> doctorQuery)
         {
             return doctorQuery
@@ -99,6 +110,56 @@ namespace VetClinic.Core.Services
                     DepartmentId = d.DepartmentId
                 })
                 .ToList();
+        }
+
+        public string Register(DoctorFormModel doctorModel)
+        {
+            var user = new User()
+            {
+                Email = doctorModel.Email,
+                UserName = doctorModel.Email,
+                PhoneNumber = doctorModel.PhoneNumber,
+                FullName = doctorModel.FullName,
+            };
+
+            Task
+                .Run(async () =>
+                {
+                    await userManager.CreateAsync(user, DefaultPassword);
+
+                    await userManager.AddToRoleAsync(user, DoctorRoleName);
+                })
+                .GetAwaiter()
+                .GetResult();
+
+            return user.Id;
+        }
+
+        public string Create(
+                string fullName,
+               string profileImage,
+               string phoneNumber,
+               string email,
+               string description,
+               int departmentId,
+               string userId)
+        {
+            var doctor = new Doctor
+            {
+                FullName = fullName,
+                ProfileImage = profileImage,
+                PhoneNumber = phoneNumber,
+                Email = email,
+                Description = description,
+                DepartmentId = departmentId,
+                UserId = userId
+            };
+
+            this.data.Doctors.Add(doctor);
+
+            this.data.SaveChanges();
+
+            return doctor.Id;
         }
 
         private AvailableDoctorsServiceModel GetAvailableDoctors(AvailableDoctorsServiceModel query, IQueryable<Doctor> doctorsQuery)

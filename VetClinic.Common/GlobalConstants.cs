@@ -10,6 +10,8 @@
 
         public const string ClientRoleName = "Client";
 
+        public const string DefaultPassword = "123456";
+
         public class FormattingConstants
         {
             public const string NormalDateFormat = "dd.MM.yyyy";

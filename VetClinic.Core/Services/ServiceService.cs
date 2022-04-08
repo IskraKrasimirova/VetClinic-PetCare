@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Contracts;
+﻿using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Services;
 using VetClinic.Data;
 using VetClinic.Data.Models;

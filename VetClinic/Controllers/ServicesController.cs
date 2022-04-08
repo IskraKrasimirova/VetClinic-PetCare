@@ -15,17 +15,6 @@ namespace VetClinic.Controllers
             this.departmentService = departmentService;
         }
 
-        //public IActionResult All()
-        //{
-        //    var allServices = this.service.GetAllServices();
-
-        //    if (!allServices.Any())
-        //    {
-        //        this.ModelState.AddModelError(String.Empty, "No services are found.");
-        //    }
-        //    return View(allServices);
-        //}
-
         public IActionResult All([FromQuery] AllServicesViewModel query)
         {
             var queryResult = service.All(query.Department, query.SearchTerm);

@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VetClinic.Data.Models;
 using VetClinic.Data.Seeding.Contracts;
 using VetClinic.Data.Seeding.SeedData;
