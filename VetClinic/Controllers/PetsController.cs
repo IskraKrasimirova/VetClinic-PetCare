@@ -70,12 +70,12 @@ namespace VetClinic.Controllers
                 pet.PetTypeId,
                 clientId);
 
-            return RedirectToAction("Mine", "Pets");
-            //return RedirectToAction("Details", new { id = petId});
+            // return RedirectToAction("Mine", "Pets");
+            return RedirectToAction("Details", new { id = petId });
         }
 
         [Authorize(Roles = DoctorRoleName)]
-        public IActionResult All([FromQuery]AllPetsViewModel query)
+        public IActionResult All([FromQuery] AllPetsViewModel query)
         {
             var queryResult = petService.All(
                 query.SearchTerm,
@@ -88,7 +88,7 @@ namespace VetClinic.Controllers
             query.TotalPets = queryResult.TotalPets;
             query.Pets = queryResult.Pets;
             query.PetTypes = petPetTypes;
-            query.SearchTerm = queryResult.SearchTerm;  
+            query.SearchTerm = queryResult.SearchTerm;
 
             return View(query);
         }

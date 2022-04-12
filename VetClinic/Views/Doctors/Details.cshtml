@@ -16,7 +16,7 @@
                 <li class="list-group-item mb-5">Phone Number: @Model.PhoneNumber</li>
             </ul>
             <div class="footer text-center mb-3">
-                <a asp-controller="Appointments" asp-action="All" asp-route-id="@Model.Id" class="btn btn-outline-primary">Book</a>
+                <a asp-controller="Appointments" asp-action="Book" asp-route-doctorId="@Model.Id" class="btn btn-outline-primary">Book</a>
                 @if (User.IsAdmin())
                 {
                     <a asp-area="Admin" asp-controller="Doctors" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Edit</a>
@@ -26,3 +26,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/bootstrap-datepicker.js" asp-append-version="true"></script>
+    <script src="~/js/date-picker.js" asp-append-version="true"></script>
+    <partial name="_ValidationScriptsPartial"/>
+}

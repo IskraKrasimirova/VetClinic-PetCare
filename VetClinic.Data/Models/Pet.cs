@@ -13,6 +13,7 @@ namespace VetClinic.Data.Models
             PetServices = new HashSet<PetService>();
             PetDoctors = new HashSet<PetDoctor>();    
             Prescriptions = new HashSet<Prescription>();
+            Appointments = new HashSet<Appointment>();
         }
 
         [Key]
@@ -48,5 +49,6 @@ namespace VetClinic.Data.Models
         public ICollection<PetService> PetServices { get; set; }
         public ICollection<PetDoctor> PetDoctors { get; set; }
         public ICollection<Prescription> Prescriptions { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
     }
 }

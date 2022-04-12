@@ -45,6 +45,7 @@ builder.Services.AddTransient<IClientService, ClientService>();
 builder.Services.AddTransient<IDepartmentService, DepartmentService>();
 builder.Services.AddTransient<IDoctorService, DoctorService>();
 builder.Services.AddTransient<IServiceService, ServiceService>();
+builder.Services.AddTransient<IAppointmentService, AppointmentService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

@@ -30,5 +30,9 @@ namespace VetClinic.Data.Models
         [ForeignKey(nameof(Service))]
         public int ServiceId { get; set; }
         public Service Service { get; set; }
+
+        [ForeignKey(nameof(Pet))]
+        public string PetId { get; set; }
+        public Pet Pet { get; set; }
     }
 }

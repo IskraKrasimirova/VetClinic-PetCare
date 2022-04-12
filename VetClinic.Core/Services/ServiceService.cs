@@ -159,6 +159,19 @@ namespace VetClinic.Core.Services
             return true;
         }
 
+        public IEnumerable<ServiceViewModel> AllServices()
+        {
+            return this.data.Services
+                .Select(s => new ServiceViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    DepartmentId = s.DepartmentId,
+                    Department = s.Department.Name,
+                })
+                .ToList();
+        }
+
         private IEnumerable<ServiceViewModel> GetServices(IQueryable<Service> serviceQuery)
         {
             return serviceQuery

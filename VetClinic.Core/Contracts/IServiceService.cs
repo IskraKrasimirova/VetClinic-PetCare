@@ -19,5 +19,7 @@ namespace VetClinic.Core.Contracts
         bool Edit(int id, string name, string description, decimal price, int departmentId);
 
         bool Delete(int id);
+
+        IEnumerable<ServiceViewModel> AllServices();
     }
 }
