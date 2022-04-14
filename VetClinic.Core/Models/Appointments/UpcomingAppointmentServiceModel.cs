@@ -16,6 +16,8 @@ namespace VetClinic.Core.Models.Appointments
 
         public string DoctorFullName { get; set; }
 
+        public string DoctorPhoneNumber { get; set; }
+
         public string ServiceName { get; set; }
 
         public string PetName { get; set; }

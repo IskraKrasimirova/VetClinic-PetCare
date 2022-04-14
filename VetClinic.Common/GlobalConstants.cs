@@ -12,6 +12,8 @@
 
         public const string DefaultPassword = "123456";
 
+        public const string GlobalMessageKey = "GlobalMessage";
+
         public class FormattingConstants
         {
             public const string NormalDateFormat = "dd-MM-yyyy";

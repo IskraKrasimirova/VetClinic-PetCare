@@ -26,5 +26,7 @@ namespace VetClinic.Core.Contracts
              DateTime appointmentDateTime,
              string hourAsString);
 
+        IEnumerable<UpcomingAppointmentServiceModel> GetUpcomingAppointments(string clientId);
+        IEnumerable<PastAppointmentServiceModel> GetPastAppointments(string clientId);
     }
 }

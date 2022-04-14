@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using VetClinic.Data.Models
 @using VetClinic.Extensions
+@using VetClinic.Common
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -13,7 +14,7 @@
     <title>@ViewData["Title"] - Vet Clinic</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/VetClinicWebApp.styles.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">*@
     @RenderSection("Styles", false)
 </head>
 <body>
@@ -43,6 +44,9 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Pets" asp-action="Mine">My Pets</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Mine">My Appointments</a>
                                 </li>
                             }
                             @if (User.IsDoctor())
@@ -80,6 +84,12 @@
         </nav>
     </header>
     <div class="container">
+        @if (TempData.ContainsKey(GlobalConstants.GlobalMessageKey))
+        {
+            <div class="alert alert-success text-center" role="alert">
+                @TempData[GlobalConstants.GlobalMessageKey]
+            </div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -93,6 +103,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/8b4a761e06.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,86 @@
+﻿@model AppointmentsListingViewModel
+
+@{
+    ViewBag.Title = "My Appointments";
+}
+
+@if (!Model.UpcomingAppointments.Any() && !Model.PastAppointments.Any())
+{
+    ViewBag.Title = null;
+    <h2 class="text-center">
+        You have no booked appointments!
+    </h2>
+    <div class="text-center">
+        <a asp-controller="Departments" asp-action="All" class="btn btn-outline-primary" style="margin-top: 20px">Book an appointment</a>
+    </div>
+}
+@if (Model.UpcomingAppointments.Any())
+{
+    <h2 class="text-center">Upcoming Appointments</h2>
+    <table class="table table-bordered table-striped text-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Date and Hour</th>
+                <th scope="col">Pet</th>
+                <th scope="col">Service</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Doctor Phone Number</th>
+                <th scope="col">Cancellation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in Model.UpcomingAppointments)
+            {
+                <tr>
+                    <th scope="row">@appointment.Date.ToString(NormalDateFormat) @appointment.Hour</th>
+                    <td>@appointment.PetName</td>
+                    <td>@appointment.ServiceName</td>
+                    <td>@appointment.DoctorFullName</td>
+                    <td>
+                        @*<span class="fas fa-phone fa-lg text-dark"></span> @appointment.DoctorPhoneNumber*@
+                        <i class="fa-solid fa-phone"></i> @appointment.DoctorPhoneNumber
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-danger btn-sm" asp-controller="Appointments" asp-action="Cancel" asp-route-appointmentId="@appointment.Id">Cancel</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr class="bg-dark m-4" style="height: 6px;" />
+}
+
+@if (Model.PastAppointments.Any())
+{
+    <h2 class="text-center">Past Appointments</h2>
+    <table class="table table-bordered table-striped text-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Date and Hour</th>
+                <th scope="col">Pet</th>
+                <th scope="col">Service</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Doctor Phone Number</th>
+                <th scope="col">Prescription</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in Model.PastAppointments)
+            {
+                <tr>
+                    <th scope="row">@appointment.Date.ToString(NormalDateFormat) @appointment.Hour</th>
+                    <td>@appointment.PetName</td>
+                    <td>@appointment.ServiceName</td>
+                    <td>@appointment.DoctorFullName</td>
+                    <td>
+                        <i class="fa-solid fa-phone"></i> @appointment.DoctorPhoneNumber
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-danger btn-sm" asp-controller="Prescriptions" asp-action="Details" asp-route-appointmentId="@appointment.Id">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

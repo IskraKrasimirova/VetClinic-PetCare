@@ -12,16 +12,15 @@ namespace VetClinic.Controllers
     {
         private readonly IAppointmentService appointmentService;
         private readonly IClientService clientService;
-        private readonly IServiceService serviceService;
         private readonly IPetService petService;
 
-        public AppointmentsController(IAppointmentService appointmentService, IClientService clientService, IServiceService serviceService, IPetService petService)
+        public AppointmentsController(IAppointmentService appointmentService, IClientService clientService, IPetService petService)
         {
             this.appointmentService = appointmentService;
             this.clientService = clientService;
-            this.serviceService = serviceService;
             this.petService = petService;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -79,13 +78,40 @@ namespace VetClinic.Controllers
 
             if (availableHours != null)
             {
+                this.ModelState.AddModelError(string.Empty, availableHours);
+                query.Services = this.appointmentService.AllServices(doctorId);
+                query.Pets = this.petService.ByClient(clientId);
                 return View(query);
             }
 
             this.appointmentService.AddNewAppointment
                 (clientId, doctorId, serviceId, petId, appointmentDateTime, appointmentHourAsString);
 
-            return RedirectToAction("Index", "Home");
+            this.TempData[GlobalMessageKey] = "Successfully booked an appointment!";
+
+            return RedirectToAction("Mine", "Appointments");
+        }
+
+        public IActionResult Mine()
+        {
+            var clientId = clientService.GetClientId(this.User.GetId());
+
+            if (clientId == null)
+            {
+                return BadRequest();
+            }
+
+            var upcomingAppointments = this.appointmentService
+                .GetUpcomingAppointments(clientId);
+
+            var pastAppointments = this.appointmentService
+                .GetPastAppointments(clientId);
+
+            return this.View(new AppointmentsListingViewModel()
+            {
+                UpcomingAppointments = upcomingAppointments,
+                PastAppointments = pastAppointments
+            });
         }
     }
 }

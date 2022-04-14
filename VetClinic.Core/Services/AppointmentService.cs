@@ -87,7 +87,9 @@ namespace VetClinic.Core.Services
             if (DateTime.TryParseExact(hourAsString, HourFormat, cultureInfo, DateTimeStyles.None, out _))
             {
                 var doctorsQuery = this.data.Doctors
-                    .Include(d => d.Appointments).AsQueryable();
+                    .Include(d => d.Appointments)
+                    .AsQueryable();
+
                 var isUnavailable = doctorsQuery
                    .Any(d => d.Id == doctorId && d.Appointments.Any(a => a.Date == appointmentDateTime));
 
@@ -169,19 +171,74 @@ namespace VetClinic.Core.Services
             return services;
         }
 
-        private string GetAvailableHours(
+        public IEnumerable<UpcomingAppointmentServiceModel> GetUpcomingAppointments(string clientId)
+        {
+            if (!this.data.Clients.Any(c => c.Id == clientId))
+            {
+                return null;
+            }
+
+            var upcomingAppointments = this.data.Appointments
+                .Where(a => a.ClientId == clientId && a.Date > DateTime.UtcNow)
+                .Select(a => new UpcomingAppointmentServiceModel
+                {
+                    Id = a.Id,
+                    Date = a.Date,
+                    Hour = a.Hour,
+                    PetName = a.Pet.Name,
+                    ServiceName = a.Service.Name,
+                    DoctorFullName = a.Doctor.FullName,
+                    DoctorPhoneNumber = a.Doctor.PhoneNumber,
+                })
+                .OrderBy(a => a.Date)
+                .ToList();
+
+            return upcomingAppointments;
+        }
+
+        public IEnumerable<PastAppointmentServiceModel> GetPastAppointments(string clientId)
+        {
+            if (!this.data.Clients.Any(c => c.Id == clientId))
+            {
+                return null;
+            }
+
+            var pastAppointments = this.data.Appointments
+                .Where(a => a.ClientId == clientId && a.Date < DateTime.UtcNow)
+                .Select(a => new PastAppointmentServiceModel
+                {
+                    Id = a.Id,
+                    Date = a.Date,
+                    Hour = a.Hour,
+                    PetName = a.Pet.Name,
+                    ServiceName = a.Service.Name,
+                    DoctorFullName = a.Doctor.FullName,
+                    DoctorPhoneNumber= a.Doctor.PhoneNumber,
+                    ClientId = clientId,
+                    PetId = a.Pet.Id,
+                    DoctorId = a.Doctor.Id,
+                    ServiceId = a.Service.Id,
+                })
+                .OrderByDescending(a => a.Date)
+                .ToList();
+
+            return pastAppointments;
+        }
+
+        private static string GetAvailableHours(
              DateTime appointmentDateTime,
              string appointmentHour,
              string doctorId,
-            IQueryable<Doctor> doctorQuery)
+            IQueryable<Doctor> doctorsQuery)
         {
-            var bookedHours = doctorQuery
+            var bookedHours = doctorsQuery
                 .FirstOrDefault(d => d.Id == doctorId)
                 ?.Appointments
                 .Where(a => a.Date.Day == appointmentDateTime.Day &&
                              a.Date.Month == appointmentDateTime.Month &&
-                             a.Date.Year == appointmentDateTime.Year)
-                .Select(s => new { s.Hour })
+                             a.Date.Year == appointmentDateTime.Year &&
+                             a.Hour == appointmentHour)
+                .Select(a => a.Hour)
                 .ToList();
 
             if (HourScheduleAsString == null)
@@ -193,13 +250,25 @@ namespace VetClinic.Core.Services
 
             foreach (var booked in bookedHours)
             {
-                if (defaultHourSchedule.Contains(booked.Hour))
+                if (defaultHourSchedule.Contains(booked))
                 {
-                    defaultHourSchedule.Remove(booked.Hour);
+                  defaultHourSchedule.Remove(booked);
                 }
             }
 
-            return string.Join(" ", defaultHourSchedule);
+            var availabeHoursMessage = string.Empty;
+
+            if (defaultHourSchedule == null)
+            {
+                availabeHoursMessage = "There are no available hours for that day.";
+            }
+            else
+            {
+                var availableHours = string.Join(" ", defaultHourSchedule);
+                availabeHoursMessage = $"The available hours for the date {appointmentDateTime.ToString(NormalDateFormat)} are: {availableHours}";
+            }
+
+            return availabeHoursMessage;
         }
     }
 }

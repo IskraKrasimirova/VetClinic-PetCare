@@ -19,11 +19,11 @@ namespace VetClinic.Core.Models.Appointments
         }
 
         [Required]
-        [ValidateDateStringAttribute(ErrorMessage = "Please select a valid date!")]
+        [ValidateDateStringAttribute(ErrorMessage = "Please, select a valid date!")]
         public string Date { get; set; }
 
         [Required]
-        [ValidateHourStringAttribute(ErrorMessage = "Please select a valid hour!")]
+        [ValidateHourStringAttribute(ErrorMessage = "Please, select a valid hour!")]
         public string Hour { get; set; }
 
         [Required]

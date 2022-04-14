@@ -12,8 +12,12 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item mb-3">Department: @Model.Department</li>
                 <li class="list-group-item mb-3">@Model.Description</li>
-                <li class="list-group-item mb-3">Email: @Model.Email</li>
-                <li class="list-group-item mb-5">Phone Number: @Model.PhoneNumber</li>
+                <li class="list-group-item mb-3">
+                    <i class="fa-solid fa-envelope"></i> @Model.Email
+                </li>
+                <li class="list-group-item mb-5">
+                    <i class="fa-solid fa-phone"></i> @Model.PhoneNumber
+                </li>
             </ul>
             <div class="footer text-center mb-3">
                 <a asp-controller="Appointments" asp-action="Book" asp-route-doctorId="@Model.Id" class="btn btn-outline-primary">Book</a>
@@ -28,7 +32,7 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/bootstrap-datepicker.js" asp-append-version="true"></script>
-    <script src="~/js/date-picker.js" asp-append-version="true"></script>
-    <partial name="_ValidationScriptsPartial"/>
+<script src="~/js/bootstrap-datepicker.js" asp-append-version="true"></script>
+<script src="~/js/date-picker.js" asp-append-version="true"></script>
+<partial name="_ValidationScriptsPartial" />
 }

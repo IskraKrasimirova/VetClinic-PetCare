@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VetClinic.Core.Models.Appointments
+﻿namespace VetClinic.Core.Models.Appointments
 {
     public class PastAppointmentServiceModel
     {
@@ -18,13 +12,13 @@ namespace VetClinic.Core.Models.Appointments
 
         public string DoctorFullName { get; set; }
 
+        public string DoctorPhoneNumber { get; set; }
+
         public int ServiceId { get; set; }
 
         public string ServiceName { get; set; }
 
         public string ClientId { get; set; }
-
-        public string ClientFullName { get; set; }
 
         public string PetId { get; set; }
 

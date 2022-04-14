@@ -14,6 +14,7 @@ namespace VetClinic.Data.Models
         [Required]
         public string Id { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime Date { get; set; }
 
         [Required]
