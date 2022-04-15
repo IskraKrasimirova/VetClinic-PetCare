@@ -23,7 +23,7 @@ namespace VetClinic.Controllers
             return View(allDepartments);
         }
 
-        public IActionResult Details(int id, string information)
+        public IActionResult Details(int id)
         {
             var department = this.departmentService.Details(id);
 

@@ -28,5 +28,9 @@ namespace VetClinic.Core.Contracts
 
         IEnumerable<UpcomingAppointmentServiceModel> GetUpcomingAppointments(string clientId);
         IEnumerable<PastAppointmentServiceModel> GetPastAppointments(string clientId);
+
+        CancelAppointmentServiceModel GetAppointmentForCancel(string appointmentId);
+
+        bool Delete(string appointmentId);
     }
 }

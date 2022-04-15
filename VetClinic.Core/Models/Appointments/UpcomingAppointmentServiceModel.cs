@@ -20,6 +20,8 @@ namespace VetClinic.Core.Models.Appointments
 
         public string ServiceName { get; set; }
 
+        public string DepartmentName { get; set; }
+
         public string PetName { get; set; }
     }
 }

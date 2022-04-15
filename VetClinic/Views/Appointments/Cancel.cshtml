@@ -1,0 +1,74 @@
+﻿@model CancelAppointmentServiceModel
+
+@{
+    ViewBag.Title = "Cancel Appointment";
+}
+
+@*<h3 class="offset-md-3">
+    <strong>Are you sure you want to cancel this appointment?</strong>
+    </h3>
+    <form class="col-6 mt-5 text-center offset-md-3" style="font-weight: bold">
+    <div class="form-group row">
+    <label class="col-sm-4 col-form-label">Date and Hour</label>
+    <div class="col-sm-7">
+    <div class="form-control">@Model.Date.ToString(NormalDateFormat) @Model.Hour</div>
+    </div>
+    </div>
+    <div class="form-group row">
+    <label class="col-sm-4 col-form-label">Pet</label>
+    <div class="col-sm-7">
+    <div class="form-control">@Model.PetName</div>
+    </div>
+    </div>
+    <div class="form-group row">
+    <label class="col-sm-4 col-form-label">Service</label>
+    <div class="col-sm-7">
+    <div class="form-control">@Model.ServiceName</div>
+    </div>
+    </div>
+    <div class="form-group row">
+    <label class="col-sm-4 col-form-label">Doctor</label>
+    <div class="col-sm-7">
+    <div class="form-control">@Model.DoctorFullName</div>
+    </div>
+    </div>
+    </form>
+
+    <div class="offset-md-4" style="margin-top: 30px">
+    <div class="row ml-5">
+    <form method="post">
+    <button type="submit" class="btn btn-outline-danger" asp-controller="Appointments" asp-action="Delete" asp-route-appointmentId="@Model.Id">
+    Cancel
+    </button>
+    </form>
+    <div class="ml-5">
+    <a class="btn btn-outline-primary" asp-controller="Appointments" asp-action="Mine">Back</a>
+    </div>
+    </div>
+    </div>*@
+
+<h3 class="text-center mb-5">
+    <strong>Are you sure you want to cancel this appointment?</strong>
+</h3>
+<div class="col-lg-6 col-md-12 offset-lg-4 mb-3">
+    <div class="card mb-5" style="width: 24rem; background-color: #F0F8FF">
+        <div class="card-body text-center text-danger" style="font-weight:700">
+            <h3 class="card-title text-center mb-5">@ViewBag.Title</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item mb-3">Pet: @Model.PetName</li>
+                <li class="list-group-item mb-3">Date: @Model.Date.ToString(NormalDateFormat) @Model.Hour</li>
+                <li class="list-group-item mb-3">Service: @Model.ServiceName</li>
+                <li class="list-group-item mb-3">Doctor: @Model.DoctorFullName</li>
+            </ul>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-3 mt-3">
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-danger" asp-controller="Appointments" asp-action="Delete" asp-route-appointmentId="@Model.Id">
+                        Cancel
+                    </button>
+                </form>
+                <a class="btn btn-outline-primary" asp-controller="Appointments" asp-action="Mine">Back</a>
+            </div>
+        </div>
+    </div>
+</div>

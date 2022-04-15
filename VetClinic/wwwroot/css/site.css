@@ -1,3 +1,5 @@
+@import 'https://use.fontawesome.com/releases/v5.15.3/css/all.css' 
+
 html {
   font-size: 14px;
 }
@@ -21,3 +23,100 @@ body {
     margin-top: 20px;
     margin-bottom: 40px;
 }
+
+/* Booking table styles
+-------------------------------------------------- */
+
+.button {
+    width: 137px;
+    height: 54px;
+    background: #228B22;
+    overflow: hidden;
+}
+
+.button-large {
+    width: 254px !important;
+    height: 54px;
+    background: #228B22;
+    overflow: hidden;
+}
+
+.button a {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+    .button a span {
+        font-size: 11px;
+        font-weight: 500;
+        color: #FFFFFF;
+        line-height: 54px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        -webkit-transition: all 400ms ease;
+        -moz-transition: all 400ms ease;
+        -o-transition: all 400ms ease;
+        transition: all 400ms ease;
+    }
+
+        .button a span:first-child {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .button a span:last-child {
+            position: absolute;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+            top: 100%;
+            font-size: 9px;
+            opacity: 0;
+        }
+
+.button:hover a span:first-child {
+    top: -10%;
+    font-size: 9px;
+    opacity: 0;
+}
+
+.button:hover a span:last-child {
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    opacity: 1;
+}
+
+.button_2 {
+    background: #9932CC;
+}
+
+    .button_2 a span {
+        color: #FFFFFF;
+    }
+
+.button_3 {
+    background: transparent;
+    border: solid 2px #228B22;
+}
+
+    .button_3 a span {
+        color: #404040;
+    }

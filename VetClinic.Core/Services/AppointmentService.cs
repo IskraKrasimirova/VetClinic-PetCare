@@ -179,13 +179,17 @@ namespace VetClinic.Core.Services
             }
 
             var upcomingAppointments = this.data.Appointments
-                .Where(a => a.ClientId == clientId && a.Date > DateTime.UtcNow)
+                .Where(a => a.ClientId == clientId && a.Date >= DateTime.UtcNow)
                 .Select(a => new UpcomingAppointmentServiceModel
                 {
                     Id = a.Id,
                     Date = a.Date,
                     Hour = a.Hour,
                     PetName = a.Pet.Name,
+                    DepartmentName = this.data.Services
+                                        .Where(s => s.Id == a.ServiceId)
+                                        .Select(s => s.Department.Name)
+                                        .FirstOrDefault(),
                     ServiceName = a.Service.Name,
                     DoctorFullName = a.Doctor.FullName,
                     DoctorPhoneNumber = a.Doctor.PhoneNumber,
@@ -211,9 +215,13 @@ namespace VetClinic.Core.Services
                     Date = a.Date,
                     Hour = a.Hour,
                     PetName = a.Pet.Name,
+                    DepartmentName = this.data.Services
+                                        .Where(s => s.Id == a.ServiceId)
+                                        .Select(s => s.Department.Name)
+                                        .FirstOrDefault(),
                     ServiceName = a.Service.Name,
                     DoctorFullName = a.Doctor.FullName,
-                    DoctorPhoneNumber= a.Doctor.PhoneNumber,
+                    DoctorPhoneNumber = a.Doctor.PhoneNumber,
                     ClientId = clientId,
                     PetId = a.Pet.Id,
                     DoctorId = a.Doctor.Id,
@@ -224,6 +232,60 @@ namespace VetClinic.Core.Services
 
             return pastAppointments;
         }
+
+        public CancelAppointmentServiceModel GetAppointmentForCancel(string appointmentId)
+        {
+            var appointment = this.data.Appointments
+                .FirstOrDefault(a => a.Id == appointmentId);
+
+            if (appointment == null || appointment.Date < DateTime.UtcNow.Date)
+            {
+                return null;
+            }
+
+            var petId = appointment.PetId;
+            var doctorId = appointment.DoctorId;
+            var serviceId = appointment.ServiceId;
+
+            if (petId == null || doctorId == null || serviceId == 0)
+            {
+                return null;
+            }
+
+            var pet = this.data.Pets.Find(petId);
+            var doctor = this.data.Doctors.Find(doctorId);
+            var service = this.data.Services.Find(serviceId);
+
+            var canceledAppointment = new CancelAppointmentServiceModel
+            {
+                Id = appointment.Id,
+                Date = appointment.Date,
+                Hour = appointment.Hour,
+                PetName = pet.Name,
+                DoctorFullName = doctor.FullName,
+                ServiceName = service.Name,
+            };
+
+            return canceledAppointment;
+        }
+
+        public bool Delete(string appointmentId)
+        {
+            var appointment = this.data.Appointments
+                .Where(a => a.Id == appointmentId)
+                .FirstOrDefault();
+
+            if (appointment == null)
+            {
+                return false;
+            }
+
+            this.data.Appointments.Remove(appointment);
+            this.data.SaveChanges();
+
+            return true;
+        }
+
 
         private static string GetAvailableHours(
              DateTime appointmentDateTime,
@@ -252,7 +314,7 @@ namespace VetClinic.Core.Services
             {
                 if (defaultHourSchedule.Contains(booked))
                 {
-                  defaultHourSchedule.Remove(booked);
+                    defaultHourSchedule.Remove(booked);
                 }
             }
 

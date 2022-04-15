@@ -196,7 +196,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.Client", b =>
@@ -218,7 +218,7 @@ namespace VetClinic.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.Department", b =>
@@ -245,7 +245,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.Doctor", b =>
@@ -290,7 +290,7 @@ namespace VetClinic.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.DoctorService", b =>
@@ -305,7 +305,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("DoctorServices");
+                    b.ToTable("DoctorServices", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.Pet", b =>
@@ -346,7 +346,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("PetTypeId");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pets", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.PetDoctor", b =>
@@ -361,7 +361,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("PetDoctors");
+                    b.ToTable("PetDoctors", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.PetService", b =>
@@ -376,7 +376,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("PetServices");
+                    b.ToTable("PetServices", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.PetType", b =>
@@ -394,7 +394,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PetTypes");
+                    b.ToTable("PetTypes", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.Prescription", b =>
@@ -424,7 +424,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("PetId");
 
-                    b.ToTable("Prescriptions");
+                    b.ToTable("Prescriptions", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.Service", b =>
@@ -454,7 +454,7 @@ namespace VetClinic.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("VetClinic.Data.Models.User", b =>

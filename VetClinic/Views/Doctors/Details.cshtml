@@ -4,6 +4,7 @@
     ViewBag.Title = "Details";
 }
 
+
 <div class="col-lg-8 col-md-12 offset-lg-2 ">
     <div class="card mb-5" style="width: 36rem">
         <div class="card-body text-center">
@@ -13,10 +14,10 @@
                 <li class="list-group-item mb-3">Department: @Model.Department</li>
                 <li class="list-group-item mb-3">@Model.Description</li>
                 <li class="list-group-item mb-3">
-                    <i class="fa-solid fa-envelope"></i> @Model.Email
+                    <i class="fas fa-envelope fa-lg text-dark"></i> @Model.Email
                 </li>
                 <li class="list-group-item mb-5">
-                    <i class="fa-solid fa-phone"></i> @Model.PhoneNumber
+                    <span class="fas fa-phone fa-lg text-dark"></span> @Model.PhoneNumber
                 </li>
             </ul>
             <div class="footer text-center mb-3">
