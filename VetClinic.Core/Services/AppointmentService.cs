@@ -23,6 +23,7 @@ namespace VetClinic.Core.Services
         {
             this.data = data;
         }
+
         public BookAppointmentServiceModel GetDoctorSchedule(string doctorId)
         {
             if (HourScheduleAsString == null)
@@ -286,6 +287,74 @@ namespace VetClinic.Core.Services
             return true;
         }
 
+        public IEnumerable<DoctorUpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId)
+        {
+            var doctor = this.data.Doctors
+                .FirstOrDefault(d => d.UserId == userId);
+
+            if (doctor == null)
+            {
+                return null;
+            }
+
+            var upcomingAppointments = this.data.Appointments
+                .Where(a => a.DoctorId == doctor.Id && a.Date >= DateTime.UtcNow)
+                .Select(a => new DoctorUpcomingAppointmentServiceModel
+                {
+                    Id = a.Id,
+                    Date = a.Date,
+                    Hour = a.Hour,
+                    ServiceName = a.Service.Name,
+                    PetName = a.Pet.Name,
+                    PetType = a.Pet.PetType.Name,
+                    ClientFullName = a.Client.FullName,
+                    ClientPhoneNumber = this.data.Users
+                                        .FirstOrDefault(u => u.FullName == a.Client.FullName)
+                                        .PhoneNumber
+                })
+                .OrderBy(a => a.Date)
+                .ToList();
+
+            return upcomingAppointments;
+        }
+
+        public IEnumerable<DoctorPastAppointmentServiceModel> GetDoctorPastAppointments(string userId)
+        {
+            var doctor = this.data.Doctors
+                .FirstOrDefault(d => d.UserId == userId);
+
+            if (doctor == null)
+            {
+                return null;
+            }
+
+            var pastAppointments = this.data.Appointments
+                .Where(a => a.DoctorId == doctor.Id && a.Date < DateTime.UtcNow)
+                .Select(a => new DoctorPastAppointmentServiceModel
+                {
+                    Id = a.Id,
+                    Date = a.Date,
+                    Hour = a.Hour,
+                    PetName = a.Pet.Name,
+                    PetType = a.Pet.PetType.Name,
+                    ServiceName = a.Service.Name,
+                    ClientFullName = a.Client.FullName,
+                    ClientPhoneNumber = this.data.Users
+                                .FirstOrDefault(u => u.FullName == a.Client.FullName)
+                                .PhoneNumber,
+                    ClientId = this.data.Pets
+                                .Where(p => p.Id == a.PetId)
+                                .Select(p => p.ClientId)
+                                .ToString(),
+                    PetId = a.Pet.Id,
+                    DoctorId = a.Doctor.Id,
+                    ServiceId = a.Service.Id,
+                })
+                .OrderByDescending(a => a.Date)
+                .ToList();
+
+            return pastAppointments;
+        }
 
         private static string GetAvailableHours(
              DateTime appointmentDateTime,

@@ -1,9 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome!</h1>
+    @if (ViewBag.ClientFullName != null)
+    {
+        <h1 class="display-4">Welcome, @ViewBag.ClientFullName!</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Welcome!</h1>
+    }
     <h2 class="display-4">We Care Your Pets</h2>
     <img src="~/img/start.jpg" class="img-fluid" alt="Pet Care image">
+    <a asp-controller="Appointments" asp-action="Mine" class="btn btn-outline-primary" style="margin-top: 20px">
+        Check your appointments
+    </a>
 </div>

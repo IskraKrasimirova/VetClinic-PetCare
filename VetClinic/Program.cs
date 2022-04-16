@@ -39,6 +39,7 @@ builder.Services.AddControllersWithViews()
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); 
     });
 
+builder.Services.AddTransient<IHomeService, HomeService>();
 builder.Services.AddTransient<IPetService, PetService>();
 builder.Services.AddTransient<IPetTypeService, PetTypeService>();
 builder.Services.AddTransient<IClientService, ClientService>();

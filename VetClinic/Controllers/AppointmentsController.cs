@@ -21,11 +21,6 @@ namespace VetClinic.Controllers
             this.petService = petService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Book([FromQuery] AppointmentQueryModel query)
         {
             var appointment = this.appointmentService.GetDoctorSchedule(query.DoctorId);
@@ -65,8 +60,8 @@ namespace VetClinic.Controllers
             {
                 query.Services = this.appointmentService.AllServices(doctorId);
                 query.Pets = this.petService.ByClient(clientId);
+
                 return View(query);
-                //return RedirectToAction("Book", new { doctorId, serviceId, clientId, petId });
             }
                 
             var appointmentHourAsString = query.Hour.Trim();

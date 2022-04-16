@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome, Doctor @ViewBag.DoctorFullName!</h1>
+    <img src="~/img/start.jpg" class="img-fluid" alt="Pet Care image">
+    <a asp-controller="Appointments" asp-action="Mine" class="btn btn-outline-primary" style="margin-top: 20px">
+        Check your work schedule
+    </a>
+</div>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Models.Appointments;
+﻿using VetClinic.Core.Models.Appointments;
 using VetClinic.Core.Models.Services;
 
 namespace VetClinic.Core.Contracts
@@ -27,10 +22,15 @@ namespace VetClinic.Core.Contracts
              string hourAsString);
 
         IEnumerable<UpcomingAppointmentServiceModel> GetUpcomingAppointments(string clientId);
+
         IEnumerable<PastAppointmentServiceModel> GetPastAppointments(string clientId);
 
         CancelAppointmentServiceModel GetAppointmentForCancel(string appointmentId);
 
         bool Delete(string appointmentId);
+
+        IEnumerable<DoctorUpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId);
+
+        IEnumerable<DoctorPastAppointmentServiceModel> GetDoctorPastAppointments(string userId);
     }
 }
