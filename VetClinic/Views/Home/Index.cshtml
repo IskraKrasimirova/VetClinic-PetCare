@@ -15,8 +15,10 @@
     <img src="~/img/start4.jpg" class="img-fluid mt-3" alt="Pet Care image">
     @if (User.IsClient())
     {
-        <a asp-controller="Appointments" asp-action="Mine" class="btn btn-outline-primary mb-5 mt-5">
-            Check your appointments
-        </a>
+        <div class="align-content-end">
+            <a asp-controller="Appointments" asp-action="Mine" class="btn btn-outline-primary mb-5 mt-5" style="position:absolute -ms-page">
+                Check your appointments
+            </a>
+        </div>
     }
 </div>

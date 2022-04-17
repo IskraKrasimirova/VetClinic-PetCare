@@ -17,7 +17,7 @@
 @if (Model.UpcomingAppointments.Any())
 {
     <h2 class="text-center mb-3">Upcoming Appointments</h2>
-    <table class="table table-bordered table-striped text-center">
+    <table class="table table-bordered table-striped text-center" style="background-color:#80c1ff">
         <thead class="thead-light">
             <tr>
                 <th scope="col">Date and Hour</th>
@@ -55,7 +55,7 @@
 @if (Model.PastAppointments.Any())
 {
     <h2 class="text-center mb-3">Past Appointments</h2>
-    <table class="table table-bordered table-striped text-center">
+    <table class="table table-bordered table-striped text-center" style="background-color:aliceblue">
         <thead class="thead-light">
             <tr>
                 <th scope="col">Date and Hour</th>
@@ -80,7 +80,7 @@
                         <span class="fas fa-phone fa-lg text-dark"></span> @appointment.DoctorPhoneNumber
                     </td>
                     <td>
-                        <a class="btn btn-outline-danger btn-sm" asp-controller="Prescriptions" asp-action="Details" asp-route-appointmentId="@appointment.Id">View</a>
+                        <a class="btn btn-outline-primary btn-sm" asp-controller="Prescriptions" asp-action="Details" asp-route-appointmentId="@appointment.Id">View</a>
                     </td>
                 </tr>
             }

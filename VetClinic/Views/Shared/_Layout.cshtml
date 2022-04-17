@@ -61,15 +61,6 @@
                                     <a class="nav-link text-dark" asp-area="Doctor" asp-controller="Prescriptions" asp-action="All">Prescriptions</a>
                                 </li>
                             }
-                            @if (User.IsAdmin())
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Departments" asp-action="Add">Add Department</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Services" asp-action="Add">Add Service</a>
-                                </li>
-                            }
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
