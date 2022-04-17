@@ -24,6 +24,23 @@ body {
     margin-bottom: 40px;
 }
 
+.bgcolor-blue {
+    background-color: #cce6ff;
+}
+
+.bgcolor-orange {
+    background-color: #ffffb3;
+}
+
+.bg-image {
+    background-image: url('~/img/start4.jpg');
+    position: relative;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-top: 5rem;
+}
+
+
 /* Booking table styles
 -------------------------------------------------- */
 

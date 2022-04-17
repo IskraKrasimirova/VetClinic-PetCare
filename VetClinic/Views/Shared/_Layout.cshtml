@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     @RenderSection("Styles", false)
 </head>
-<body>
+<body class="bgcolor-blue">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="background-color:#80d7ff">
+            <div class="container-fluid" style="background-color:#ffffb3">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vet Clinic</a>
                 <!-- Logo -->
                 <div class="col-xl-2 col-lg-2 col-md-1">
@@ -101,7 +101,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bgcolor-orange fixed-bottom">
         <div class="container">
             &copy; @DateTime.UtcNow.Year - Vet Clinic - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
