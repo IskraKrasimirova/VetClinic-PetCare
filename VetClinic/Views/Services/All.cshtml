@@ -36,32 +36,32 @@
 }
 
 <div class="row">
-    <div class="col-12">
-        <div class="card">
+    <div class="col-12 bgcolor-orange">
+        <div class="card bgcolor-orange">
             <h2 class="heading-margin mb-3 mt-3 text-center">@ViewBag.Title</h2>
             <table class="table table-secondary table-hover">
-                <thead class="table-light">
+                <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Department</th>
-                        <th>Service</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th></th>
+                        <th style="background-color: #b3cde5">No</th>
+                        <th style="background-color: #b3cde5">Department</th>
+                        <th style="background-color: #b3cde5">Service</th>
+                        <th style="background-color: #b3cde5">Description</th>
+                        <th style="background-color: #b3cde5">Price</th>
+                        <th style="background-color: #b3cde5"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var service in Model.Services)
                     {
-                        <tr>
-                            <td>@service.Id</td>
-                            <td>@service.Department</td>
-                            <td>@service.Name</td>
-                            <td>@service.Description</td>
-                            <td>@service.Price</td>
+                        <tr style="background-color: #b3cde5">
+                            <td style="background-color: #b3cde5">@service.Id</td>
+                            <td style="background-color: #ffffb3">@service.Department</td>
+                            <td style="background-color: #ffffb3">@service.Name</td>
+                            <td style="background-color: #ffffb3">@service.Description</td>
+                            <td style="background-color: #ffffb3">@service.Price</td>
                             @if (User.IsAdmin())
                             {
-                                <td>
+                                <td style="background-color: #ffffb3">
                                     <div class="d-grid gap-2 d-md-block float-right">
                                         <a asp-area="Admin" asp-controller="Services" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-outline-warning btn-sm float-right mb-2">Edit</a>
                                         <a asp-area="Admin" asp-controller="Services" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-outline-danger btn-sm float-right mb-2">Delete</a>

@@ -21,14 +21,15 @@ namespace VetClinic.Core.Services
             this.data = data;
             this.departmentService = departmentService;
         }
-
+        //Search by text does not work!!!
         public AllDoctorsViewModel All(string departmentName, string searchTerm, int currentPage = 1, int doctorsPerPage = int.MaxValue)
         {
             var doctorsQuery = this.data.Doctors.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(departmentName))
             {
-                doctorsQuery = doctorsQuery.Where(d => d.Department.Name == departmentName);
+                doctorsQuery = doctorsQuery
+                    .Where(d => d.Department.Name == departmentName);
             }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))

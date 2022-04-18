@@ -15,7 +15,7 @@ namespace VetClinic.Data.Models
         public string Description { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime Date { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         [Required]
         [ForeignKey(nameof(Doctor))]
@@ -26,5 +26,12 @@ namespace VetClinic.Data.Models
         [ForeignKey(nameof(Pet))]
         public string PetId { get; set; }
         public Pet Pet { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(Appointment))]
+        public string AppointmentId { get; set; }
+        public Appointment Appointment { get; set; }
+
+        public bool IsPublished { get; set; }
     }
 }

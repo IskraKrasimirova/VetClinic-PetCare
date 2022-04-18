@@ -35,5 +35,9 @@ namespace VetClinic.Data.Models
         [ForeignKey(nameof(Pet))]
         public string PetId { get; set; }
         public Pet Pet { get; set; }
+
+        [ForeignKey(nameof(Prescription))]
+        public string PrescriptionId { get; set; }
+        public Prescription Prescription { get; set; }
     }
 }
