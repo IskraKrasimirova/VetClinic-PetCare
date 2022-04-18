@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Data;
@@ -20,21 +21,23 @@ namespace VetClinic.Core.Services
         public AllPetsViewModel All(string petTypeName, string searchTerm, int currentPage = 1,
             int petsPerPage = int.MaxValue)
         {
-            var petsQuery = this.data.Pets.AsQueryable();
+            IQueryable<Pet> petsQuery = this.data.Pets.Include(p => p.PetType);
 
             if (!string.IsNullOrWhiteSpace(petTypeName))
             {
-                petsQuery = petsQuery.Where(p => p.PetType.Name == petTypeName);
+                petsQuery = petsQuery
+                    .Where(p => p.PetType.Name == petTypeName);
             }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 petsQuery = petsQuery.Where(p =>
-                p.PetType.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                p.Breed.ToLower().Contains(searchTerm.ToLower()) ||
-                p.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                p.Gender.ToString().ToLower().Contains(searchTerm.ToLower()) ||
-                p.Description.ToLower().Contains(searchTerm.ToLower()));
+                p.PetType.Name.ToLower().Contains(searchTerm.Trim().ToLower()) ||
+                (p.Breed + " " + p.Name).ToLower().Contains(searchTerm.Trim().ToLower()) ||
+                p.Name.ToLower().Contains(searchTerm.Trim().ToLower()) ||
+                p.Breed.ToLower().Contains(searchTerm.Trim().ToLower()));
+                //p.Gender.ToString().ToLower().Contains(searchTerm.Trim().ToLower()));
+                //.ToList();
             }
 
             var totalPets = petsQuery.Count();
@@ -43,7 +46,6 @@ namespace VetClinic.Core.Services
                 .Skip((currentPage - 1) * petsPerPage)
                 .Take(petsPerPage)
                 .OrderBy(p => p.Name));
-
 
             var petPetTypes = AllPetTypes();
 
@@ -92,10 +94,6 @@ namespace VetClinic.Core.Services
             {
                 Name = name,
                 DateOfBirth = dateOfBirth,
-                //DateTime.ParseExact(
-                //            pet.DateOfBirth.ToString(),
-                //            NormalDateFormat,
-                //            CultureInfo.InvariantCulture),
                 Breed = breed,
                 Gender = (Gender)Enum.Parse(typeof(Gender), gender),
                 Description = description,
@@ -112,17 +110,17 @@ namespace VetClinic.Core.Services
         }
 
         public bool Edit(
-            string id, 
-            string name, 
-            DateTime dateOfBirth, 
-            string breed, 
-            string gender, 
-            string description, 
+            string id,
+            string name,
+            DateTime dateOfBirth,
+            string breed,
+            string gender,
+            string description,
             int petTypeId)
         {
             var pet = this.data.Pets.Find(id);
 
-            if ( pet == null )
+            if (pet == null)
             {
                 return false;
             }
@@ -190,26 +188,19 @@ namespace VetClinic.Core.Services
             return this.data.Pets.Any(p => p.Id == id && p.ClientId == clientId);
         }
 
-        private IEnumerable<PetListingViewModel> GetPets(IQueryable<Pet> petQuery)
+        private IEnumerable<PetListingViewModel> GetPets(IQueryable<Pet> petsQuery)
         {
-            return petQuery
+            return petsQuery
                 .Select(p => new PetListingViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
-                    //DateTime.ParseExact(
-                    //            p.DateOfBirth.ToString(),
-                    //            NormalDateFormat,
-                    //            CultureInfo.InvariantCulture),
-                    //p.DateOfBirth,
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString()
                 })
                 .ToList();
         }
-
-        
     }
 }

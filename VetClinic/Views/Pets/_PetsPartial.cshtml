@@ -8,10 +8,10 @@
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@pet.Name</h5>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">@pet.PetType</li>
-                        <li class="list-group-item">@pet.Breed</li>
-                        <li class="list-group-item">@pet.DateOfBirth</li>
-                        <li class="list-group-item">@pet.Gender</li>
+                        <li class="list-group-item">Pet Type: @pet.PetType</li>
+                        <li class="list-group-item">Breed: @pet.Breed</li>
+                        <li class="list-group-item">Date of Birth: @pet.DateOfBirth</li>
+                        <li class="list-group-item">Gender: @pet.Gender</li>
                     </ul>
                     <a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.Id" class="btn btn-outline-primary">View</a>
                     @if (ViewBag.AllowPetEdit == true || User.IsDoctor())

@@ -22,8 +22,7 @@ namespace VetClinic.Core.Services
             this.departmentService = departmentService;
         }
 
-        public AllDoctorsViewModel All(string departmentName, string searchTerm, int currentPage = 1,
-            int doctorsPerPage = int.MaxValue)
+        public AllDoctorsViewModel All(string departmentName, string searchTerm, int currentPage = 1, int doctorsPerPage = int.MaxValue)
         {
             var doctorsQuery = this.data.Doctors.AsQueryable();
 
@@ -35,9 +34,10 @@ namespace VetClinic.Core.Services
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 doctorsQuery = doctorsQuery.Where(d =>
-                d.Department.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                d.FullName.ToLower().Contains(searchTerm.ToLower()) ||
-                d.Description.ToLower().Contains(searchTerm.ToLower()));
+                d.Department.Name.ToLower().Contains(searchTerm.Trim().ToLower()) ||
+                d.FullName.ToLower().Contains(searchTerm.Trim().ToLower()) ||
+                (d.FullName + " " + d.Department.Name).Contains(searchTerm.Trim().ToLower()) ||
+                d.Description.ToLower().Contains(searchTerm.Trim().ToLower()));
             }
 
             var totalDoctors = doctorsQuery.Count();
