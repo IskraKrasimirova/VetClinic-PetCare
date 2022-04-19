@@ -70,7 +70,6 @@ namespace VetClinic.Controllers
                 pet.PetTypeId,
                 clientId);
 
-            // return RedirectToAction("Mine", "Pets");
             return RedirectToAction("Details", new { id = petId });
         }
 
@@ -184,7 +183,7 @@ namespace VetClinic.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(string id, string information)
+        public IActionResult Details(string id)
         {
             var pet = this.petService.Details(id);
 

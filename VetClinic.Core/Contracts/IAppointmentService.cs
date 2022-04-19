@@ -32,5 +32,7 @@ namespace VetClinic.Core.Contracts
         IEnumerable<DoctorUpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId);
 
         IEnumerable<DoctorPastAppointmentServiceModel> GetDoctorPastAppointments(string userId);
+
+        PastAppointmentServiceModel GetPastAppointment(string appointmentId);
     }
 }

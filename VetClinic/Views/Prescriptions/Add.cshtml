@@ -1,0 +1,69 @@
+﻿@model PrescriptionFormModel
+
+@{
+    ViewBag.Title = "Make Prescription";
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="@Model.DoctorId" value="@Model.DoctorId" class="form-control" hidden>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Doctor</label>
+                <div class="col-sm-10">
+                    <div asp-for="@Model.DoctorFullName" class="form-control" hidden></div>
+                    <input asp-for="@Model.DoctorFullName" value="@Model.DoctorFullName" class="form-control" required readonly />
+                </div>
+            </div>
+            <input asp-for="@Model.DepartmentName" value="@Model.DepartmentName" class="form-control" hidden>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Department</label>
+                <div class="col-sm-10">
+                    <div asp-for="@Model.DepartmentName" class="form-control" hidden></div>
+                    <input asp-for="@Model.DepartmentName" value="@Model.DepartmentName" class="form-control" required readonly />
+                </div>
+            </div>
+            <input asp-for="@Model.ServiceName" value="@Model.ServiceName" class="form-control" hidden>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Service</label>
+                <div class="col-sm-10">
+                    <div asp-for="@Model.ServiceName" class="form-control" hidden></div>
+                    <input asp-for="@Model.ServiceName" value="@Model.ServiceName" class="form-control" required readonly />
+                </div>
+            </div>
+            <input asp-for="@Model.PetId" value="@Model.PetId" class="form-control" hidden>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Pet</label>
+                <div class="col-sm-10">
+                    <div asp-for="@Model.PetName" class="form-control" hidden></div>
+                    <input asp-for="@Model.PetName" value="@Model.PetName" class="form-control" required readonly />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-10">
+                    <input asp-for="@Model.CreatedOn" value="" class="form-control" />
+                    <span asp-validation-for="@Model.CreatedOn" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Service description, treatment, vaccine, etc..."></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+            <div class="form-group row mt-4">
+                <div class="col-sm-10">
+                    <input class="btn btn-primary mt-3" type="submit" value="Save" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

@@ -34,5 +34,7 @@ namespace VetClinic.Core.Contracts
                 int departmentId);
 
         bool Delete(string id);
+
+        DoctorServiceModel GetDoctor(string userId);
     }
 }

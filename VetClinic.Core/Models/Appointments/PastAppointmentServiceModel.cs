@@ -25,5 +25,7 @@
         public string PetId { get; set; }
 
         public string PetName { get; set; }
+
+        public string PrescriptionId { get; set; }
     }
 }

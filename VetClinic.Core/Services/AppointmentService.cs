@@ -103,14 +103,13 @@ namespace VetClinic.Core.Services
             return null;
         }
 
-        public void AddNewAppointment
-            (string clientId,
+        public void AddNewAppointment(
+            string clientId,
              string doctorId,
              int serviceId,
              string petId,
              DateTime appointmentDateTime,
-             string hourAsString
-             )
+             string hourAsString)
         {
             var client = this.data.Clients
                 .FirstOrDefault(c => c.Id == clientId);
@@ -354,6 +353,26 @@ namespace VetClinic.Core.Services
                 .ToList();
 
             return pastAppointments;
+        }
+
+        public PastAppointmentServiceModel GetPastAppointment(string appointmentId)
+        {
+            var appointment = this.data.Appointments
+                .Where(a => a.Id == appointmentId)
+                .Select(a => new PastAppointmentServiceModel
+                {
+                    DoctorId = a.DoctorId,
+                    PetId = a.PetId,
+                    PetName = a.Pet.Name,
+                    ClientId = a.ClientId,
+                    ServiceId = a.ServiceId,
+                    ServiceName = a.Service.Name,
+                    DoctorFullName = a.Doctor.FullName,
+                    PrescriptionId = a.PrescriptionId
+                })
+                .FirstOrDefault();
+
+            return appointment;
         }
 
         private static string GetAvailableHours(

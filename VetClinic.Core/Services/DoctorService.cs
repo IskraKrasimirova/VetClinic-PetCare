@@ -203,6 +203,20 @@ namespace VetClinic.Core.Services
             return doctor.Id;
         }
 
+        public DoctorServiceModel GetDoctor(string userId)
+        {
+            return this.data.Doctors
+                .Where(d => d.UserId == userId)
+                .Select(d => new DoctorServiceModel
+                {
+                    Id = d.Id,
+                    FullName = d.FullName,
+                    DepartmentId = d.DepartmentId,
+                    Department = d.Department.Name
+                })
+                .FirstOrDefault();
+        }
+
         private AvailableDoctorsServiceModel GetAvailableDoctors(AvailableDoctorsServiceModel query, IQueryable<Doctor> doctorsQuery)
         {
             return new AvailableDoctorsServiceModel
