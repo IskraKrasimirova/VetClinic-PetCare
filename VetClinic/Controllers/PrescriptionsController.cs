@@ -101,6 +101,7 @@ namespace VetClinic.Controllers
             {
                 return Unauthorized();
             }
+
             var appointment = this.appointmentService.GetPastAppointment(appointmentId);
 
             if (appointment == null)
@@ -142,6 +143,41 @@ namespace VetClinic.Controllers
             }
 
             return View(prescription);
+        }
+
+        [Authorize(Roles = $"{ClientRoleName}, {DoctorRoleName}")]
+        public IActionResult ByPet(string petId)
+        {
+            if (petId == null)
+            {
+                return BadRequest();
+            }
+
+            if (!this.User.IsClient() && !this.User.IsDoctor())
+            {
+                return Unauthorized();
+            }
+
+            var petPrescriptions = this.prescriptionService.GetPrescriptionsByPet(petId);
+
+            var userId = this.User.GetId();
+
+            if (this.User.IsClient())
+            {
+                var clientId = this.clientService.GetClientId(userId);
+
+                if (clientId == null)
+                {
+                    return BadRequest();
+                }
+
+                if (petPrescriptions.Any(p => p.ClientId != clientId))
+                {
+                    return Unauthorized();
+                }
+            }
+
+            return View(petPrescriptions);
         }
     }
 }

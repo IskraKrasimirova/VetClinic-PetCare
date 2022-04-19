@@ -77,7 +77,14 @@
                         <span class="fas fa-phone fa-lg text-dark"></span> @appointment.ClientPhoneNumber
                     </td>
                     <td>
-                        <a class="btn btn-outline-danger btn-sm" asp-area="" asp-controller="Prescriptions" asp-action="Add" asp-route-appointmentId="@appointment.Id" asp-route-doctorId="@appointment.DoctorId">View</a>
+                        @if (appointment.PrescriptionId == null)
+                        {
+                            <a class="btn btn-outline-danger btn-sm" asp-area="" asp-controller="Prescriptions" asp-action="Add" asp-route-appointmentId="@appointment.Id" asp-route-doctorId="@appointment.DoctorId">Add</a>
+                        }
+                        @if (appointment.PrescriptionId != null)
+                        {
+                            <a class="btn btn-outline-danger btn-sm" asp-area="" asp-controller="Prescriptions" asp-action="Details" asp-route-appointmentId="@appointment.Id">View</a>
+                        }
                     </td>
                 </tr>
             }

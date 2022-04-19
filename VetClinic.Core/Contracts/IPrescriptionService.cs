@@ -15,5 +15,7 @@ namespace VetClinic.Core.Contracts
                 string appointmentId);
 
         PrescriptionServiceModel Details(string id);
+
+        IEnumerable<PrescriptionServiceModel> GetPrescriptionsByPet(string petId);
     }
 }

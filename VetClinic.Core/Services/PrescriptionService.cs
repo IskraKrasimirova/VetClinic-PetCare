@@ -68,5 +68,38 @@ namespace VetClinic.Core.Services
                 })
                 .FirstOrDefault();
         }
+
+        public IEnumerable<PrescriptionServiceModel> GetPrescriptionsByPet(string petId)
+        {
+            var pet = this.data.Pets
+                .FirstOrDefault(p => p.Id == petId);
+
+            if (pet == null)
+            {
+                return null;
+            }
+
+            var petPrescriptions = this.data.Prescriptions
+                .Where(p => p.PetId == petId)
+                .OrderByDescending(p => p.CreatedOn)
+                .Select(p => new PrescriptionServiceModel
+                {
+                    Id = p.Id,
+                    PetId = p.PetId,
+                    PetName = p.Pet.Name,
+                    Description = p.Description,
+                    CreatedOn = p.CreatedOn.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    DoctorId = p.DoctorId,
+                    DoctorFullName = p.Doctor.FullName,
+                    AppointmentId = p.AppointmentId,
+                    DepartmentName = p.Doctor.Department.Name,
+                    ServiceName = p.Appointment.Service.Name,
+                    ClientId = p.Appointment.ClientId,
+                    IsPublished = true
+                })
+                .ToList();
+
+            return petPrescriptions;
+        }
     }
 }

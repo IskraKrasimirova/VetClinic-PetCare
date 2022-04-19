@@ -25,5 +25,7 @@
         public string ClientFullName { get; set; }
 
         public string ClientPhoneNumber { get; set; }
+
+        public string PrescriptionId { get; set; }
     }
 }

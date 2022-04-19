@@ -15,7 +15,7 @@
                 <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
                 <li class="list-group-item bgcolor-blue">Date: @Model.CreatedOn</li>
             </ul>
-            <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-id="@Model.PetId" class="btn btn-outline-primary mb-3 mt-3">Prescriptions</a>
+            <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-petId="@Model.PetId" class="btn btn-outline-primary mb-3 mt-3">All Prescriptions</a>
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@
                 <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
                 <li class="list-group-item bgcolor-blue">Owner: @Model.ClientName</li>
             </ul>
-            <a asp-controller="Prescriptions" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary mb-3 mt-3">Prescriptions</a>
+            <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-petId="@Model.Id" class="btn btn-outline-primary mb-3 mt-3">Prescriptions</a>
         </div>
     </div>
 </div>
