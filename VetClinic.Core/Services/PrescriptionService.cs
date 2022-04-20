@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Prescriptions;
 using VetClinic.Data;
@@ -28,6 +23,7 @@ namespace VetClinic.Core.Services
 
             var prescription = new Prescription
             {
+                Id = Guid.NewGuid().ToString(),
                 PetId = appointment.PetId,
                 Pet = appointment.Pet,
                 Description = description,
@@ -35,14 +31,13 @@ namespace VetClinic.Core.Services
                 AppointmentId = appointmentId,
                 DoctorId = appointment.DoctorId,
                 Doctor = appointment.Doctor,
-                Appointment = appointment,
-                IsPublished = true
+                Appointment = appointment
             };
 
-            prescription.Id = Guid.NewGuid().ToString();
-            appointment.PrescriptionId = prescription.Id;
+            //prescription.Id = Guid.NewGuid().ToString();
 
             this.data.Prescriptions.Add(prescription);
+            appointment.PrescriptionId = prescription.Id;
 
             this.data.SaveChanges();
         }
@@ -58,13 +53,12 @@ namespace VetClinic.Core.Services
                     PetName = p.Pet.Name,
                     Description = p.Description,
                     CreatedOn = p.CreatedOn.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
-                    DoctorId= p.DoctorId,
+                    DoctorId = p.DoctorId,
                     DoctorFullName = p.Doctor.FullName,
                     AppointmentId = p.AppointmentId,
                     DepartmentName = p.Doctor.Department.Name,
                     ServiceName = p.Appointment.Service.Name,
-                    ClientId = p.Appointment.ClientId,
-                    IsPublished= true
+                    ClientId = p.Appointment.ClientId
                 })
                 .FirstOrDefault();
         }
@@ -94,8 +88,7 @@ namespace VetClinic.Core.Services
                     AppointmentId = p.AppointmentId,
                     DepartmentName = p.Doctor.Department.Name,
                     ServiceName = p.Appointment.Service.Name,
-                    ClientId = p.Appointment.ClientId,
-                    IsPublished = true
+                    ClientId = p.Appointment.ClientId
                 })
                 .ToList();
 

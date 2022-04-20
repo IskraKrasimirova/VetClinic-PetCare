@@ -31,7 +31,5 @@ namespace VetClinic.Data.Models
         [ForeignKey(nameof(Appointment))]
         public string AppointmentId { get; set; }
         public Appointment Appointment { get; set; }
-
-        public bool IsPublished { get; set; }
     }
 }

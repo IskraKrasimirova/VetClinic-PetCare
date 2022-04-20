@@ -79,8 +79,8 @@ namespace VetClinic.Controllers
                 return View(query);
             }
 
-            this.appointmentService.AddNewAppointment
-                (clientId, doctorId, serviceId, petId, appointmentDateTime, appointmentHourAsString);
+            this.appointmentService.AddNewAppointment(
+                clientId, doctorId, serviceId, petId, appointmentDateTime, appointmentHourAsString);
 
             this.TempData[GlobalMessageKey] = "Successfully booked an appointment!";
 

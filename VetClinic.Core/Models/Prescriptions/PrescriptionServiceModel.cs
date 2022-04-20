@@ -23,7 +23,5 @@
         public string DepartmentName { get; set; }
 
         public string ServiceName { get; set; }
-
-        public bool IsPublished { get; set; }
     }
 }

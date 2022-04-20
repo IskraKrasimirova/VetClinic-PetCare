@@ -31,7 +31,5 @@ namespace VetClinic.Core.Models.Prescriptions
 
         [Required]
         public string ServiceName { get; set; }
-
-        public bool IsPublished { get; set; }
     }
 }
