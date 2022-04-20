@@ -34,8 +34,6 @@ namespace VetClinic.Core.Services
                 Appointment = appointment
             };
 
-            //prescription.Id = Guid.NewGuid().ToString();
-
             this.data.Prescriptions.Add(prescription);
             appointment.PrescriptionId = prescription.Id;
 
@@ -61,6 +59,39 @@ namespace VetClinic.Core.Services
                     ClientId = p.Appointment.ClientId
                 })
                 .FirstOrDefault();
+        }
+
+        public IEnumerable<PrescriptionServiceModel> GetMine(string doctorId)
+        {
+            var doctor = this.data.Doctors
+                .FirstOrDefault(d => d.Id == doctorId);
+
+            if (doctor == null)
+            {
+                return null;
+            }
+
+            var doctorPrescriptions = this.data.Prescriptions
+                .Where(p => p.DoctorId == doctorId)
+                .OrderByDescending(p => p.CreatedOn)
+                .ThenBy(p => p.Pet.Name)
+                .Select(p => new PrescriptionServiceModel
+                {
+                    Id = p.Id,
+                    PetId = p.PetId,
+                    PetName = p.Pet.Name,
+                    Description = p.Description,
+                    CreatedOn = p.CreatedOn.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    DoctorId = p.DoctorId,
+                    DoctorFullName = p.Doctor.FullName,
+                    AppointmentId = p.AppointmentId,
+                    DepartmentName = p.Doctor.Department.Name,
+                    ServiceName = p.Appointment.Service.Name,
+                    ClientId = p.Appointment.ClientId
+                })
+                .ToList();
+
+            return doctorPrescriptions;
         }
 
         public IEnumerable<PrescriptionServiceModel> GetPrescriptionsByPet(string petId)

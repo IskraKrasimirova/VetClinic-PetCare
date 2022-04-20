@@ -10,6 +10,8 @@
 
         public string ClientName { get; set; }
 
+        public string ClientPhoneNumber { get; set; }
+
         public string UserId { get; set; }
     }
 }

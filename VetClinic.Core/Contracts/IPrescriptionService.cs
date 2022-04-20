@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Models.Prescriptions;
+﻿using VetClinic.Core.Models.Prescriptions;
 
 namespace VetClinic.Core.Contracts
 {
@@ -17,5 +12,7 @@ namespace VetClinic.Core.Contracts
         PrescriptionServiceModel Details(string id);
 
         IEnumerable<PrescriptionServiceModel> GetPrescriptionsByPet(string petId);
+
+        IEnumerable<PrescriptionServiceModel> GetMine(string doctorId);
     }
 }

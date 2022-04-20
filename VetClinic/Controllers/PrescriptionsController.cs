@@ -179,5 +179,27 @@ namespace VetClinic.Controllers
 
             return View(petPrescriptions);
         }
+
+        [Authorize(Roles = DoctorRoleName)]
+        public IActionResult All()
+        {
+            if (!this.User.IsDoctor())
+            {
+                return Unauthorized();
+            }
+
+            var userId = this.User.GetId();
+
+            var doctor = doctorService.GetDoctor(userId);
+
+            if (doctor.Id == null)
+            {
+                return BadRequest();
+            }
+
+            var prescriptions = this.prescriptionService.GetMine(doctor.Id);
+
+            return View(prescriptions);
+        }
     }
 }

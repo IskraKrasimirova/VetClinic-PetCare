@@ -1,0 +1,49 @@
+﻿@model IEnumerable<PrescriptionServiceModel>
+
+@{
+    ViewBag.Title = "Prescriptions";
+}
+
+@if (!Model.Any())
+{
+    ViewBag.Title = null;
+    <h2 class="text-center">
+        You have not made any prescriptions!
+    </h2>
+    <div class="text-center">
+        <a asp-area="Doctor" asp-controller="Appointments" asp-action="Mine" class="btn btn-outline-primary" style="margin-top: 20px">Back to appointments</a>
+    </div>
+}
+
+@if (Model.Any())
+{
+    <h2 class="text-center mb-3">@ViewBag.Title</h2>
+    <table class="table table-bordered table-hover text-center" style="background-color:#80c1ff">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Department</th>
+                <th scope="col">Service</th>
+                <th scope="col">Description</th>
+                <th scope="col">Pet</th>
+                <th scope="col">Pet Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prescription in Model)
+            {
+                <tr>
+                    <th scope="row">@prescription.CreatedOn</th>
+                    <td>@prescription.DepartmentName</td>
+                    <td>@prescription.ServiceName</td>
+                    <td>@prescription.Description</td>
+                    <td>@prescription.PetName</td>
+                    <td>
+                        <a class="btn btn-outline-danger btn-sm" asp-controller="Pets" asp-action="Details" asp-route-id="@prescription.PetId">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

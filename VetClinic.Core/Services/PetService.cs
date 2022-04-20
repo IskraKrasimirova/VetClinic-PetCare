@@ -153,6 +153,9 @@ namespace VetClinic.Core.Services
                     Description = p.Description,
                     ClientId = p.ClientId,
                     ClientName = p.Client.FullName,
+                    ClientPhoneNumber = this.data.Users
+                                        .FirstOrDefault(u => u.FullName == p.Client.FullName)
+                                        .PhoneNumber,
                     UserId = p.Client.UserId
                 })
                 .FirstOrDefault();

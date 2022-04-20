@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Appointments;
 using VetClinic.Core.Models.Services;
 using VetClinic.Data;
 using VetClinic.Data.Models;
-using static VetClinic.Common.GlobalConstants.FormattingConstants;
 using static VetClinic.Common.DefaultHourSchedule;
-using Microsoft.EntityFrameworkCore;
+using static VetClinic.Common.GlobalConstants.FormattingConstants;
 
 namespace VetClinic.Core.Services
 {
@@ -54,8 +49,6 @@ namespace VetClinic.Core.Services
                     Department = department.Name
                 })
                 .ToList();
-
-            //var doctorServices = doctor.DoctorServices;
 
             return new BookAppointmentServiceModel
             {
