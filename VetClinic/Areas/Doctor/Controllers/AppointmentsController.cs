@@ -29,7 +29,7 @@ namespace VetClinic.Areas.Doctor.Controllers
             var pastAppointments = this.appointmentService
                 .GetDoctorPastAppointments(userId);
 
-            return this.View(new DoctorAppointmentsListingViewModel()
+            return this.View(new AppointmentsListingViewModel()
             {
                 UpcomingAppointments = upcomingAppointments,
                 PastAppointments = pastAppointments

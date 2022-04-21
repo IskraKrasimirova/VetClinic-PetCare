@@ -61,6 +61,15 @@ namespace VetClinic.Controllers
                 return BadRequest();
             }
 
+            var prescriptionId = appointment.PrescriptionId;
+
+            if (prescriptionId != null)
+            {
+                var existingPrescription = this.prescriptionService.Details(prescriptionId);
+                this.TempData[GlobalMessageKey] = "The prescription already exists.";
+                return View("Details", existingPrescription);
+            }
+
             return View(new PrescriptionFormModel
             {
                 PetId = appointment.PetId,
@@ -77,6 +86,21 @@ namespace VetClinic.Controllers
         [Authorize(Roles = DoctorRoleName)]
         public IActionResult Add(PrescriptionFormModel prescription)
         {
+            var appointmentId = prescription.AppointmentId;
+
+            if (appointmentId == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = this.appointmentService.GetPastAppointment(appointmentId);
+            //Не сравнява правилно датите - може да се въведе рецепта с дата преди прегледа!!!
+            if (prescription.CreatedOn > appointment.Date) 
+            {
+                this.ModelState.AddModelError(String.Empty, "The prescription date must be after the appointment day.");
+                return View(prescription);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(prescription);

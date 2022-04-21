@@ -29,9 +29,9 @@ namespace VetClinic.Core.Contracts
 
         bool Delete(string appointmentId);
 
-        IEnumerable<DoctorUpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId);
+        IEnumerable<UpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId);
 
-        IEnumerable<DoctorPastAppointmentServiceModel> GetDoctorPastAppointments(string userId);
+        IEnumerable<PastAppointmentServiceModel> GetDoctorPastAppointments(string userId);
 
         PastAppointmentServiceModel GetPastAppointment(string appointmentId);
     }

@@ -22,9 +22,15 @@
 
         public string ClientId { get; set; }
 
+        public string ClientFullName { get; set; }
+
+        public string ClientPhoneNumber { get; set; }
+
         public string PetId { get; set; }
 
         public string PetName { get; set; }
+
+        public string PetType { get; set; }
 
         public string PrescriptionId { get; set; }
     }

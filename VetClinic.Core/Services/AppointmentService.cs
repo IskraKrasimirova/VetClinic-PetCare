@@ -202,6 +202,7 @@ namespace VetClinic.Core.Services
 
             var pastAppointments = this.data.Appointments
                 .Where(a => a.ClientId == clientId && a.Date < DateTime.UtcNow)
+                .OrderByDescending(a => a.Date)
                 .Select(a => new PastAppointmentServiceModel
                 {
                     Id = a.Id,
@@ -219,8 +220,8 @@ namespace VetClinic.Core.Services
                     PetId = a.Pet.Id,
                     DoctorId = a.Doctor.Id,
                     ServiceId = a.Service.Id,
+                    PrescriptionId = a.PrescriptionId
                 })
-                .OrderByDescending(a => a.Date)
                 .ToList();
 
             return pastAppointments;
@@ -279,7 +280,7 @@ namespace VetClinic.Core.Services
             return true;
         }
 
-        public IEnumerable<DoctorUpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId)
+        public IEnumerable<UpcomingAppointmentServiceModel> GetDoctorUpcomingAppointments(string userId)
         {
             var doctor = this.data.Doctors
                 .FirstOrDefault(d => d.UserId == userId);
@@ -291,7 +292,7 @@ namespace VetClinic.Core.Services
 
             var upcomingAppointments = this.data.Appointments
                 .Where(a => a.DoctorId == doctor.Id && a.Date >= DateTime.UtcNow)
-                .Select(a => new DoctorUpcomingAppointmentServiceModel
+                .Select(a => new UpcomingAppointmentServiceModel
                 {
                     Id = a.Id,
                     Date = a.Date,
@@ -310,7 +311,7 @@ namespace VetClinic.Core.Services
             return upcomingAppointments;
         }
 
-        public IEnumerable<DoctorPastAppointmentServiceModel> GetDoctorPastAppointments(string userId)
+        public IEnumerable<PastAppointmentServiceModel> GetDoctorPastAppointments(string userId)
         {
             var doctor = this.data.Doctors
                 .FirstOrDefault(d => d.UserId == userId);
@@ -322,7 +323,7 @@ namespace VetClinic.Core.Services
 
             var pastAppointments = this.data.Appointments
                 .Where(a => a.DoctorId == doctor.Id && a.Date < DateTime.UtcNow)
-                .Select(a => new DoctorPastAppointmentServiceModel
+                .Select(a => new PastAppointmentServiceModel
                 {
                     Id = a.Id,
                     Date = a.Date,
@@ -341,6 +342,7 @@ namespace VetClinic.Core.Services
                     PetId = a.Pet.Id,
                     DoctorId = a.Doctor.Id,
                     ServiceId = a.Service.Id,
+                    PrescriptionId = a.PrescriptionId
                 })
                 .OrderByDescending(a => a.Date)
                 .ToList();
@@ -351,9 +353,10 @@ namespace VetClinic.Core.Services
         public PastAppointmentServiceModel GetPastAppointment(string appointmentId)
         {
             var appointment = this.data.Appointments
-                .Where(a => a.Id == appointmentId)
+                .Where(a => a.Id == appointmentId && a.Date < DateTime.UtcNow)
                 .Select(a => new PastAppointmentServiceModel
                 {
+                    Date = a.Date,
                     DoctorId = a.DoctorId,
                     PetId = a.PetId,
                     PetName = a.Pet.Name,

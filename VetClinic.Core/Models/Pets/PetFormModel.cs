@@ -15,7 +15,7 @@ namespace VetClinic.Core.Models.Pets
 
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
-        [IsBeforeAttribute(MaxDate,ErrorMessage = "The Date of Birth must be before the current date")]
+        [IsBeforeAttribute(MaxDate, ErrorMessage = "The Date of Birth must be before the current date")]
         public DateTime DateOfBirth { get; set; }
 
         [Required]
@@ -26,10 +26,10 @@ namespace VetClinic.Core.Models.Pets
         public Gender Gender { get; set; }
 
         [StringLength(DescriptionMaxLength,MinimumLength = DescriptionMinLength)]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [Display(Name = "Pet Type")]
         public int PetTypeId { get; set; }
-        public IEnumerable<PetTypeServiceModel>? PetTypes { get; set; }
+        public IEnumerable<PetTypeServiceModel> PetTypes { get; set; }
     }
 }

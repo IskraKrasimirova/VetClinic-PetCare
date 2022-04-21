@@ -21,23 +21,26 @@ namespace VetClinic.Core.Services
             var appointment = this.data.Appointments
                 .FirstOrDefault(a => a.Id == appointmentId);
 
-            var prescription = new Prescription
+            if (appointment.PrescriptionId == null)
             {
-                Id = Guid.NewGuid().ToString(),
-                PetId = appointment.PetId,
-                Pet = appointment.Pet,
-                Description = description,
-                CreatedOn = createdOn,
-                AppointmentId = appointmentId,
-                DoctorId = appointment.DoctorId,
-                Doctor = appointment.Doctor,
-                Appointment = appointment
-            };
+                var prescription = new Prescription
+                {
+                    Id = Guid.NewGuid().ToString(),//Ако не подам - гърми!!!
+                    PetId = appointment.PetId,
+                    Pet = appointment.Pet,
+                    Description = description,
+                    CreatedOn = createdOn,
+                    AppointmentId = appointmentId,
+                    DoctorId = appointment.DoctorId,
+                    Doctor = appointment.Doctor,
+                    Appointment = appointment
+                };
 
-            this.data.Prescriptions.Add(prescription);
-            appointment.PrescriptionId = prescription.Id;
+                this.data.Prescriptions.Add(prescription);
+                appointment.PrescriptionId = prescription.Id;
 
-            this.data.SaveChanges();
+                this.data.SaveChanges();
+            }
         }
 
         public PrescriptionServiceModel Details(string id)
