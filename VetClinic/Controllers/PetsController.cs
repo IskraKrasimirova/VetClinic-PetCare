@@ -77,16 +77,16 @@ namespace VetClinic.Controllers
         public IActionResult All([FromQuery] AllPetsViewModel query)
         {
             var queryResult = petService.All(
-                query.SearchTerm,
                 query.PetTypeName,
+                query.SearchTerm,
                 query.CurrentPage,
                 AllPetsViewModel.PetsPerPage);
 
             var petPetTypes = petService.AllPetTypes();
 
+            query.PetTypes = petPetTypes;
             query.TotalPets = queryResult.TotalPets;
             query.Pets = queryResult.Pets;
-            query.PetTypes = petPetTypes;
             query.SearchTerm = queryResult.SearchTerm;
 
             return View(query);

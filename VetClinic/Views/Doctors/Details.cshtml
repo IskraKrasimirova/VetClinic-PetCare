@@ -21,7 +21,10 @@
                 </li>
             </ul>
             <div class="footer text-center mb-3">
-                <a asp-controller="Appointments" asp-action="Book" asp-route-doctorId="@Model.Id" class="btn btn-outline-primary">Book</a>
+                @if (User.IsClient())
+                {
+                    <a asp-controller="Appointments" asp-action="Book" asp-route-doctorId="@Model.Id" class="btn btn-outline-primary">Book</a>
+                }
                 @if (User.IsAdmin())
                 {
                     <a asp-area="Admin" asp-controller="Doctors" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Edit</a>

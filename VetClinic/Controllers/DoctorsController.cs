@@ -23,16 +23,16 @@ namespace VetClinic.Controllers
         public IActionResult All([FromQuery] AllDoctorsViewModel query)
         {
             var queryResult = doctorService.All(
-                query.SearchTerm,
                 query.Department,
+                query.SearchTerm,
                 query.CurrentPage,
                 AllDoctorsViewModel.DoctorsPerPage);
 
             var doctorsDepartments = departmentService.AllDepartments();
 
+            query.Departments = doctorsDepartments;
             query.TotalDoctors = queryResult.TotalDoctors;
             query.Doctors = queryResult.Doctors;
-            query.Departments = doctorsDepartments;
             query.SearchTerm = queryResult.SearchTerm;
 
             return View(query);

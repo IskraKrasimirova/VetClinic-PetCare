@@ -17,7 +17,7 @@ namespace VetClinic.Core.Services
         {
             this.data = data;
         }
-        //Search by text does not work!!!
+        
         public AllPetsViewModel All(string petTypeName, string searchTerm, int currentPage = 1,
             int petsPerPage = int.MaxValue)
         {
@@ -33,7 +33,6 @@ namespace VetClinic.Core.Services
             {
                 petsQuery = petsQuery.Where(p =>
                 p.PetType.Name.ToLower().Contains(searchTerm.Trim().ToLower()) ||
-                (p.Breed + " " + p.Name).ToLower().Contains(searchTerm.Trim().ToLower()) ||
                 p.Name.ToLower().Contains(searchTerm.Trim().ToLower()) ||
                 p.Breed.ToLower().Contains(searchTerm.Trim().ToLower()));
                 //p.Gender.ToString().ToLower().Contains(searchTerm.Trim().ToLower()));

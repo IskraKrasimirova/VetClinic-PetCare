@@ -21,7 +21,7 @@ namespace VetClinic.Core.Services
             this.data = data;
             this.departmentService = departmentService;
         }
-        //Search by text does not work!!!
+        
         public AllDoctorsViewModel All(string departmentName, string searchTerm, int currentPage = 1, int doctorsPerPage = int.MaxValue)
         {
             var doctorsQuery = this.data.Doctors.AsQueryable();
@@ -37,17 +37,18 @@ namespace VetClinic.Core.Services
                 doctorsQuery = doctorsQuery.Where(d =>
                 d.Department.Name.ToLower().Contains(searchTerm.Trim().ToLower()) ||
                 d.FullName.ToLower().Contains(searchTerm.Trim().ToLower()) ||
-                (d.FullName + " " + d.Department.Name).Contains(searchTerm.Trim().ToLower()) ||
                 d.Description.ToLower().Contains(searchTerm.Trim().ToLower()));
             }
+
+            doctorsQuery = doctorsQuery
+                .OrderBy(d => d.DepartmentId)
+                .ThenBy(d => d.FullName);
 
             var totalDoctors = doctorsQuery.Count();
 
             var doctors = GetDoctors(doctorsQuery
                 .Skip((currentPage - 1) * doctorsPerPage)
-                .Take(doctorsPerPage)
-                .OrderBy(d => d.DepartmentId)
-                .ThenBy(d => d.FullName));
+                .Take(doctorsPerPage));
 
             var doctorsDepartments = departmentService.AllDepartments();
 
