@@ -40,12 +40,16 @@ namespace VetClinic.Core.Services
                 //.ToList();
             }
 
+            petsQuery = petsQuery
+                .OrderBy(p => p.PetType.Name)
+                .ThenBy(p => p.Name)
+                .ThenBy(p => p.Breed);
+
             var totalPets = petsQuery.Count();
 
             var pets = GetPets(petsQuery
                 .Skip((currentPage - 1) * petsPerPage)
-                .Take(petsPerPage)
-                .OrderBy(p => p.Name));
+                .Take(petsPerPage));
 
             var petPetTypes = AllPetTypes();
 
@@ -64,7 +68,7 @@ namespace VetClinic.Core.Services
             return this.data.Pets
                 .Select(p => p.PetType.Name)
                 .Distinct()
-                .OrderBy(pt => pt)
+                .OrderBy(p => p)
                 .ToList();
         }
 

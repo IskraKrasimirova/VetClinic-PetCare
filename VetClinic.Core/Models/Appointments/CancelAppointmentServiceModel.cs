@@ -12,6 +12,8 @@
 
         public string DoctorFullName { get; set; }
 
+        public string ClientFullName { get; set; }
+
         public string ServiceName { get; set; }
     }
 }

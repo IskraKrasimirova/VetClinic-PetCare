@@ -2,6 +2,7 @@
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Appointments;
 using VetClinic.Extensions;
+using static VetClinic.Common.GlobalConstants;
 
 namespace VetClinic.Areas.Doctor.Controllers
 {
@@ -34,6 +35,34 @@ namespace VetClinic.Areas.Doctor.Controllers
                 UpcomingAppointments = upcomingAppointments,
                 PastAppointments = pastAppointments
             });
+        }
+
+        public IActionResult Cancel(string appointmentId)
+        {
+            var appointmentModel = this.appointmentService.GetAppointmentForCancel(appointmentId);
+
+            if (appointmentModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(appointmentModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string appointmentId)
+        {
+            var isDeleted = this.appointmentService.Delete(appointmentId);
+
+            if (!isDeleted)
+            {
+                this.ModelState.AddModelError(String.Empty, "Oops..Something Went Wrong");
+                return View("Cancel", null);
+            }
+
+            this.TempData[GlobalMessageKey] = "Successfully delete appointment";
+
+            return RedirectToAction("Mine", "Appointments");
         }
     }
 }

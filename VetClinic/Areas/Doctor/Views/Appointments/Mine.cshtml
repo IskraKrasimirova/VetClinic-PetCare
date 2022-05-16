@@ -39,7 +39,7 @@
                         <span class="fas fa-phone fa-lg text-dark"></span> @appointment.ClientPhoneNumber
                     </td>
                     <td>
-                        <a class="btn btn-outline-danger btn-sm" asp-controller="Appointments" asp-action="Cancel" asp-route-appointmentId="@appointment.Id">Cancel</a>
+                        <a class="btn btn-outline-danger btn-sm" asp-area="Doctor" asp-controller="Appointments" asp-action="Cancel" asp-route-appointmentId="@appointment.Id">Cancel</a>
                     </td>
                 </tr>
             }

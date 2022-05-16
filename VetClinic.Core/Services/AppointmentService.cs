@@ -240,8 +240,9 @@ namespace VetClinic.Core.Services
             var petId = appointment.PetId;
             var doctorId = appointment.DoctorId;
             var serviceId = appointment.ServiceId;
+            var clientId = appointment.ClientId;
 
-            if (petId == null || doctorId == null || serviceId == 0)
+            if (clientId == null || petId == null || doctorId == null || serviceId == 0)
             {
                 return null;
             }
@@ -249,6 +250,7 @@ namespace VetClinic.Core.Services
             var pet = this.data.Pets.Find(petId);
             var doctor = this.data.Doctors.Find(doctorId);
             var service = this.data.Services.Find(serviceId);
+            var client = this.data.Clients.Find(clientId);
 
             var canceledAppointment = new CancelAppointmentServiceModel
             {
@@ -256,6 +258,7 @@ namespace VetClinic.Core.Services
                 Date = appointment.Date,
                 Hour = appointment.Hour,
                 PetName = pet.Name,
+                ClientFullName = client.FullName,
                 DoctorFullName = doctor.FullName,
                 ServiceName = service.Name,
             };
