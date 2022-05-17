@@ -128,7 +128,7 @@ namespace VetClinic.Controllers
 
             if (!isDeleted)
             {
-                this.ModelState.AddModelError(String.Empty, "Oops..Something Went Wrong");
+                this.ModelState.AddModelError(String.Empty, "Oops..Something Went Wrong!");
                 return View("Cancel", null);
             }
 

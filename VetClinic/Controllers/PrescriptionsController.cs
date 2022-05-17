@@ -94,8 +94,8 @@ namespace VetClinic.Controllers
             }
 
             var appointment = this.appointmentService.GetPastAppointment(appointmentId);
-            //Не сравнява правилно датите - може да се въведе рецепта с дата преди прегледа!!!
-            if (prescription.CreatedOn > appointment.Date) 
+            
+            if (DateTime.Compare(prescription.CreatedOn, appointment.Date) < 0) 
             {
                 this.ModelState.AddModelError(String.Empty, "The prescription date must be after the appointment day.");
                 return View(prescription);

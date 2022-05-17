@@ -148,7 +148,7 @@ namespace VetClinic.Core.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    DateOfBirth = p.DateOfBirth.ToString(DateFormat, CultureInfo.InvariantCulture),
                     PetTypeId = p.PetTypeId,
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
@@ -201,11 +201,14 @@ namespace VetClinic.Core.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(NormalDateFormat, CultureInfo.InvariantCulture),
+                    DateOfBirth = p.DateOfBirth.ToString(DateFormat, CultureInfo.InvariantCulture),
                     PetType = p.PetType.Name,
                     Breed = p.Breed,
                     Gender = p.Gender.ToString()
                 })
+                .OrderBy(p => p.PetType)
+                .ThenBy(p => p.Breed)
+                .ThenBy(p => p.Name)
                 .ToList();
         }
     }

@@ -13,7 +13,7 @@
             <h3 class="card-title text-center mb-5">@ViewBag.Title</h3>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item mb-3">Pet: @Model.PetName</li>
-                <li class="list-group-item mb-3">Date: @Model.Date.ToString(NormalDateFormat) @Model.Hour</li>
+                <li class="list-group-item mb-3">Date: @Model.Date.ToString(DateFormat) @Model.Hour</li>
                 <li class="list-group-item mb-3">Service: @Model.ServiceName</li>
                 <li class="list-group-item mb-3">Client: @Model.ClientFullName</li>
             </ul>

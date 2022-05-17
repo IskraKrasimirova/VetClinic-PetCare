@@ -35,7 +35,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
-        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.NormalDateFormat));
+        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.DateFormat));
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); 
     });
 

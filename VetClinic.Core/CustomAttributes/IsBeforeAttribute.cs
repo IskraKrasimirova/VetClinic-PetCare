@@ -38,7 +38,7 @@ namespace VetClinic.Core.CustomAttributes
 
         public IsBeforeAttribute(string dateInput)
         {
-            this.date = DateTime.ParseExact(dateInput, NormalDateFormat, CultureInfo.InvariantCulture);
+            this.date = DateTime.ParseExact(dateInput, DateFormat, CultureInfo.InvariantCulture);
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

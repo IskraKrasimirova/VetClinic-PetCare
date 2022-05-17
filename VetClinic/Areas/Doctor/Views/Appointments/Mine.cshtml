@@ -30,7 +30,7 @@
             @foreach (var appointment in Model.UpcomingAppointments)
             {
                 <tr>
-                    <th scope="row">@appointment.Date.ToString(NormalDateFormat) @appointment.Hour</th>
+                    <th scope="row">@appointment.Date.ToString(DateFormat) @appointment.Hour</th>
                     <td>@appointment.ServiceName</td>
                     <td>@appointment.PetName</td>
                     <td>@appointment.PetType</td>
@@ -68,7 +68,7 @@
             @foreach (var appointment in Model.PastAppointments)
             {
                 <tr>
-                    <th scope="row">@appointment.Date.ToString(NormalDateFormat) @appointment.Hour</th>
+                    <th scope="row">@appointment.Date.ToString(DateFormat) @appointment.Hour</th>
                     <td>@appointment.ServiceName</td>
                     <td>@appointment.PetName</td>
                     <td>@appointment.PetType</td>

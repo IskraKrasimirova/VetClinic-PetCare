@@ -17,7 +17,7 @@ namespace VetClinic.Core.CustomAttributes
 
             bool isParsed = DateTime.TryParseExact(
                 dateAsString,
-                NormalDateFormat,
+                DateFormat,
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out DateTime dateTime);

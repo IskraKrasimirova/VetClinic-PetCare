@@ -16,7 +16,7 @@
 
         public class FormattingConstants
         {
-            public const string NormalDateFormat = "dd-MM-yyyy";
+            public const string DateFormat = "dd-MM-yyyy";
 
             public const string HourFormat = "HH:mm";
 

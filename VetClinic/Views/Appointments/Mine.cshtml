@@ -33,7 +33,7 @@
             @foreach (var appointment in Model.UpcomingAppointments)
             {
                 <tr>
-                    <th scope="row">@appointment.Date.ToString(NormalDateFormat) @appointment.Hour</th>
+                    <th scope="row">@appointment.Date.ToString(DateFormat) @appointment.Hour</th>
                     <td>@appointment.PetName</td>
                     <td>@appointment.DepartmentName</td>
                     <td>@appointment.ServiceName</td>
@@ -71,7 +71,7 @@
             @foreach (var appointment in Model.PastAppointments)
             {
                 <tr>
-                    <th scope="row">@appointment.Date.ToString(NormalDateFormat) @appointment.Hour</th>
+                    <th scope="row">@appointment.Date.ToString(DateFormat) @appointment.Hour</th>
                     <td>@appointment.PetName</td>
                     <td>@appointment.DepartmentName</td>
                     <td>@appointment.ServiceName</td>
@@ -80,7 +80,10 @@
                         <span class="fas fa-phone fa-lg text-dark"></span> @appointment.DoctorPhoneNumber
                     </td>
                     <td>
-                        <a class="btn btn-outline-primary btn-sm" asp-controller="Prescriptions" asp-action="Details" asp-route-appointmentId="@appointment.Id">View</a>
+                        @{
+                            var shouldButtonBeDisabled = appointment.PrescriptionId == null;
+                        }
+                        <a class="btn btn-outline-primary btn-sm @(shouldButtonBeDisabled ? "disabled" : string.Empty)" asp-controller="Prescriptions" asp-action="Details" asp-route-appointmentId="@appointment.Id">View</a>
                     </td>
                 </tr>
             }

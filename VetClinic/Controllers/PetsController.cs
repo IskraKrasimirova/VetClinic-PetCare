@@ -127,7 +127,7 @@ namespace VetClinic.Controllers
             return View(new PetFormModel
             {
                 Name = pet.Name,
-                DateOfBirth = DateTime.ParseExact(pet.DateOfBirth, NormalDateFormat, CultureInfo.InvariantCulture),
+                DateOfBirth = DateTime.ParseExact(pet.DateOfBirth, DateFormat, CultureInfo.InvariantCulture),
                 Breed = pet.Breed,
                 Gender = (Gender)Enum.Parse(typeof(Gender), pet.Gender),
                 Description = pet.Description,

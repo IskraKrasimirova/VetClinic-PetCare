@@ -67,17 +67,18 @@ namespace VetClinic.Core.Services
                 return DateTime.MinValue;
             }
 
-            if (!DateTime.TryParseExact(dateAsString, NormalDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parseDate))
+            if (!DateTime.TryParseExact(dateAsString, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
             {
                 return DateTime.MinValue;
             }
 
-            return parseDate.AddHours(parsedTime.Hour);
+            return parsedDate.AddHours(parsedTime.Hour);
         }
 
         public string CheckDoctorAvailableHours(DateTime appointmentDateTime, string hourAsString, string doctorId)
         {
             var cultureInfo = CultureInfo.GetCultureInfo("bg-BG");
+
             if (DateTime.TryParseExact(hourAsString, HourFormat, cultureInfo, DateTimeStyles.None, out _))
             {
                 var doctorsQuery = this.data.Doctors
@@ -91,6 +92,10 @@ namespace VetClinic.Core.Services
                 {
                     return GetAvailableHours(appointmentDateTime, hourAsString, doctorId, doctorsQuery);
                 }
+            }
+            else
+            {
+                return "Oops...Something went wrong!";
             }
 
             return null;
@@ -385,9 +390,8 @@ namespace VetClinic.Core.Services
                 ?.Appointments
                 .Where(a => a.Date.Day == appointmentDateTime.Day &&
                              a.Date.Month == appointmentDateTime.Month &&
-                             a.Date.Year == appointmentDateTime.Year &&
-                             a.Hour == appointmentHour)
-                .Select(a => a.Hour)
+                             a.Date.Year == appointmentDateTime.Year)
+                .Select(a => new { a.Hour })
                 .ToList();
 
             if (HourScheduleAsString == null)
@@ -399,9 +403,9 @@ namespace VetClinic.Core.Services
 
             foreach (var booked in bookedHours)
             {
-                if (defaultHourSchedule.Contains(booked))
+                if (defaultHourSchedule.Contains(booked.Hour))
                 {
-                    defaultHourSchedule.Remove(booked);
+                    defaultHourSchedule.Remove(booked.Hour);
                 }
             }
 
@@ -414,7 +418,7 @@ namespace VetClinic.Core.Services
             else
             {
                 var availableHours = string.Join(" ", defaultHourSchedule);
-                availabeHoursMessage = $"The available hours for the date {appointmentDateTime.ToString(NormalDateFormat)} are: {availableHours}";
+                availabeHoursMessage = $"The available hours for the date {appointmentDateTime.ToString(DateFormat)} are: {availableHours}";
             }
 
             return availabeHoursMessage;
