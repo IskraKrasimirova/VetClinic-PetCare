@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Departments;
+using static VetClinic.Common.GlobalConstants;
 
 namespace VetClinic.Areas.Admin.Controllers
 {
@@ -36,7 +37,9 @@ namespace VetClinic.Areas.Admin.Controllers
                 department.Image,
                 department.Description);
 
-            return RedirectToAction("Details", new {id = departmentId});
+            this.TempData[GlobalMessageKey] = $"Successfully added the department {department.Name}.";
+
+            return RedirectToAction("Details", "Departments", new { Area = "", departmentId });
         }
 
         public IActionResult Edit(int id)
@@ -70,6 +73,8 @@ namespace VetClinic.Areas.Admin.Controllers
                 return BadRequest();
             }
 
+            this.TempData[GlobalMessageKey] = $"Successfully edited the department {department.Name}.";
+
             return RedirectToAction("Details", "Departments", new { Area = "", id  });
         }
 
@@ -81,6 +86,8 @@ namespace VetClinic.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
+
+            this.TempData[GlobalMessageKey] = "Successfully deleted a department.";
 
             return RedirectToAction("All", "Departments", new { Area = "" });
         }

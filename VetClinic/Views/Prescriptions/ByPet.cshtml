@@ -11,28 +11,31 @@
         Pet has no prescriptions!
     </h2>
 }
-
-<h2 class="text-center mb-3">@ViewBag.Title</h2>
-<table class="table table-bordered table-striped text-center" style="background-color:#80c1ff">
-    <thead class="thead-light">
-        <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Department</th>
-            <th scope="col">Service</th>
-            <th scope="col">Description</th>
-            <th scope="col">Doctor</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var prescription in Model)
-        {
+else
+{
+    <h2 class="text-center mb-3">@ViewBag.Title</h2>
+    <table class="table table-bordered table-striped text-center" style="background-color:#80c1ff">
+        <thead class="thead-light">
             <tr>
-                <th scope="row">@prescription.CreatedOn</th>
-                <td>@prescription.DepartmentName</td>
-                <td>@prescription.ServiceName</td>
-                <td>@prescription.Description</td>
-                <td>@prescription.DoctorFullName</td>
+                <th scope="col">Date</th>
+                <th scope="col">Department</th>
+                <th scope="col">Service</th>
+                <th scope="col">Description</th>
+                <th scope="col">Doctor</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var prescription in Model)
+            {
+                <tr>
+                    <th scope="row">@prescription.CreatedOn</th>
+                    <td>@prescription.DepartmentName</td>
+                    <td>@prescription.ServiceName</td>
+                    <td>@prescription.Description</td>
+                    <td>@prescription.DoctorFullName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

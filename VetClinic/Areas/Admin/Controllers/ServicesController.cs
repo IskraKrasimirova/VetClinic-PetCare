@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Services;
+using static VetClinic.Common.GlobalConstants;
 
 namespace VetClinic.Areas.Admin.Controllers
 {
@@ -49,6 +50,8 @@ namespace VetClinic.Areas.Admin.Controllers
                 serviceModel.Price,
                 serviceModel.DepartmentId);
 
+            this.TempData[GlobalMessageKey] = "Successfully added a service.";
+
             return RedirectToAction("All", "Services", new {Area = ""});
             //return RedirectToAction("Details", new { id = serviceId });
         }
@@ -94,6 +97,8 @@ namespace VetClinic.Areas.Admin.Controllers
                 return BadRequest();
             }
 
+            this.TempData[GlobalMessageKey] = "Successfully edited a service.";
+
             return RedirectToAction("Details", "Services", new { id });
         }
 
@@ -117,6 +122,8 @@ namespace VetClinic.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
+
+            this.TempData[GlobalMessageKey] = "Successfully deleted a service.";
 
             return RedirectToAction("All", "Services", new { Area = "" });
         }

@@ -53,6 +53,16 @@ namespace VetClinic.Controllers
             {
                 this.ModelState.AddModelError(nameof(pet.PetTypeId), "Pet type does not exist.");
             }
+            //Валидационният атрибут не работи, защото трябва да се зададе const MaxDate.
+            //if (DateTime.Compare(DateTime.UtcNow.Date, pet.DateOfBirth.Date) < 0)
+            //{
+            //    this.ModelState.AddModelError(String.Empty, "The Date of Birth must be before the current date.");
+            //}
+
+            if (pet.DateOfBirth > DateTime.UtcNow)
+            {
+                this.ModelState.AddModelError(String.Empty, "The Date of Birth must be before the current date.");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -69,6 +79,8 @@ namespace VetClinic.Controllers
                 pet.Description,
                 pet.PetTypeId,
                 clientId);
+
+            this.TempData[GlobalMessageKey] = "Successfully added a pet!";
 
             return RedirectToAction("Details", new { id = petId });
         }
@@ -152,6 +164,11 @@ namespace VetClinic.Controllers
                 this.ModelState.AddModelError(nameof(pet.PetTypeId), "Pet type does not exist.");
             }
 
+            if (pet.DateOfBirth > DateTime.UtcNow)
+            {
+                this.ModelState.AddModelError(String.Empty, "The Date of Birth must be before the current date.");
+            }
+
             if (!ModelState.IsValid)
             {
                 pet.PetTypes = this.petTypeService.GetPetTypes();
@@ -178,6 +195,7 @@ namespace VetClinic.Controllers
                 return BadRequest();
             }
 
+            this.TempData[GlobalMessageKey] = "Successfully edited a pet!";
             //return RedirectToAction("Mine", "Pets"); 
             return RedirectToAction("Details", new { id });
         }
@@ -216,6 +234,8 @@ namespace VetClinic.Controllers
             {
                 return BadRequest();
             }
+
+            this.TempData[GlobalMessageKey] = "Successfully deleted a pet!";
 
             return RedirectToAction("Mine", "Pets");
         }

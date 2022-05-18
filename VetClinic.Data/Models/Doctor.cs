@@ -34,6 +34,7 @@ namespace VetClinic.Data.Models
         [Required]
         public string ProfileImage { get; set; }
 
+        [Required]
         [ForeignKey(nameof(Department))]
         public int DepartmentId { get; set; }
         public Department Department { get; set; }

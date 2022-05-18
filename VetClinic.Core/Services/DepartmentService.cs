@@ -118,6 +118,18 @@ namespace VetClinic.Core.Services
                 return false;
             }
 
+            foreach (var service in department.Services)
+            {
+                service.DepartmentId = 0;
+                department.Services.Remove(service);
+            }
+
+            foreach (var doctor in department.Doctors)
+            {
+                doctor.DepartmentId = 0;
+                department.Doctors.Remove(doctor);
+            }
+
             this.data.Departments.Remove(department);
             this.data.SaveChanges();
 

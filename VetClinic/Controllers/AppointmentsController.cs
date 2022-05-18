@@ -132,7 +132,7 @@ namespace VetClinic.Controllers
                 return View("Cancel", null);
             }
 
-            this.TempData[GlobalMessageKey] = "Successfully delete appointment";
+            this.TempData[GlobalMessageKey] = "Successfully deleted an appointment.";
 
             return RedirectToAction("Mine", "Appointments");
         }

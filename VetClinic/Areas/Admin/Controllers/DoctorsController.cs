@@ -1,23 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Doctors;
-using VetClinic.Data.Models;
 using static VetClinic.Common.GlobalConstants;
 
 namespace VetClinic.Areas.Admin.Controllers
 {
     public class DoctorsController : AdminController
     {
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<User> userManager;
         private readonly IDoctorService doctorService;
         private readonly IDepartmentService departmentService;
 
-        public DoctorsController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IDoctorService doctorService, IDepartmentService departmentService)
+        public DoctorsController(IDoctorService doctorService, IDepartmentService departmentService)
         {
-            this.roleManager = roleManager;
-            this.userManager = userManager;
             this.doctorService = doctorService;
             this.departmentService = departmentService;
         }
@@ -31,7 +25,7 @@ namespace VetClinic.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(DoctorFormModel doctorModel)
+        public IActionResult Add(DoctorFormModel doctorModel)
         {
             if (!departmentService.DepartmentExists(doctorModel.DepartmentId))
             {
@@ -60,6 +54,8 @@ namespace VetClinic.Areas.Admin.Controllers
                 doctorModel.Description,
                 doctorModel.DepartmentId,
                 userId);
+
+            this.TempData[GlobalMessageKey] = $"Successfully added doctor {doctorModel.FullName}.";
 
             //return RedirectToAction("All", "Doctors", new { Area = "" });
             return RedirectToAction("Details", new { Area = "", id = doctorId });
@@ -110,6 +106,8 @@ namespace VetClinic.Areas.Admin.Controllers
                 return BadRequest();
             }
 
+            this.TempData[GlobalMessageKey] = $"Successfully added doctor {doctor.FullName}.";
+
             return RedirectToAction("Details", "Doctors", new { Area = "", id });
         }
 
@@ -121,6 +119,8 @@ namespace VetClinic.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
+
+            this.TempData[GlobalMessageKey] = "Successfully deleted a doctor.";
 
             return RedirectToAction("All", "Doctors", new { Area = "" });
         }
