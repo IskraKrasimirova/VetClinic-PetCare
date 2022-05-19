@@ -39,7 +39,7 @@ namespace VetClinic.Areas.Admin.Controllers
 
             this.TempData[GlobalMessageKey] = $"Successfully added the department {department.Name}.";
 
-            return RedirectToAction("Details", "Departments", new { Area = "", departmentId });
+            return RedirectToAction("Details", "Departments", new { Area = "", id = departmentId });
         }
 
         public IActionResult Edit(int id)

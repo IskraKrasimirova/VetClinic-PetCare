@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Doctors;
 using VetClinic.Data;
@@ -9,17 +10,13 @@ namespace VetClinic.Core.Services
 {
     public class DoctorService : IDoctorService
     {
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<User> userManager;
         private readonly VetClinicDbContext data;
-        private readonly IDepartmentService departmentService;
 
-        public DoctorService(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, VetClinicDbContext data, IDepartmentService departmentService)
+        public DoctorService(UserManager<User> userManager, VetClinicDbContext data)
         {
-            this.roleManager = roleManager;
             this.userManager = userManager;
             this.data = data;
-            this.departmentService = departmentService;
         }
         
         public AllDoctorsViewModel All(string departmentName, string searchTerm, int currentPage = 1, int doctorsPerPage = int.MaxValue)
@@ -50,7 +47,7 @@ namespace VetClinic.Core.Services
                 .Skip((currentPage - 1) * doctorsPerPage)
                 .Take(doctorsPerPage));
 
-            var doctorsDepartments = departmentService.AllDepartments();
+            var doctorsDepartments = this.AllDepartments();
 
             return new AllDoctorsViewModel
             {
@@ -126,33 +123,66 @@ namespace VetClinic.Core.Services
         public bool Delete(string id)
         {
             var doctor = this.data.Doctors
-                .Where(d => d.Id == id)
-                .FirstOrDefault();
+                .Include(d => d.Appointments)
+                .Include(d => d.Prescriptions)
+                .FirstOrDefault(d => d.Id == id);
 
             if (doctor == null)
             {
                 return false;
             }
 
+            //doctor.Prescriptions.Clear();
+            //doctor.Appointments.Clear();
+            //this.data.SaveChanges();
+
+            var prescriptions = doctor.Prescriptions.ToArray();
+            this.data.Prescriptions.RemoveRange(prescriptions);
+            this.data.SaveChanges();
+
+            var appointments = doctor.Appointments.ToArray();
+            this.data.Appointments.RemoveRange(appointments);
+            this.data.SaveChanges();
+
+            var pets = this.data.PetDoctors
+                .Where(d => d.DoctorId == id)
+                .ToArray();
+            this.data.PetDoctors.RemoveRange(pets);
+            this.data.SaveChanges();
+
+            var services = this.data.DoctorServices
+                .Where(d => d.DoctorId == id)
+                .ToArray();
+            this.data.DoctorServices.RemoveRange(services);
+            this.data.SaveChanges();
+
+            var user = this.data.Users
+                .FirstOrDefault(u => u.Id == doctor.UserId);
+
+            Task
+                .Run(async () =>
+                {
+                    await this.userManager.RemoveFromRoleAsync(user, DoctorRoleName);
+                })
+                .GetAwaiter()
+                .GetResult();
+
             this.data.Doctors.Remove(doctor);
+            this.data.SaveChanges();
+
+            this.data.Users.Remove(user);
+            this.data.SaveChanges();
+
+            var department = this.data.Departments
+                .FirstOrDefault(d => d.Id == doctor.DepartmentId);
+
+            department.Doctors.Remove(doctor);
             this.data.SaveChanges();
 
             return true;
         }
 
-        private IEnumerable<DoctorServiceModel> GetDoctors(IQueryable<Doctor> doctorQuery)
-        {
-            return doctorQuery
-                .Select(d => new DoctorServiceModel
-                {
-                    Id = d.Id,
-                    FullName = d.FullName,
-                    ProfileImage = d.ProfileImage,
-                    Department = d.Department.Name,
-                    DepartmentId = d.DepartmentId
-                })
-                .ToList();
-        }
+        
 
         public string Register(DoctorFormModel doctorModel)
         {
@@ -218,6 +248,19 @@ namespace VetClinic.Core.Services
                 .FirstOrDefault();
         }
 
+        private IEnumerable<DoctorServiceModel> GetDoctors(IQueryable<Doctor> doctorQuery)
+        {
+            return doctorQuery
+                .Select(d => new DoctorServiceModel
+                {
+                    Id = d.Id,
+                    FullName = d.FullName,
+                    ProfileImage = d.ProfileImage,
+                    Department = d.Department.Name,
+                    DepartmentId = d.DepartmentId
+                })
+                .ToList();
+        }
         private AvailableDoctorsServiceModel GetAvailableDoctors(AvailableDoctorsServiceModel query, IQueryable<Doctor> doctorsQuery)
         {
             return new AvailableDoctorsServiceModel
@@ -226,6 +269,14 @@ namespace VetClinic.Core.Services
                 Doctors = GetDoctors(doctorsQuery
                 .Where(d => d.DepartmentId == query.DepartmentId))
             };
+        }
+
+        private IEnumerable<string> AllDepartments()
+        {
+            return this.data.Departments
+                .Select(d => d.Name)
+                .Distinct()
+                .ToList();
         }
     }
 }

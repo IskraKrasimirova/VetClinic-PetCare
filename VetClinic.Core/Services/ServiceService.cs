@@ -8,12 +8,10 @@ namespace VetClinic.Core.Services
     public class ServiceService : IServiceService
     {
         private readonly VetClinicDbContext data;
-        private readonly IDepartmentService departmentService;
 
-        public ServiceService(VetClinicDbContext data, IDepartmentService departmentService)
+        public ServiceService(VetClinicDbContext data)
         {
             this.data = data;
-            this.departmentService = departmentService;
         }
 
         //public IEnumerable<ServiceViewModel> GetAllServices()
@@ -58,7 +56,7 @@ namespace VetClinic.Core.Services
                 .OrderBy(s => s.DepartmentId)
                 .ThenBy(s => s.Id));
 
-            var servicesDepartments = departmentService.AllDepartments();
+            var servicesDepartments = this.AllDepartments();
 
             return new AllServicesViewModel
             {
@@ -153,7 +151,34 @@ namespace VetClinic.Core.Services
                 return false;
             }
 
+            var appointments = this.data.Appointments
+                .Where(a => a.ServiceId == id)
+                .ToArray();
+
+            this.data.Appointments.RemoveRange(appointments);
+            this.data.SaveChanges();
+
+            var doctorServices = this.data.DoctorServices
+                .Where(s => s.ServiceId == id)
+                .ToArray();
+
+            this.data.DoctorServices.RemoveRange(doctorServices);
+            this.data.SaveChanges();
+
+            var petServices = this.data.PetServices
+                .Where(s => s.ServiceId == id)
+                .ToArray();
+
+            this.data.PetServices.RemoveRange(petServices);
+            this.data.SaveChanges();
+
             this.data.Services.Remove(service);
+            this.data.SaveChanges();
+
+            var department = this.data.Departments
+                .FirstOrDefault(d => d.Id == service.DepartmentId);
+
+            department.Services.Remove(service);
             this.data.SaveChanges();
 
             return true;
@@ -195,6 +220,14 @@ namespace VetClinic.Core.Services
                 Services = GetServices(servicesQuery
                 .Where(d => d.DepartmentId == query.DepartmentId))
             };
+        }
+
+        private IEnumerable<string> AllDepartments()
+        {
+            return this.data.Departments
+                .Select(d => d.Name)
+                .Distinct()
+                .ToList();
         }
     }
 }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Departments;
-using VetClinic.Core.Models.Doctors;
 using VetClinic.Data;
 using VetClinic.Data.Models;
 
@@ -14,10 +9,14 @@ namespace VetClinic.Core.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly VetClinicDbContext data;
+        private readonly IDoctorService doctorService;
+        private readonly IServiceService serviceService;
 
-        public DepartmentService(VetClinicDbContext data)
+        public DepartmentService(VetClinicDbContext data, IDoctorService doctorService, IServiceService serviceService)
         {
             this.data = data;
+            this.doctorService = doctorService;
+            this.serviceService = serviceService;
         }
 
         public int Create(string name, string image, string description)
@@ -110,24 +109,36 @@ namespace VetClinic.Core.Services
         public bool Delete(int id)
         {
             var department = this.data.Departments
-                .Where(d => d.Id == id)
-                .FirstOrDefault();
+                .Include(d => d.Doctors)
+                .Include(d => d.Services)
+                .FirstOrDefault(d => d.Id == id);
 
             if (department == null)
             {
                 return false;
             }
 
-            foreach (var service in department.Services)
+            //department.Doctors.Clear();
+            //department.Services.Clear();
+
+            var doctorIds = this.data.Doctors
+                .Where(d => d.DepartmentId == id)
+                .Select(d => new {d.Id})
+                .ToArray();
+
+            var serviceIds = this.data.Services
+                .Where(s => s.DepartmentId == id)
+                .Select(s => new { s.Id })
+                .ToArray();
+
+            foreach (var doctor in doctorIds)
             {
-                service.DepartmentId = 0;
-                department.Services.Remove(service);
+                this.doctorService.Delete(doctor.Id);
             }
 
-            foreach (var doctor in department.Doctors)
+            foreach (var service in serviceIds)
             {
-                doctor.DepartmentId = 0;
-                department.Doctors.Remove(doctor);
+                this.serviceService.Delete(service.Id);
             }
 
             this.data.Departments.Remove(department);

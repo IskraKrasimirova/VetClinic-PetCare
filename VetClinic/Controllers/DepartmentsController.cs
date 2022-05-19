@@ -20,6 +20,7 @@ namespace VetClinic.Controllers
             {
                 this.ModelState.AddModelError(String.Empty, "No departments are found.");
             }
+
             return View(allDepartments);
         }
 
