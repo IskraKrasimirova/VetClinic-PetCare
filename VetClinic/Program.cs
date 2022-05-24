@@ -17,7 +17,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<VetClinicDbContext>(options =>
     {
         options.UseSqlServer(connectionString);
-        //options.EnableSensitiveDataLogging();
     });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -31,6 +30,14 @@ builder.Services.AddDefaultIdentity<User>(options =>
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<VetClinicDbContext>();
+
+builder.Services.AddAuthentication()
+    .AddFacebook(options =>
+    {
+        options.AppId = builder.Configuration.GetValue<string>("Facebook:AppId");
+        options.AppSecret = builder.Configuration.GetValue<string>("Facebook:AppSecret");
+    });
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {

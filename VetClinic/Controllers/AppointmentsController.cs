@@ -56,6 +56,15 @@ namespace VetClinic.Controllers
             var clientId = clientService.GetClientId(this.User.GetId());
             var petId = query.PetId;
 
+            if (petId == null)
+            {
+                this.ModelState.AddModelError(string.Empty, "First you must add a pet!");
+                query.Services = this.appointmentService.AllServices(doctorId);
+                query.Pets = this.petService.ByClient(clientId);
+
+                return View(query);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 query.Services = this.appointmentService.AllServices(doctorId);

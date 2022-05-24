@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.CustomAttributes;
+﻿using System.ComponentModel.DataAnnotations;
 using VetClinic.Common;
-using VetClinic.Core.Models.Services;
+using VetClinic.Core.CustomAttributes;
 using VetClinic.Core.Models.Pets;
+using VetClinic.Core.Models.Services;
 
 namespace VetClinic.Core.Models.Appointments
 {
