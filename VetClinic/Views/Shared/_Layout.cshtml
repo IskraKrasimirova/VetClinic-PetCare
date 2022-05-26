@@ -81,6 +81,7 @@
         </nav>
     </header>
     <div class="container">
+        <partial name="_CookieConsentPartial" />
         @if (TempData.ContainsKey(GlobalConstants.GlobalMessageKey))
         {
             <div class="alert alert-success text-center" role="alert">

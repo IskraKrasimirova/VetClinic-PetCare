@@ -38,6 +38,12 @@ builder.Services.AddAuthentication()
         options.AppSecret = builder.Configuration.GetValue<string>("Facebook:AppSecret");
     });
 
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
@@ -76,6 +82,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseRouting();
 
