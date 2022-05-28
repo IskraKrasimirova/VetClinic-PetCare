@@ -213,8 +213,23 @@ namespace VetClinic.Controllers
             return View(pet);
         }
 
+
         [Authorize(Roles = ClientRoleName)]
         public IActionResult Delete(string id)
+        {
+            var pet = this.petService.GetPetForDelete(id);
+
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            return View(pet);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = ClientRoleName)]
+        public IActionResult DeletePet(string id)
         {
             if (!this.User.IsClient())
             {

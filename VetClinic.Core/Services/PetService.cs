@@ -164,6 +164,25 @@ namespace VetClinic.Core.Services
                 .FirstOrDefault();
         }
 
+        public PetDeleteServiceModel GetPetForDelete(string id)
+        {
+            return this.data.Pets
+                .Where(p => p.Id == id)
+                .Select(p => new PetDeleteServiceModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth.ToString(DateFormat, CultureInfo.InvariantCulture),
+                    PetTypeId = p.PetTypeId,
+                    PetType = p.PetType.Name,
+                    Breed = p.Breed,
+                    Gender = p.Gender.ToString(),
+                    Description = p.Description,
+                    ClientId = p.ClientId,
+                })
+                .FirstOrDefault();
+        }
+
         public bool Delete(string id, string clientId)
         {
             var owner = this.data.Clients.Find(clientId);

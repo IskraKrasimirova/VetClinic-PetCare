@@ -1,0 +1,32 @@
+﻿@model PetDeleteServiceModel
+
+@{
+    ViewBag.Title = "Delete Pet";
+}
+
+<h3 class="text-center mb-5">
+    <strong>Are you sure you want to delete this pet?</strong>
+</h3>
+<div class="col-md-4 offset-md-4">
+    <div class="card mt-3 mb-3" style="width: 24rem">
+        <div class="card-body text-center bgcolor-orange">
+            <h5 class="card-title text-center">@Model.Name</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bgcolor-blue">Pet Type: @Model.PetType</li>
+                <li class="list-group-item bgcolor-blue">Breed: @Model.Breed</li>
+                <li class="list-group-item bgcolor-blue">Date of Birth: @Model.DateOfBirth</li>
+                <li class="list-group-item bgcolor-blue">Gender: @Model.Gender</li>
+                <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
+            </ul>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-3 mt-3">
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-danger" asp-controller="Pets" asp-action="DeletePet" asp-route-id="@Model.Id">
+                        Delete
+                    </button>
+                </form>
+                <a class="btn btn-outline-primary" asp-controller="Pets" asp-action="Mine">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
