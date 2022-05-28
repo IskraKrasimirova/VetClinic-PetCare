@@ -175,6 +175,8 @@ namespace VetClinic.Core.Services
 
             var pet = this.data.Pets
                 .Where(p => p.Id == id && p.ClientId == clientId)
+                .Include(p => p.Appointments)
+                .Include(p => p.Prescriptions)
                 .FirstOrDefault();
 
             if (pet == null)
@@ -182,8 +184,33 @@ namespace VetClinic.Core.Services
                 return false;
             }
 
+            var prescriptions = pet.Prescriptions.ToArray();
+            this.data.Prescriptions.RemoveRange(prescriptions);
+            this.data.SaveChanges();
+
+            var appointments = pet.Appointments.ToArray();
+            this.data.Appointments.RemoveRange(appointments);
+            this.data.SaveChanges();
+
+            var doctors = this.data.PetDoctors
+                .Where(p => p.PetId == id)
+                .ToArray();
+            this.data.PetDoctors.RemoveRange(doctors);
+            this.data.SaveChanges();
+
+            var services = this.data.PetServices
+                .Where(p => p.PetId == id)
+                .ToArray();
+            this.data.PetServices.RemoveRange(services);
+            this.data.SaveChanges();
+
             owner.Pets.Remove(pet);
             this.data.Pets.Remove(pet);
+            this.data.SaveChanges();
+
+            var petType = this.data.PetTypes
+                .FirstOrDefault(pt => pt.Id == pet.PetTypeId);
+            petType.Pets.Remove(pet);
             this.data.SaveChanges();
 
             return true;

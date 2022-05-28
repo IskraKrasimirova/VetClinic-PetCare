@@ -1,4 +1,4 @@
-@import 'https://use.fontawesome.com/releases/v5.15.3/css/all.css' 
+@import 'https://use.fontawesome.com/releases/v5.15.3/css/all.css'; 
 
 html {
   font-size: 14px;
@@ -44,6 +44,7 @@ body {
     font-size: 1rem;
     line-height: inherit;
     border-color: none;
+    position:relative
 }
 
 /* Booking table styles
