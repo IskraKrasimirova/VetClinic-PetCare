@@ -14,9 +14,9 @@
                         <li class="list-group-item">Gender: @pet.Gender</li>
                     </ul>
                     <a asp-controller="Pets" asp-action="Details" asp-route-id="@pet.Id" class="btn btn-outline-primary">View</a>
-                    @if (ViewBag.AllowPetEdit == true || User.IsDoctor())
+                    <a asp-controller="Pets" asp-action="Edit" asp-route-id="@pet.Id" class="btn btn-outline-warning">Edit</a>
+                    @if (ViewBag.AllowPetEdit == true)
                     {
-                        <a asp-controller="Pets" asp-action="Edit" asp-route-id="@pet.Id" class="btn btn-outline-warning">Edit</a>
                         <a asp-controller="Pets" asp-action="Delete" asp-route-id="@pet.Id" class="btn btn-outline-danger">Delete</a>
                     }
                 </div>

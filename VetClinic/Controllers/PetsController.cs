@@ -16,12 +16,14 @@ namespace VetClinic.Controllers
         private readonly IPetService petService;
         private readonly IPetTypeService petTypeService;
         private readonly IClientService clientService;
+        private readonly IDoctorService doctorService;
 
-        public PetsController(IPetService petService, IPetTypeService petTypeService, IClientService clientService)
+        public PetsController(IPetService petService, IPetTypeService petTypeService, IClientService clientService, IDoctorService doctorService)
         {
             this.petService = petService;
             this.petTypeService = petTypeService;
             this.clientService = clientService;
+            this.doctorService = doctorService;
         }
 
         [Authorize]
@@ -217,11 +219,23 @@ namespace VetClinic.Controllers
         [Authorize(Roles = ClientRoleName)]
         public IActionResult Delete(string id)
         {
+            if (!this.User.IsClient())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var pet = this.petService.GetPetForDelete(id);
 
             if (pet == null)
             {
                 return NotFound();
+            }
+
+            var clientId = clientService.GetClientId(this.User.GetId());
+
+            if (pet.ClientId != clientId)
+            {
+                return Unauthorized();
             }
 
             return View(pet);
