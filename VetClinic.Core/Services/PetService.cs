@@ -240,6 +240,20 @@ namespace VetClinic.Core.Services
             return this.data.Pets.Any(p => p.Id == id && p.ClientId == clientId);
         }
 
+        public PetServiceModel GetPet(string id)
+        {
+            return this.data.Pets
+                .Where(p => p.Id == id)
+                .Select(p => new PetServiceModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Breed = p.Breed,
+                    PetType = p.PetType.Name
+                })
+                .FirstOrDefault();
+        }
+
         private IEnumerable<PetListingViewModel> GetPets(IQueryable<Pet> petsQuery)
         {
             return petsQuery

@@ -16,14 +16,12 @@ namespace VetClinic.Controllers
         private readonly IPetService petService;
         private readonly IPetTypeService petTypeService;
         private readonly IClientService clientService;
-        private readonly IDoctorService doctorService;
 
-        public PetsController(IPetService petService, IPetTypeService petTypeService, IClientService clientService, IDoctorService doctorService)
+        public PetsController(IPetService petService, IPetTypeService petTypeService, IClientService clientService)
         {
             this.petService = petService;
             this.petTypeService = petTypeService;
             this.clientService = clientService;
-            this.doctorService = doctorService;
         }
 
         [Authorize]

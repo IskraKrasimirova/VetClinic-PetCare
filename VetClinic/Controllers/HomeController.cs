@@ -23,7 +23,7 @@ namespace VetClinic.Controllers
                 var userId = this.User.GetId();
                 this.ViewBag.ClientFullName = this.homeService.GetClientFullName(userId);
 
-                return this.View();
+                //return this.View();
             }
 
             if (this.User.IsInRole(DoctorRoleName))

@@ -7,15 +7,37 @@
 <div class="col-md-4 offset-md-4">
     <div class="card mt-3 mb-3" style="width: 24rem">
         <div class="card-body text-center bgcolor-orange">
-            <h5 class="card-title text-center">@Model.PetName</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item bgcolor-blue">Doctor: @Model.DoctorFullName</li>
-                <li class="list-group-item bgcolor-blue">Department: @Model.DepartmentName</li>
-                <li class="list-group-item bgcolor-blue">Service: @Model.ServiceName</li>
-                <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
-                <li class="list-group-item bgcolor-blue">Date: @Model.CreatedOn</li>
-            </ul>
-            <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-petId="@Model.PetId" class="btn btn-outline-primary mb-3 mt-3">All Prescriptions</a>
+            <div id="parentDiv">
+                <h5 class="card-title text-center">Pet: @Model.PetName</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bgcolor-blue">Doctor: @Model.DoctorFullName</li>
+                    <li class="list-group-item bgcolor-blue">Department: @Model.DepartmentName</li>
+                    <li class="list-group-item bgcolor-blue">Service: @Model.ServiceName</li>
+                    <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
+                    <li class="list-group-item bgcolor-blue">Date: @Model.CreatedOn</li>
+                </ul>
+            </div>
+            <div>
+                <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-petId="@Model.PetId" class="btn btn-outline-primary mb-3 mt-3">All Prescriptions</a>
+                <a id="printPDF" class="btn btn-outline-primary mx-3">Download PDF</a>
+            </div>
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        $("#printPDF").click(function() {
+            var element = document.getElementById('parentDiv');
+            let pdfName = '@Model.PetName/@Model.CreatedOn';
+            var opt = {
+                margin: 1,
+                filename: `${pdfName}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    </script>
+}

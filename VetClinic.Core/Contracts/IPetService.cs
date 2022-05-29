@@ -42,6 +42,8 @@ namespace VetClinic.Core.Contracts
 
         bool IsByOwner(string id, string clientId);
 
+        PetServiceModel GetPet(string id);
+
         PetDeleteServiceModel GetPetForDelete(string id);
     }
 }

@@ -15,14 +15,16 @@ namespace VetClinic.Controllers
         private readonly IAppointmentService appointmentService;
         private readonly IDoctorService doctorService;
         private readonly IClientService clientService;
+        private readonly IPetService petService;
 
         public PrescriptionsController(IPrescriptionService prescriptionService, IAppointmentService appointmentService,
-            IDoctorService doctorService, IClientService clientService)
+            IDoctorService doctorService, IClientService clientService, IPetService petService)
         {
             this.prescriptionService = prescriptionService;
             this.appointmentService = appointmentService;
             this.doctorService = doctorService;
             this.clientService = clientService;
+            this.petService = petService;
         }
         public IActionResult Index()
         {
@@ -165,7 +167,7 @@ namespace VetClinic.Controllers
                     return Unauthorized();
                 }
             }
-
+            
             return View(prescription);
         }
 
@@ -200,6 +202,9 @@ namespace VetClinic.Controllers
                     return Unauthorized();
                 }
             }
+
+            var pet = this.petService.GetPet(petId);
+            ViewBag.Pet = $"{pet.Name} - {pet.PetType}";
 
             return View(petPrescriptions);
         }
