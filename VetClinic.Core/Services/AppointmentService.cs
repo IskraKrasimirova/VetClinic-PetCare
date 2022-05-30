@@ -86,11 +86,11 @@ namespace VetClinic.Core.Services
                     .AsQueryable();
 
                 var isUnavailable = doctorsQuery
-                   .Any(d => d.Id == doctorId && d.Appointments.Any(a => a.Date == appointmentDateTime));
+                   .Any(d => d.Id == doctorId && d.Appointments.Any(a => a.Date == appointmentDateTime && a.Hour == hourAsString));
 
                 if (isUnavailable)
                 {
-                    return GetAvailableHours(appointmentDateTime, hourAsString, doctorId, doctorsQuery);
+                    return GetAvailableHours(appointmentDateTime, doctorId, doctorsQuery);
                 }
             }
             else
@@ -177,7 +177,7 @@ namespace VetClinic.Core.Services
             }
 
             var upcomingAppointments = this.data.Appointments
-                .Where(a => a.ClientId == clientId && a.Date >= DateTime.UtcNow)
+                .Where(a => a.ClientId == clientId && a.Date >= DateTime.UtcNow.Date)
                 .Select(a => new UpcomingAppointmentServiceModel
                 {
                     Id = a.Id,
@@ -206,7 +206,7 @@ namespace VetClinic.Core.Services
             }
 
             var pastAppointments = this.data.Appointments
-                .Where(a => a.ClientId == clientId && a.Date < DateTime.UtcNow)
+                .Where(a => a.ClientId == clientId && a.Date < DateTime.UtcNow.Date)
                 .OrderByDescending(a => a.Date)
                 .Select(a => new PastAppointmentServiceModel
                 {
@@ -299,7 +299,7 @@ namespace VetClinic.Core.Services
             }
 
             var upcomingAppointments = this.data.Appointments
-                .Where(a => a.DoctorId == doctor.Id && a.Date >= DateTime.UtcNow)
+                .Where(a => a.DoctorId == doctor.Id && a.Date >= DateTime.UtcNow.Date)
                 .Select(a => new UpcomingAppointmentServiceModel
                 {
                     Id = a.Id,
@@ -330,7 +330,7 @@ namespace VetClinic.Core.Services
             }
 
             var pastAppointments = this.data.Appointments
-                .Where(a => a.DoctorId == doctor.Id && a.Date < DateTime.UtcNow)
+                .Where(a => a.DoctorId == doctor.Id && a.Date < DateTime.UtcNow.Date)
                 .Select(a => new PastAppointmentServiceModel
                 {
                     Id = a.Id,
@@ -361,7 +361,7 @@ namespace VetClinic.Core.Services
         public PastAppointmentServiceModel GetPastAppointment(string appointmentId)
         {
             var appointment = this.data.Appointments
-                .Where(a => a.Id == appointmentId && a.Date < DateTime.UtcNow)
+                .Where(a => a.Id == appointmentId && a.Date < DateTime.UtcNow.Date)
                 .Select(a => new PastAppointmentServiceModel
                 {
                     Date = a.Date,
@@ -379,9 +379,23 @@ namespace VetClinic.Core.Services
             return appointment;
         }
 
+        public bool CheckPetAppointmentsAtTheSameDateAndHour(
+            DateTime appointmentDateTime,
+            string appointmentHourAsString,
+            string petId,
+            string clientId)
+        {
+            return this.data.Appointments
+                .Any(a => a.ClientId == clientId &&
+                          a.PetId == petId &&
+                          a.Date.Day == appointmentDateTime.Day &&
+                          a.Date.Month == appointmentDateTime.Month &&
+                          a.Date.Year == appointmentDateTime.Year &&
+                          a.Hour == appointmentHourAsString);
+        }
+
         private static string GetAvailableHours(
              DateTime appointmentDateTime,
-             string appointmentHour,
              string doctorId,
             IQueryable<Doctor> doctorsQuery)
         {

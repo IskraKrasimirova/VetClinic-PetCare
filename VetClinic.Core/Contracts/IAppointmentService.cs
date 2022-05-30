@@ -34,5 +34,7 @@ namespace VetClinic.Core.Contracts
         IEnumerable<PastAppointmentServiceModel> GetDoctorPastAppointments(string userId);
 
         PastAppointmentServiceModel GetPastAppointment(string appointmentId);
+
+        bool CheckPetAppointmentsAtTheSameDateAndHour(DateTime appointmentDateTime, string appointmentHourAsString, string petId, string clientId);
     }
 }

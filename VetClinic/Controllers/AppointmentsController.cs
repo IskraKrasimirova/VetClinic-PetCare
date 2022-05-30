@@ -77,6 +77,26 @@ namespace VetClinic.Controllers
             var appointmentDateTime = this.appointmentService
                 .TryToParseDate(query.Date, appointmentHourAsString);
 
+            if (appointmentDateTime < DateTime.Now)
+            {
+                this.ModelState.AddModelError(string.Empty, "You are trying to make an appointment in the past. Please, select valid date and hour!");
+                query.Services = this.appointmentService.AllServices(doctorId);
+                query.Pets = this.petService.ByClient(clientId);
+
+                return View(query);
+            }
+
+            var duplicatedAppointments = this.appointmentService
+                .CheckPetAppointmentsAtTheSameDateAndHour(appointmentDateTime, appointmentHourAsString, petId, clientId);
+
+            if (duplicatedAppointments)
+            {
+                this.ModelState.AddModelError(string.Empty, "Your pet has an appointment at the same date and hour.");
+                query.Services = this.appointmentService.AllServices(doctorId);
+                query.Pets = this.petService.ByClient(clientId);
+                return View(query);
+            }
+
             var availableHours = this.appointmentService
                     .CheckDoctorAvailableHours(appointmentDateTime, appointmentHourAsString, doctorId);
 
