@@ -5,6 +5,15 @@
     {
       "library": "html2pdf.js@0.9.0",
       "destination": "wwwroot/lib/html2pdf.js/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/",
+      "files": [
+        "js/jquery.dataTables.min.js",
+        "css/jquery.dataTables.min.css"
+      ]
     }
   ]
 }

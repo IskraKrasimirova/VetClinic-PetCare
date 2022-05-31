@@ -18,8 +18,8 @@
 @if (Model.Any())
 {
     <h2 class="text-center mb-3">@ViewBag.Title</h2>
-    <table class="table table-bordered table-hover text-center" style="background-color:#80c1ff">
-        <thead class="thead-light">
+    <table id="DataTable" class="table table-bordered table-hover text-center">
+        <thead class="table-light align-middle">
             <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Department</th>
@@ -32,7 +32,7 @@
         <tbody>
             @foreach (var prescription in Model)
             {
-                <tr>
+                <tr class="tbl" style="background-color:#80c1ff">
                     <th scope="row">@prescription.CreatedOn</th>
                     <td>@prescription.DepartmentName</td>
                     <td>@prescription.ServiceName</td>
@@ -46,4 +46,12 @@
         </tbody>
     </table>
 
+    @section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+            $('#DataTable').DataTable();
+        });
+    </script>
+    }
 }
