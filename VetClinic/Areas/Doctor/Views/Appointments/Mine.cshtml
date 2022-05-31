@@ -14,8 +14,8 @@
 @if (Model.UpcomingAppointments.Any())
 {
     <h2 class="text-center mb-3">Upcoming Appointments(@Model.UpcomingAppointments.Count())</h2>
-    <table class="table table-bordered table-striped text-center">
-        <thead class="thead-light">
+    <table id="UpcomingTable" class="table table-bordered table-striped text-center">
+        <thead class="table-light align-middle">
             <tr>
                 <th scope="col">Date and Hour</th>
                 <th scope="col">Service</th>
@@ -52,8 +52,8 @@
 @if (Model.PastAppointments.Any())
 {
     <h2 class="text-center mb-3">Past Appointments(@Model.PastAppointments.Count())</h2>
-    <table class="table table-bordered table-striped text-center">
-        <thead class="thead-light">
+    <table id="PastTable" class="table table-bordered table-striped text-center">
+        <thead class="table-light align-middle">
             <tr>
                 <th scope="col">Date and Hour</th>
                 <th scope="col">Service</th>
@@ -91,3 +91,13 @@
         </tbody>
     </table>
 }
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+            $('#UpcomingTable').DataTable();
+            $('#PastTable').DataTable();
+        });
+    </script>
+    }

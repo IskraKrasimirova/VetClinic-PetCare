@@ -17,7 +17,7 @@
 @if (Model.UpcomingAppointments.Any())
 {
     <h2 class="text-center mb-3">Upcoming Appointments</h2>
-    <table class="table table-bordered table-striped text-center" style="background-color:#80c1ff">
+    <table id="UpcomingTable" class="table table-bordered table-striped text-center" style="background-color:aliceblue">
         <thead class="thead-light">
             <tr>
                 <th scope="col">Date and Hour</th>
@@ -32,7 +32,7 @@
         <tbody>
             @foreach (var appointment in Model.UpcomingAppointments)
             {
-                <tr>
+                <tr style="background-color:#80c1ff">
                     <th scope="row">@appointment.Date.ToString(DateFormat) @appointment.Hour</th>
                     <td>@appointment.PetName</td>
                     <td>@appointment.DepartmentName</td>
@@ -55,8 +55,8 @@
 @if (Model.PastAppointments.Any())
 {
     <h2 class="text-center mb-3">Past Appointments</h2>
-    <table class="table table-bordered table-striped text-center" style="background-color:aliceblue">
-        <thead class="thead-light">
+    <table id="PastTable" class="table table-bordered table-striped text-center">
+        <thead class="table-light">
             <tr>
                 <th scope="col">Date and Hour</th>
                 <th scope="col">Pet</th>
@@ -90,3 +90,13 @@
         </tbody>
     </table>
 }
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+            $('#UpcomingTable').DataTable();
+            $('#PastTable').DataTable();
+        });
+    </script>
+    }
