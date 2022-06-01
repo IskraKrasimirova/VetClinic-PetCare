@@ -28,6 +28,10 @@ body {
     background-color: #cce6ff;
 }
 
+.bgcolor-darkblue {
+    background-color: #234465;
+}
+
 .bgcolor-orange {
     background-color: #ffffb3;
 }
@@ -40,10 +44,13 @@ body {
     margin-top: 5rem;
 }
 
-.button.accept-policy {
+
+button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
 }
+
+
 
 /* Booking table styles
 -------------------------------------------------- */

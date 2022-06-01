@@ -20,8 +20,8 @@
 </head>
 <body class="bgcolor-blue">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="background-color:#80d7ff">
-            <div class="container-fluid" style="background-color:#ffffb3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bgcolor-darkblue border-bottom box-shadow mb-3" style="text-white bgcolor-darkblue/*background-color:#80d7ff*/">
+            <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vet Clinic</a>
                 <!-- Logo -->
                 <div class="col-xl-2 col-lg-2 col-md-1">
@@ -41,39 +41,39 @@
                             @if (User.IsClient())
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Pets" asp-action="Add">Add Pet</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Pets" asp-action="Add">Add Pet</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Pets" asp-action="Mine">My Pets</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Pets" asp-action="Mine">My Pets</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Mine">My Appointments</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Appointments" asp-action="Mine">My Appointments</a>
                                 </li>
                             }
                             @if (User.IsDoctor())
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Pets" asp-action="All">All Pets</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Pets" asp-action="All">All Pets</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Doctor" asp-controller="Appointments" asp-action="Mine">Work Schedule</a>
+                                    <a class="nav-link text-white" asp-area="Doctor" asp-controller="Appointments" asp-action="Mine">Work Schedule</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Prescriptions" asp-action="All">Prescriptions</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Prescriptions" asp-action="All">Prescriptions</a>
                                 </li>
                             }
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="All">Departments</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Departments" asp-action="All">Departments</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="All">Services</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Services" asp-action="All">Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctors" asp-action="All">Team</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Doctors" asp-action="All">Team</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -82,7 +82,7 @@
         </nav>
     </header>
     <div class="container">
-        <partial name="_CookieConsentPartial"/>
+        <partial name="_CookieConsentPartial" />
         @if (TempData.ContainsKey(GlobalConstants.GlobalMessageKey))
         {
             <div class="alert alert-success text-center" role="alert">
@@ -94,9 +94,16 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bgcolor-orange fixed-bottom">
-        <div class="container">
-            &copy; @DateTime.UtcNow.Year - Vet Clinic - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-white bgcolor-darkblue fixed-bottom">
+        <div class="container m-md-2">
+            &copy; @DateTime.UtcNow.Year - Vet Clinic PetCare - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="float-end">
+                <span class="fas fa-map-marker-alt fa-lg mx-2"></span> 1330 Sofia bul Vardar 
+                <span class="fas fa-phone fa-lg mx-2"></span> +359 888 952086 
+                <span class="fas fa-envelope fa-lg mx-2"></span> vetclinic@petcare.com
+                <a href="https://github.com/IskraKrasimirova/VetClinic-PetCare" class="float-end mx-5">GitHub</a>
+                @*<i class="fas fa-envelope fa-lg"></i> vetclinic@petcare.com*@
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
