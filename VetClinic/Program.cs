@@ -10,6 +10,7 @@ using VetClinic.Core.Services;
 using PetService = VetClinic.Core.Services.PetService;
 using DoctorService = VetClinic.Core.Services.DoctorService;
 using static VetClinic.Common.GlobalConstants;
+using VetClinic.Core.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +49,7 @@ builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
         options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider(FormattingConstants.DateFormat));
-        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); 
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
     });
 
 builder.Services.AddTransient<IHomeService, HomeService>();
@@ -60,6 +61,7 @@ builder.Services.AddTransient<IDoctorService, DoctorService>();
 builder.Services.AddTransient<IServiceService, ServiceService>();
 builder.Services.AddTransient<IAppointmentService, AppointmentService>();
 builder.Services.AddTransient<IPrescriptionService, PrescriptionService>();
+builder.Services.AddTransient<IEmailSender>(x => new SendGridEmailSender(builder.Configuration["SendGrid:ApiKey"]));
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

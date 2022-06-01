@@ -14,6 +14,8 @@
 
         public string ClientFullName { get; set; }
 
+        public string ClientEmail { get; set; }
+
         public string ServiceName { get; set; }
     }
 }

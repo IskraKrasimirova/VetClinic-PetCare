@@ -264,6 +264,9 @@ namespace VetClinic.Core.Services
                 Hour = appointment.Hour,
                 PetName = pet.Name,
                 ClientFullName = client.FullName,
+                ClientEmail = this.data.Users
+                              .FirstOrDefault(u => u.Id == client.UserId)
+                              .Email,
                 DoctorFullName = doctor.FullName,
                 ServiceName = service.Name,
             };

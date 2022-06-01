@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SendGrid" Version="9.28.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VetClinic.Common\VetClinic.Common.csproj" />
     <ProjectReference Include="..\VetClinic.Data\VetClinic.Data.csproj" />
   </ItemGroup>
