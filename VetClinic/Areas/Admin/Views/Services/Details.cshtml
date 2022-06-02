@@ -4,19 +4,19 @@
     ViewBag.Title = "Details";
 }
 
-<div class="col-lg-8 col-md-12 offset-lg-2 ">
-    <div class="card mb-5" style="width: 36rem">
+<div class="col-lg-6 col-md-8 offset-lg-3 ">
+    <div class="card mb-5" style="width: 32rem">
         <div class="card-body text-center">
-            <h3 class="card-title text-center mb-5">@Model.Name</h3>
+            <h3 class="card-title text-center mb-5">Service: @Model.Name</h3>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item mb-5">@Model.Description</li>
+                <li class="list-group-item mb-5">Description: @Model.Description</li>
                 <li class="list-group-item mb-5">Price: @Model.Price BGN</li>
                 <li class="list-group-item mb-5">Department: @Model.Department</li>
             </ul>
             <div class="footer text-center mb-3">
                 <a asp-area="Admin" asp-controller="Services" asp-action="Edit" asp-route-Id="@Model.Id" class="btn btn-outline-warning">Edit</a>
                 <a asp-area="Admin" asp-controller="Services" asp-action="Delete" asp-route-Id="@Model.Id" class="btn btn-outline-danger">Delete</a>
-                <a asp-area="" asp-controller="Services" asp-action="All" asp-route-departmentId="@Model.DepartmentId" class="btn btn-outline-primary">Services</a>
+                <a asp-area="" asp-controller="Services" asp-action="All" asp-route-departmentId="@Model.DepartmentId" class="btn btn-outline-primary">All Services</a>
             </div>
         </div>
     </div>

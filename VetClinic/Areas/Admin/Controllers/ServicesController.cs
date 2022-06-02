@@ -116,6 +116,19 @@ namespace VetClinic.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
+            var serviceModel = this.service.Details(id);
+
+            if (serviceModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(serviceModel);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteService(int id)
+        {
             var isDeleted = service.Delete(id);
 
             if (!isDeleted)

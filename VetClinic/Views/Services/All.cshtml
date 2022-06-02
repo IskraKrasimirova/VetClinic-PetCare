@@ -42,19 +42,19 @@
             <table class="table table-secondary table-hover">
                 <thead>
                     <tr>
-                        <th style="background-color: #b3cde5">No</th>
-                        <th style="background-color: #b3cde5">Department</th>
-                        <th style="background-color: #b3cde5">Service</th>
-                        <th style="background-color: #b3cde5">Description</th>
-                        <th style="background-color: #b3cde5">Price</th>
-                        <th style="background-color: #b3cde5"></th>
+                        <th style="background-color: #a3c0dc">No</th>
+                        <th style="background-color: #a3c0dc">Department</th>
+                        <th style="background-color: #a3c0dc">Service</th>
+                        <th style="background-color: #a3c0dc">Description</th>
+                        <th style="background-color: #a3c0dc">Price</th>
+                        <th style="background-color: #a3c0dc"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var service in Model.Services)
                     {
-                        <tr style="background-color: #b3cde5">
-                            <td style="background-color: #b3cde5">@service.Id</td>
+                        <tr style="background-color: #a3c0dc">
+                            <td style="background-color: #a3c0dc">@service.Id</td>
                             <td style="background-color: #ffffb3">@service.Department</td>
                             <td style="background-color: #ffffb3">@service.Name</td>
                             <td style="background-color: #ffffb3">@service.Description</td>
