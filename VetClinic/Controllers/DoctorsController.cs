@@ -48,7 +48,7 @@ namespace VetClinic.Controllers
             return View(query);
         }
 
-        public IActionResult Details(string id, string information)
+        public IActionResult Details(string id)
         {
             var doctor = this.doctorService.Details(id);
 

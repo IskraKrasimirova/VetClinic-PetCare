@@ -106,12 +106,25 @@ namespace VetClinic.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            this.TempData[GlobalMessageKey] = $"Successfully added doctor {doctor.FullName}.";
+            this.TempData[GlobalMessageKey] = $"Successfully edited doctor {doctor.FullName}.";
 
             return RedirectToAction("Details", "Doctors", new { Area = "", id });
         }
 
         public IActionResult Delete(string id)
+        {
+            var doctor = this.doctorService.Details(id);
+
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+
+            return View(doctor);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteDoctor(string id)
         {
             var isDeleted = doctorService.Delete(id);
 

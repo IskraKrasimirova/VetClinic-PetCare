@@ -4,7 +4,6 @@
     ViewBag.Title = "Details";
 }
 
-
 <div class="col-lg-8 col-md-12 offset-lg-2 ">
     <div class="card mb-5" style="width: 36rem">
         <div class="card-body text-center">
@@ -29,6 +28,7 @@
                 {
                     <a asp-area="Admin" asp-controller="Doctors" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Edit</a>
                     <a asp-area="Admin" asp-controller="Doctors" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+                    <a asp-area="" asp-controller="Doctors" asp-action="All" class="btn btn-outline-primary">All Doctors</a>
                 }
             </div>
         </div>
