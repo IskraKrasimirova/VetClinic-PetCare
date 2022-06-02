@@ -80,6 +80,18 @@ namespace VetClinic.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
+            var department = this.departmentService.Details(id);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
+
+        public IActionResult DeleteDepartment(int id)
+        {
             var isDeleted = departmentService.Delete(id);
 
             if (!isDeleted)

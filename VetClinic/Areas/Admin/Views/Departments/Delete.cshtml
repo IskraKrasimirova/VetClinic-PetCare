@@ -1,0 +1,28 @@
+﻿@model DepartmentDetailsServiceModel
+
+@{
+    ViewBag.Title = "Delete Department";
+}
+
+<h3 class="text-center mb-5">
+    <strong>Are you sure you want to delete this department?</strong>
+</h3>
+<div class="col-lg-8 col-md-12 offset-lg-3 ">
+    <div class="card mb-5" style="width: 36rem">
+        <div class="card-body text-center">
+            <h3 class="card-title text-center mb-5">@Model.Name</h3>
+            <img class="d-block img-fluid mx-auto mb-5" src="@Model.Image" alt="@Model.Name Image">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item mb-5">@Model.Description</li>
+            </ul>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-3 mt-3">
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-danger" asp-controller="Departments" asp-action="DeleteDepartment" asp-route-id="@Model.Id">
+                        Delete
+                    </button>
+                </form>
+                <a class="btn btn-outline-primary" asp-area="" asp-controller="Departments" asp-action="All">Back</a>
+            </div>
+        </div>
+    </div>
+</div>

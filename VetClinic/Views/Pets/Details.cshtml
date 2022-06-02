@@ -9,13 +9,13 @@
         <div class="card-body text-center bgcolor-orange">
             <h5 class="card-title text-center">@Model.Name</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item bgcolor-blue">Pet Type: @Model.PetType</li>
-                <li class="list-group-item bgcolor-blue">Breed: @Model.Breed</li>
-                <li class="list-group-item bgcolor-blue">Date of Birth: @Model.DateOfBirth</li>
-                <li class="list-group-item bgcolor-blue">Gender: @Model.Gender</li>
-                <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
-                <li class="list-group-item bgcolor-blue">Owner: @Model.ClientName</li>
-                <li class="list-group-item bgcolor-blue"><span class="fas fa-phone fa-lg text-dark"></span> @Model.ClientPhoneNumber</li>
+                <li class="list-group-item" style="background-color:#a3bddc">Pet Type: @Model.PetType</li>
+                <li class="list-group-item" style="background-color:#a3bddc">Breed: @Model.Breed</li>
+                <li class="list-group-item" style="background-color:#a3bddc">Date of Birth: @Model.DateOfBirth</li>
+                <li class="list-group-item" style="background-color:#a3bddc">Gender: @Model.Gender</li>
+                <li class="list-group-item" style="background-color:#a3bddc">Description: @Model.Description</li>
+                <li class="list-group-item" style="background-color:#a3bddc">Owner: @Model.ClientName</li>
+                <li class="list-group-item" style="background-color:#a3bddc"><span class="fas fa-phone fa-lg text-dark"></span> @Model.ClientPhoneNumber</li>
 
             </ul>
             <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-petId="@Model.Id" class="btn btn-outline-primary mb-3 mt-3">Prescriptions</a>
