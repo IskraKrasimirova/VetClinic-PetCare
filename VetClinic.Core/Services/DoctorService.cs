@@ -182,7 +182,6 @@ namespace VetClinic.Core.Services
             return true;
         }
 
-        
 
         public string Register(DoctorFormModel doctorModel)
         {

@@ -25,7 +25,6 @@ body {
 }
 
 .bgcolor-blue {
-    /*background-color: #cce6ff;*/
     background-color: #dae6f1;
 }
 
@@ -35,6 +34,10 @@ body {
 
 .bgcolor-orange {
     background-color: #ffffb3;
+}
+
+.color-blue {
+    background-color: #a3bfdc;
 }
 
 .bg-image {
