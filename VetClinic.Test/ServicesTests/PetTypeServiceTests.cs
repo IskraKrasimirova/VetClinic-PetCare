@@ -11,6 +11,7 @@ using VetClinic.Core.Services;
 using VetClinic.Data;
 using VetClinic.Data.Models;
 using VetClinic.Test.Mocks;
+using FluentAssertions;
 
 namespace VetClinic.Test.ServicesTests
 {
@@ -103,8 +104,16 @@ namespace VetClinic.Test.ServicesTests
         public void GetPetTypesShouldReturnAll()
         {
             var result = service.GetPetTypes();
-            Assert.That(result.Count(), Is.EqualTo(2));
-            Assert.That(result.GetType(), Is.EqualTo(typeof(List<PetTypeServiceModel>)));
+            //Assert.That(result.Count(), Is.EqualTo(2));
+            //Assert.That(result.GetType(), Is.EqualTo(typeof(List<PetTypeServiceModel>)));
+
+            var expectedCount = dbContext.PetTypes.Count();
+
+            result
+                .Should()
+                .HaveCount(expectedCount)
+                .And
+                .AllBeOfType<PetTypeServiceModel>();
         }
     }
 }
