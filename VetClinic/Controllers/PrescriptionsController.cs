@@ -158,16 +158,7 @@ namespace VetClinic.Controllers
                     return Unauthorized();
                 }
             }
-            //else //User is doctor
-            //{
-            //    var doctor = doctorService.GetDoctor(userId);
 
-            //    if (prescription.DoctorId != doctor.Id)
-            //    {
-            //        return Unauthorized();
-            //    }
-            //}
-            
             return View(prescription);
         }
 
