@@ -39,7 +39,7 @@ namespace VetClinic.Data.Models
         public Gender Gender { get; set; }
 
         [MaxLength(DescriptionMaxLength)]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [Required]
         [ForeignKey(nameof(Client))]
