@@ -2,25 +2,19 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
-using VetClinic.Core.Services;
 using VetClinic.Data;
 using VetClinic.Data.Models;
-using VetClinic.Test.Mocks;
 using PetService = VetClinic.Core.Services.PetService;
-using static VetClinic.Common.GlobalConstants.FormattingConstants;
 
 namespace VetClinic.Test.ServicesTests
 {
     public class PetServiceTests
     {
         private ServiceProvider serviceProvider;
-        private InMemoryDbContext dbContext;
+        private InMemoryDbContext dbContext; 
 
         [SetUp]
         public void Setup()
@@ -34,6 +28,49 @@ namespace VetClinic.Test.ServicesTests
                 .BuildServiceProvider();
 
             var data = serviceProvider.GetRequiredService<VetClinicDbContext>();
+            //var userManagerMock = UserManagerMock.Instance;
+
+            var department = new Department
+            {
+                Id = 1,
+                Name = "TestDepartment",
+                Services = new List<Service>
+                {
+                    new Service
+                    {
+                        Id = 1,
+                        Name = "TestService"
+                    }
+                }
+            };
+
+            data.Departments.Add(department);
+
+            var userDoctor = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = "testDoctor@vetclinic.com",
+                UserName = "testDoctor@vetclinic.com",
+                FullName = "TestDoctorFullName"
+            };
+
+            //userManagerMock.CreateAsync(userDoctor, "testPassword");
+            //userManagerMock.AddToRoleAsync(userDoctor, "Doctor");
+            data.Users.Add(userDoctor);
+
+            var doctor = new Doctor
+            {
+                Id = "testDoctorId",
+                UserId = userDoctor.Id,
+                Email = "testDoctor@vetclinic.com",
+                FullName = "TestDoctorFullName",
+                PhoneNumber = "0111222333",
+                ProfileImage = "https://res.cloudinary.com/dqnorpdaj/image/upload/v1648707675/VetClinic/testDoctor.png",
+                DepartmentId = 1
+            };
+
+            data.Doctors.Add(doctor);
+            department.Doctors.Add(doctor);
 
             var user = new User
             {
@@ -41,14 +78,14 @@ namespace VetClinic.Test.ServicesTests
                 Email = "test@test.com",
                 UserName = "test@test.com",
                 PhoneNumber = "0888777111",
-                FullName ="TestName"
+                FullName = "TestName"
             };
 
             data.Users.Add(user);
 
             var client = new Client
             {
-                Id = "testClientId", 
+                Id = "testClientId",
                 UserId = user.Id,
                 FullName = user.FullName
             };
@@ -89,7 +126,7 @@ namespace VetClinic.Test.ServicesTests
                     Breed = "Persian",
                     DateOfBirth = DateTime.Now.Date.AddDays(-2),
                     Gender = Data.Enums.Gender.Male,
-                    ClientId = client.Id
+                    ClientId = client.Id,
                 }
             };
 
@@ -97,6 +134,21 @@ namespace VetClinic.Test.ServicesTests
             {
                 client.Pets.Add(pet);
             }
+
+            var testPet2 = pets.FirstOrDefault(p => p.Id == "NewTestPet2");
+
+            var petDoctor = new PetDoctor
+            {
+                PetId = "NewTestPet2",
+                DoctorId = "testDoctorId"
+            };
+
+            testPet2.PetDoctors.Add(petDoctor);
+            doctor.PetDoctors.Add(petDoctor);
+
+            data.PetTypes.AddRange(petTypes);
+            data.Pets.AddRange(pets);
+            data.PetDoctors.Add(petDoctor);
 
             var user2 = new User
             {
@@ -118,8 +170,35 @@ namespace VetClinic.Test.ServicesTests
 
             data.Clients.Add(client2);
 
-            data.PetTypes.AddRange(petTypes);
-            data.Pets.AddRange(pets);
+            var appointment = new Appointment
+            {
+                Id = "NewTestAppointmentId",
+                Date = DateTime.Now.Date.AddDays(-5),
+                Hour = "10:00",
+                Doctor = doctor,
+                Client = client,
+                Pet = testPet2,
+                ServiceId = 1,
+            };
+
+            var prescription = new Prescription
+            {
+                Id = "NewTestPrescription",
+                AppointmentId = appointment.Id,
+                CreatedOn = DateTime.Now,
+                Description = "description",
+                Doctor = doctor,
+                Pet = testPet2
+            };
+
+            data.Appointments.Add(appointment);
+            data.Prescriptions.Add(prescription);
+
+            doctor.Appointments.Add(appointment);
+            doctor.Prescriptions.Add(prescription);
+            testPet2.Appointments.Add(appointment);
+            testPet2.Prescriptions.Add(prescription);
+
             data.SaveChanges();
         }
 
@@ -215,7 +294,7 @@ namespace VetClinic.Test.ServicesTests
         public void EditShouldReturnTrueWhenPetDataAreCorrect()
         {
             var service = serviceProvider.GetService<IPetService>();
-            var result = service.Edit("NewTestPet1","Pet1", DateTime.UtcNow.AddYears(-2), "basset", "Male", null, 1);
+            var result = service.Edit("NewTestPet1", "Pet1", DateTime.UtcNow.AddYears(-2), "basset", "Male", null, 1);
             Assert.That(result, Is.True);
         }
 
@@ -256,6 +335,58 @@ namespace VetClinic.Test.ServicesTests
         {
             var service = serviceProvider.GetService<IPetService>();
             var result = service.GetPetForDelete("NotExistingPetId");
+            Assert.IsTrue(result == null);
+        }
+
+        [Test]
+        public void DeleteShouldReturnTrueWhenPetAndOwnerExist()
+        {
+            var service = serviceProvider.GetService<IPetService>();
+            var result = service.Delete("NewTestPet2", "testClientId");
+            Assert.That(result, Is.True);
+        }
+
+        [TestCase("NewTestPet2", "testClient2Id")]
+        [TestCase("NewTestPet2", "NotExistingClientId")]
+        [TestCase("NotExistingPetId", "testClientId")]
+        public void DeleteShouldReturnFalseWhenPetOrOwnerNotExist(string petId, string clientId)
+        {
+            var service = serviceProvider.GetService<IPetService>();
+            var result = service.Delete(petId, clientId);
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsByOwnerShouldReturnTrueWhenPetAndOwnerExist()
+        {
+            var service = serviceProvider.GetService<IPetService>();
+            var result = service.IsByOwner("NewTestPet2", "testClientId");
+            Assert.That(result, Is.True);
+        }
+
+        [TestCase("NewTestPet2", "testClient2Id")]
+        [TestCase("NewTestPet2", "NotExistingClientId")]
+        [TestCase("NotExistingPetId", "testClientId")]
+        public void IsByOwnerShouldReturnFalseWhenPetOrOwnerNotExist(string petId, string clientId)
+        {
+            var service = serviceProvider.GetService<IPetService>();
+            var result = service.IsByOwner(petId, clientId);
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void GetPetShouldReturnCorrectPetModel()
+        {
+            var service = serviceProvider.GetService<IPetService>();
+            var result = service.GetPet("NewTestPet1");
+            Assert.That(result.GetType, Is.EqualTo(typeof(PetServiceModel)));
+        }
+
+        [Test]
+        public void GetPetShouldReturnNullWhenPetNotExist()
+        {
+            var service = serviceProvider.GetService<IPetService>();
+            var result = service.GetPet("NotExistingPetId");
             Assert.IsTrue(result == null);
         }
     }

@@ -17,17 +17,20 @@ namespace VetClinic.Data.Seeding
             Task
                 .Run(async () =>
                 {
-                    if (!data.Users.Any
-                        (u => u.UserName == UsersSeedData.Admin.Username))
+                    if (!data.Users.Any(u => u.UserName == UsersSeedData.Admin.Username))
+                    {
                         await SeedAdmin(userManager);
+                    }
 
-                    if (!data.Users.Any
-                        (u => u.UserName == UsersSeedData.Client.Username))
+                    if (!data.Users.Any(u => u.UserName == UsersSeedData.Client.Username))
+                    {
                         await SeedClient(data, userManager);
+                    }
 
-                    if (!data.Users.Any
-                        (u => u.UserName == UsersSeedData.Doctor.Username))
+                    if (!data.Users.Any(u => u.UserName == UsersSeedData.Doctor.Username))
+                    {
                         await SeedDoctor(data, userManager);
+                    }
 
                     await data.SaveChangesAsync();
                 })
