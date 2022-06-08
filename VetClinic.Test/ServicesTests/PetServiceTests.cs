@@ -124,7 +124,7 @@ namespace VetClinic.Test.ServicesTests
                     Name = "Pet2",
                     PetTypeId = 2,
                     Breed = "Persian",
-                    DateOfBirth = DateTime.Now.Date.AddDays(-2),
+                    DateOfBirth = DateTime.Now.Date.AddMonths(-3),
                     Gender = Data.Enums.Gender.Male,
                     ClientId = client.Id,
                 }
@@ -178,7 +178,7 @@ namespace VetClinic.Test.ServicesTests
                 Doctor = doctor,
                 Client = client,
                 Pet = testPet2,
-                ServiceId = 1,
+                ServiceId = 1
             };
 
             var prescription = new Prescription

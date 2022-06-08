@@ -334,6 +334,82 @@ namespace VetClinic.Test.ServicesTests
             dbContext.Doctors.Add(doctor);
             department.Doctors.Add(doctor);
 
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+                Pets = new List<Pet>
+                {
+                    new Pet
+                    {
+                        Id = "NewTestPet1",
+                        Name = "Pet1",
+                        PetType = new PetType
+                        {
+                            Id = 1,
+                            Name = "Dog"
+                        },
+                        Breed = "street",
+                        DateOfBirth = DateTime.Now.Date.AddYears(-2),
+                        Gender = Data.Enums.Gender.Male
+                    },
+                    new Pet
+                    {
+                        Id = "NewTestPet2",
+                        Name = "Pet2",
+                        PetType = new PetType
+                        {
+                            Id = 2,
+                            Name = "Cat"
+                        },
+                        Breed = "Persian",
+                        DateOfBirth = DateTime.Now.Date.AddMonths(-3),
+                        Gender = Data.Enums.Gender.Female,
+                    }
+                },
+            };
+
+            dbContext.Clients.Add(client);
+
+            var appointment = new Appointment
+            {
+                Id = "NewTestAppointmentId",
+                Date = DateTime.Now.Date.AddDays(-5),
+                Hour = "10:00",
+                Doctor = doctor,
+                Client = client,
+                PetId = "NewTestPet2",
+                ServiceId = 1
+            };
+
+            var prescription = new Prescription
+            {
+                Id = "NewTestPrescription",
+                AppointmentId = "NewTestAppointmentId",
+                CreatedOn = DateTime.Now,
+                Description = "description",
+                Doctor = doctor,
+                PetId = "NewTestPet2"
+            };
+
+            dbContext.Appointments.Add(appointment);
+            dbContext.Prescriptions.Add(prescription);
+
+            doctor.Appointments.Add(appointment);
+            doctor.Prescriptions.Add(prescription);
+
             dbContext.SaveChanges();
         }
     }
