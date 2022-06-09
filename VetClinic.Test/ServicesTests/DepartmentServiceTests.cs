@@ -236,7 +236,9 @@ namespace VetClinic.Test.ServicesTests
         {
             GetDbContextWithDepartmentsAndDoctors();
             var result = service.Delete(1);
+            var actualDepartmentsCount = dbContext.Departments.Count();
             Assert.That(result, Is.True);
+            Assert.That(actualDepartmentsCount, Is.EqualTo(0));
         }
 
         private void GetDbContextWithDepartments()
