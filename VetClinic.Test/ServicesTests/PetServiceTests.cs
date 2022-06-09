@@ -28,7 +28,6 @@ namespace VetClinic.Test.ServicesTests
                 .BuildServiceProvider();
 
             var data = serviceProvider.GetRequiredService<VetClinicDbContext>();
-            //var userManagerMock = UserManagerMock.Instance;
 
             var department = new Department
             {
@@ -54,8 +53,6 @@ namespace VetClinic.Test.ServicesTests
                 FullName = "TestDoctorFullName"
             };
 
-            //userManagerMock.CreateAsync(userDoctor, "testPassword");
-            //userManagerMock.AddToRoleAsync(userDoctor, "Doctor");
             data.Users.Add(userDoctor);
 
             var doctor = new Doctor

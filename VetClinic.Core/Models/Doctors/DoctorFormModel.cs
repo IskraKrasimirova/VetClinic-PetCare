@@ -30,6 +30,6 @@ namespace VetClinic.Core.Models.Doctors
 
         [Display(Name = "Department")]
         public int DepartmentId { get; set; }
-        public IEnumerable<DepartmentListingViewModel>? Departments { get; set; }
+        public IEnumerable<DepartmentListingViewModel> Departments { get; set; }
     }
 }
