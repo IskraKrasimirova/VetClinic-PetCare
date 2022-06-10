@@ -428,7 +428,7 @@ namespace VetClinic.Core.Services
 
             var availabeHoursMessage = string.Empty;
 
-            if (defaultHourSchedule == null)
+            if (defaultHourSchedule.Count == 0)
             {
                 availabeHoursMessage = "There are no available hours for that day.";
             }
