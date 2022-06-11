@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VetClinic.Core.Models.Appointments;
 using VetClinic.Core.Models.Services;
 using VetClinic.Core.Services;
