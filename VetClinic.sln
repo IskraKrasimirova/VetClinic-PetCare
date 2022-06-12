@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetClinic.Data", "VetClinic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetClinic.Common", "VetClinic.Common\VetClinic.Common.csproj", "{56FE1DE7-D137-4376-BDBE-D941D54A391C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetClinic.Test", "VetClinic.Test\VetClinic.Test.csproj", "{3881F50B-AE74-40F9-80F8-DC5204779DA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetClinic.Test", "VetClinic.Test\VetClinic.Test.csproj", "{3881F50B-AE74-40F9-80F8-DC5204779DA3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A01DF026-612F-4DB3-8A93-6C486EE16504} = {A01DF026-612F-4DB3-8A93-6C486EE16504}
+		{EE8D9B3B-E42D-45A1-9F77-3FA6F41CCFFB} = {EE8D9B3B-E42D-45A1-9F77-3FA6F41CCFFB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
