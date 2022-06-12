@@ -6,11 +6,6 @@ namespace VetClinic.Controllers
 {
     public class DoctorsController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         private readonly IDoctorService doctorService;
         private readonly IDepartmentService departmentService;
 

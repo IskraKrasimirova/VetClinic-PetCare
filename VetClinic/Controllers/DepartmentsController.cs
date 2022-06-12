@@ -16,7 +16,7 @@ namespace VetClinic.Controllers
         {
             var allDepartments = this.departmentService.GetAllDepartments();
 
-            if (!allDepartments.Any())
+            if (allDepartments == null)
             {
                 this.ModelState.AddModelError(String.Empty, "No departments are found.");
             }
