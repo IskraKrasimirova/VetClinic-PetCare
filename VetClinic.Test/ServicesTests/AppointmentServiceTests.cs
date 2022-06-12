@@ -119,7 +119,7 @@ namespace VetClinic.Test.ServicesTests
             DateTime.TryParseExact(dateAsString, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime appointmentDate);
             service.AddNewAppointment("testClientId", "testDoctorId", 1, "NewTestPet1", appointmentDate, "09:00");
             var appointmentsCount = dbContext.Appointments.Count();
-            Assert.That(appointmentsCount == 13);
+            Assert.That(appointmentsCount, Is.EqualTo(18));
         }
 
         [Test]
@@ -144,8 +144,11 @@ namespace VetClinic.Test.ServicesTests
         {
             GetDbContextWithAllEntities();
             var result = service.GetUpcomingAppointments("testClientId");
+            var expectedUpcomingAppointmentsCount = dbContext.Appointments
+                .Where(a => a.ClientId == "testClientId" && a.Date >= DateTime.Now.Date && a.ServiceId !=0)
+                .Count();
             Assert.That(result.GetType, Is.EqualTo(typeof(List<UpcomingAppointmentServiceModel>)));
-            Assert.That(result.Count, Is.EqualTo(11));
+            Assert.That(result.Count, Is.EqualTo(expectedUpcomingAppointmentsCount));
         }
 
         [Test]
@@ -190,6 +193,18 @@ namespace VetClinic.Test.ServicesTests
             Assert.IsNull(result);
         }
 
+        [TestCase("AppointmentId5")]
+        [TestCase("AppointmentId4")]
+        [TestCase("AppointmentId3")]
+        [TestCase("AppointmentId2")]
+        [TestCase("AppointmentId1")]
+        public void GetAppointmentForCancelShouldReturnNullWhenClientPetDoctorOrServiceIsNull(string appointmentId)
+        {
+            GetDbContextWithAllEntities();
+            var result = service.GetAppointmentForCancel(appointmentId);
+            Assert.IsNull(result);
+        }
+
         [Test]
         public void DeleteShouldReturnFalseWhenAppointmentNotExist()
         {
@@ -203,9 +218,9 @@ namespace VetClinic.Test.ServicesTests
         {
             GetDbContextWithAllEntities();
             var result = service.Delete("NewTestAppointmentId");
-            var actualAppointmentsCount = dbContext.Appointments.Count();
+            var expectedAppointmentsCount = dbContext.Appointments.Count();
             Assert.That(result, Is.True);
-            Assert.That(actualAppointmentsCount, Is.EqualTo(11));
+            Assert.That(expectedAppointmentsCount, Is.EqualTo(16));
         }
 
         [Test]
@@ -560,6 +575,62 @@ namespace VetClinic.Test.ServicesTests
             };
 
             dbContext.Appointments.AddRange(appointments);
+
+            var nullAppointments = new List<Appointment>
+            {
+                new Appointment
+                {
+                    Id = "AppointmentId1",
+                    Date = appointmentDate.AddDays(1),
+                    Hour = "09:00",
+                    Doctor = null,
+                    Client = client,
+                    PetId = "NewTestPet2",
+                    ServiceId = 2
+                },
+                new Appointment
+                {
+                    Id = "AppointmentId2",
+                    Date = appointmentDate.AddDays(1),
+                    Hour = "10:00",
+                    Doctor = doctor2,
+                    Client = null,
+                    PetId = "NewTestPet2",
+                    ServiceId = 2
+                },
+                new Appointment
+                {
+                    Id = "AppointmentId3",
+                    Date = appointmentDate.AddDays(1),
+                    Hour = "11:00",
+                    Doctor = doctor2,
+                    Client = client,
+                    PetId = null,
+                    ServiceId = 2
+                },
+                new Appointment
+                {
+                    Id = "AppointmentId4",
+                    Date = appointmentDate.AddDays(1),
+                    Hour = "12:00",
+                    Doctor = doctor2,
+                    Client = client,
+                    PetId = "NewTestPet1",
+                    ServiceId = 0
+                },
+                new Appointment
+                {
+                    Id = "AppointmentId5",
+                    Date = appointmentDate.AddDays(1),
+                    Hour = "13:00",
+                    Doctor = null,
+                    Client = null,
+                    PetId = null,
+                    ServiceId = 0
+                }
+            };
+
+            dbContext.Appointments.AddRange(nullAppointments);
 
             dbContext.SaveChanges();
         }

@@ -150,9 +150,20 @@ namespace VetClinic.Test.ServicesTests
             //GetDbContextWithServices();
             GetDbContextWithDepartmentsAndDoctors();
             var result = service.Delete(1);
-            var actualServicesCount = dbContext.Services.Count();
+            var expectedServicesCount = dbContext.Services.Count();
             Assert.That(result, Is.True);
-            Assert.That(actualServicesCount, Is.EqualTo(1));  
+            Assert.That(expectedServicesCount, Is.EqualTo(1));  
+        }
+
+        [Test]
+        public void AllServicesShouldWorkCorrectAndReturnAllServicesInCorrectType()
+        {
+            GetDbContextWithServices();
+            var result = service.AllServices();
+            var actualServicesCount = result.Count();
+            var expectedServicesCount = dbContext.Services.Count();
+            Assert.That(actualServicesCount, Is.EqualTo(expectedServicesCount));
+            Assert.That(result.GetType(), Is.EqualTo(typeof(List<ServiceViewModel>)));
         }
 
         private void GetDbContextWithServices()
