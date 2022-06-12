@@ -1,34 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Contracts;
+﻿using NUnit.Framework;
 using VetClinic.Core.Services;
 using VetClinic.Data;
 using VetClinic.Data.Models;
+using VetClinic.Test.Mocks;
 
 namespace VetClinic.Test.ServicesTests
 {
     public class ClientServiceTests
     {
-        private ServiceProvider serviceProvider;
-        private InMemoryDbContext dbContext;
+        private VetClinicDbContext dbContext;
+        private ClientService service;
 
         [SetUp]
         public void Setup()
         {
-            dbContext = new InMemoryDbContext();
-            var serviceCollection = new ServiceCollection();
-
-            serviceProvider = serviceCollection
-                .AddSingleton(sp => dbContext.CreateContext())
-                .AddSingleton<IClientService, ClientService>()
-                .BuildServiceProvider();
-
-            var data = serviceProvider.GetRequiredService<VetClinicDbContext>();
+            dbContext = DatabaseMock.Instance;
+            service = new ClientService(dbContext);
 
             var user = new User
             {
@@ -39,7 +26,7 @@ namespace VetClinic.Test.ServicesTests
                 FullName = "TestName"
             };
 
-            data.Users.Add(user);
+            dbContext.Users.Add(user);
 
             var client = new Client
             {
@@ -48,7 +35,7 @@ namespace VetClinic.Test.ServicesTests
                 FullName = user.FullName
             };
 
-            data.Clients.Add(client);
+            dbContext.Clients.Add(client);
 
             var user2 = new User
             {
@@ -59,7 +46,7 @@ namespace VetClinic.Test.ServicesTests
                 FullName = "TestName2"
             };
 
-            data.Users.Add(user2);
+            dbContext.Users.Add(user2);
 
             var client2 = new Client
             {
@@ -68,15 +55,14 @@ namespace VetClinic.Test.ServicesTests
                 FullName = user2.FullName
             };
 
-            data.Clients.Add(client2);
+            dbContext.Clients.Add(client2);
 
-            data.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         [Test]
         public void GetClientIdShouldReturnClientId()
         {
-            var service = serviceProvider.GetService<IClientService>();
             var result = service.GetClientId("testUserId");
             Assert.That(result.GetType, Is.EqualTo(typeof(string)));
         }
@@ -84,7 +70,6 @@ namespace VetClinic.Test.ServicesTests
         [Test]
         public void GetClientIdShouldReturnNullWhenUserNotExist()
         {
-            var service = serviceProvider.GetService<IClientService>();
             var result = service.GetClientId("NotExistingUserId");
             Assert.IsTrue(result == null);
         }

@@ -13,88 +13,6 @@ namespace VetClinic.Test.ServicesTests
 {
     public class DepartmentServiceTests
     {
-        //private ServiceProvider serviceProvider;
-        //private InMemoryDbContext dbContext;
-
-        //[SetUp]
-        //public void Setup()
-        //{
-        //    dbContext = new InMemoryDbContext();
-        //    var serviceCollection = new ServiceCollection();
-
-        //    serviceProvider = serviceCollection
-        //        .AddSingleton(sp => dbContext.CreateContext())
-        //        .AddSingleton<IDepartmentService, DepartmentService>()
-        //        //.AddSingleton<IDoctorService, DoctorService>()
-        //        //.AddSingleton<IServiceService, ServiceService>()
-        //        .BuildServiceProvider();
-
-        //    var data = serviceProvider.GetRequiredService<VetClinicDbContext>();
-        //    //var userManagerMock = UserManagerMock.Instance;
-        //    //var signInManagerMock = SignInManagerMock.Instance;
-
-        //    var testDepartment = new Department
-        //    {
-        //        Id = 1,
-        //        Name = "TestDepartmentName",
-        //        Image = "TestDepartmentImg.png",
-        //        Services = new List<Service>
-        //        {
-        //            new Service
-        //            {
-        //                Id = 1,
-        //                Name = "TestService"
-        //            },
-        //            new Service
-        //            {
-        //                Id = 2,
-        //                Name = "TestService2"
-        //            }
-        //        }
-        //    };
-
-        //    data.Departments.Add(testDepartment);
-
-        //    var testDepartment2 = new Department
-        //    {
-        //        Id = 2,
-        //        Name = "TestDepartmentName2",
-        //        Image = "TestDepartmentImg2.png",
-        //        Services = new List<Service>
-        //        {
-        //            new Service
-        //            {
-        //                Id = 3,
-        //                Name = "TestService3"
-        //            },
-        //            new Service
-        //            {
-        //                Id = 4,
-        //                Name = "TestService4"
-        //            }
-        //        }
-        //    };
-
-        //    data.Departments.Add(testDepartment2);
-
-        //    data.SaveChanges();
-        //}
-
-        //[Test]
-        //public void CreateShouldWorkCorrectAndReturnDepartmentId()
-        //{
-        //    var service = serviceProvider.GetService<IDepartmentService>();
-        //    //var doctorService = serviceProvider.GetService<DoctorService>();
-        //    //var serviceService = serviceProvider.GetService<ServiceService>();
-        //    //var userManagerMock = UserManagerMock.Instance;
-        //    //var signInManagerMock = SignInManagerMock.Instance;
-        //    var result = service.Create("DepartmentName", "departmentImg.png", "description");
-        //    Assert.That(result.GetType, Is.EqualTo(typeof(int)));
-        //    Assert.That(result == 3);
-        //}
-
-
-
         private VetClinicDbContext dbContext;
         private DepartmentService service;
         private DoctorService doctorService;
@@ -108,12 +26,6 @@ namespace VetClinic.Test.ServicesTests
             serviceService = new ServiceService(dbContext);
             service = new DepartmentService(dbContext, doctorService, serviceService);
         }
-
-        //[TearDown]
-        //public void Dispose()
-        //{
-        //    dbContext.Dispose();
-        //}
 
         [Test]
         public void CreateShouldWorkCorrectAndReturnDepartmentId()
