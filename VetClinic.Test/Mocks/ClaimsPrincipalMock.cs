@@ -10,6 +10,8 @@ namespace VetClinic.Test.Mocks
             var fakeClaims = new List<Claim>()
             {
                new Claim(ClaimTypes.NameIdentifier, userId),
+               new Claim(ClaimTypes.Authentication, ClaimsIdentity.DefaultNameClaimType, userId),
+               new Claim(ClaimsIdentity.DefaultRoleClaimType, userId)
             };
 
             var fakeIdentity = new ClaimsIdentity(fakeClaims, "TestAuthType");

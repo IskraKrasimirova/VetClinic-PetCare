@@ -22,8 +22,6 @@ namespace VetClinic.Controllers
             {
                 var userId = this.User.GetId();
                 this.ViewBag.ClientFullName = this.homeService.GetClientFullName(userId);
-
-                //return this.View();
             }
 
             if (this.User.IsInRole(DoctorRoleName))
@@ -47,7 +45,7 @@ namespace VetClinic.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }
