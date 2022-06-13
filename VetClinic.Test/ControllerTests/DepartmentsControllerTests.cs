@@ -79,7 +79,11 @@ namespace VetClinic.Test.ControllerTests
                 .Should()
                 .NotBeNull()
                 .And
-                .BeOfType<ViewResult>();
+                .BeOfType<ViewResult>()
+                .Which
+                .Model
+                .Should()
+                .BeOfType<DepartmentDetailsServiceModel>();
         }
 
 
