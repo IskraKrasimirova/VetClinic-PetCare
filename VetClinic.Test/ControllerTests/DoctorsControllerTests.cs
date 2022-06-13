@@ -1,11 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VetClinic.Controllers;
 using VetClinic.Core.Models.Doctors;
 using VetClinic.Core.Services;
@@ -34,9 +30,8 @@ namespace VetClinic.Test.ControllerTests
             controller = new DoctorsController(service, departmentService);
         }
 
-
         [Test]
-        public void AllShouldReturnViewWithModelWhenDataIsValid()
+        public void AllShouldReturnViewWithModel()
         {
             var expectedModel = new AllDoctorsViewModel
             {
@@ -67,7 +62,7 @@ namespace VetClinic.Test.ControllerTests
         }
 
         [Test]
-        public void AvailableShouldReturnViewWithModelWhenDataIsValid()
+        public void AvailableShouldReturnViewWithModel()
         {
             var expectedModel = new AvailableDoctorsServiceModel
             {
