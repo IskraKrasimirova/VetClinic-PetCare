@@ -119,15 +119,20 @@ namespace VetClinic.Controllers
             return View(myPets);
         }
 
-        [Authorize]
+        [Authorize(Roles = $"{ClientRoleName}, {DoctorRoleName}")]
         public IActionResult Edit(string id)
         {
+            var pet = petService.Details(id);
+
+            if (pet == null)
+            {
+                return BadRequest();
+            }
+
             if (!this.User.IsClient() && !this.User.IsDoctor())
             {
                 return RedirectToAction("Index", "Home");
             }
-
-            var pet = petService.Details(id);
 
             var clientId = clientService.GetClientId(this.User.GetId());
 
@@ -149,7 +154,7 @@ namespace VetClinic.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = $"{ClientRoleName}, {DoctorRoleName}")]
         public IActionResult Edit(string id, PetFormModel pet)
         {
             if (!this.User.IsClient() && !this.User.IsDoctor())
@@ -200,14 +205,26 @@ namespace VetClinic.Controllers
             return RedirectToAction("Details", new { id });
         }
 
-        [Authorize]
+        [Authorize(Roles = $"{ClientRoleName}, {DoctorRoleName}")]
         public IActionResult Details(string id)
         {
             var pet = this.petService.Details(id);
 
             if (pet == null)
             {
-                return NotFound();
+                return BadRequest();
+            }
+
+            if (!this.User.IsClient() && !this.User.IsDoctor())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var clientId = clientService.GetClientId(this.User.GetId());
+
+            if (pet.ClientId != clientId && !this.User.IsDoctor())
+            {
+                return Unauthorized();
             }
 
             return View(pet);

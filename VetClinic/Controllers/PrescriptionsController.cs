@@ -17,8 +17,12 @@ namespace VetClinic.Controllers
         private readonly IClientService clientService;
         private readonly IPetService petService;
 
-        public PrescriptionsController(IPrescriptionService prescriptionService, IAppointmentService appointmentService,
-            IDoctorService doctorService, IClientService clientService, IPetService petService)
+        public PrescriptionsController(
+            IPrescriptionService prescriptionService, 
+            IAppointmentService appointmentService,
+            IDoctorService doctorService, 
+            IClientService clientService, 
+            IPetService petService)
         {
             this.prescriptionService = prescriptionService;
             this.appointmentService = appointmentService;
