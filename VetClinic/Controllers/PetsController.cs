@@ -234,21 +234,21 @@ namespace VetClinic.Controllers
         [Authorize(Roles = ClientRoleName)]
         public IActionResult Delete(string id)
         {
+            var pet = this.petService.GetPetForDelete(id);
+
+            if (pet == null)
+            {
+                return BadRequest();
+            }
+
             if (!this.User.IsClient())
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var pet = this.petService.GetPetForDelete(id);
-
-            if (pet == null)
-            {
-                return NotFound();
-            }
-
             var clientId = clientService.GetClientId(this.User.GetId());
 
-            if (pet.ClientId != clientId)
+            if (!this.petService.IsByOwner(id, clientId))
             {
                 return Unauthorized();
             }
@@ -262,7 +262,7 @@ namespace VetClinic.Controllers
         {
             if (!this.User.IsClient())
             {
-                return BadRequest();
+                return RedirectToAction("Index", "Home");
             }
 
             var clientId = clientService.GetClientId(this.User.GetId());

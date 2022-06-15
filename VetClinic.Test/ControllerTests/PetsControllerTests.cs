@@ -1,9 +1,12 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using VetClinic.Controllers;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Core.Models.PetTypes;
@@ -23,6 +26,7 @@ namespace VetClinic.Test.ControllerTests
         private PetTypeService petTypeService;
         private ClientService clientService;
         private PetsController controller;
+        private UserManager<User> userManager;
 
         [SetUp]
         public void Setup()
@@ -32,6 +36,7 @@ namespace VetClinic.Test.ControllerTests
             clientService = new ClientService(dbContext);
             service = new PetService(dbContext);
             controller = new PetsController(service, petTypeService, clientService);
+            userManager = UserManagerMock.Instance;
         }
 
         [TearDown]
@@ -977,7 +982,7 @@ namespace VetClinic.Test.ControllerTests
         }
 
         [Test]
-        public void DetailsShouldReturnView()
+        public void DetailsShouldReturnViewWhenUserIsOwner()
         {
             var user = new User
             {
@@ -996,31 +1001,20 @@ namespace VetClinic.Test.ControllerTests
                 UserId = user.Id,
                 FullName = user.FullName,
             };
-
-            var petTypes = new List<PetType>
-            {
-                new PetType
-                {
-                    Id = 1,
-                    Name = "Cat"
-                },
-                new PetType
-                {
-                    Id = 2,
-                    Name = "Dog"
-                }
-            };
-
-            dbContext.PetTypes.AddRange(petTypes);
-
+            
             var pet = new Pet
             {
                 Name = "TestPet",
                 DateOfBirth = DateTime.Now.AddYears(-2),
                 Breed = "Persian",
                 PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
                 Gender = Data.Enums.Gender.Male,
-                ClientId = client.Id,
+                ClientId = "testClientId",
                 Client = client
             };
 
@@ -1031,7 +1025,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(/*user.Id, */ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName),
             };
 
             var result = controller.Details(pet.Id);
@@ -1044,6 +1038,120 @@ namespace VetClinic.Test.ControllerTests
                 .Model
                 .Should()
                 .BeOfType<PetDetailsServiceModel>();
+        }
+
+        [Test]
+        public void DetailsShouldReturnViewWithModelWhenUserIsDoctort()
+        {
+            var user = new User
+            {
+                Id = "TestUserId",
+                Email = "testDoctor@vetclinic.com",
+                UserName = "testDoctor@vetclinic.com",
+                FullName = "TestDoctorFullName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var doctor = new Doctor
+            {
+                Id = "TestDoctorId",
+                FullName = user.FullName,
+                DepartmentId = 1,
+                Department = new Department
+                {
+                    Id = 1,
+                    Name = "TestDepartment"
+                },
+                UserId = user.Id,
+                Description = "some description",
+                Email = user.Email,
+                PhoneNumber = "0888555666",
+                ProfileImage = "testProfileImg.png"
+            };
+            dbContext.Doctors.Add(doctor);
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(DoctorRoleName)
+            };
+
+            var pet = new Pet
+            {
+                Id = "TestPetId",
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "testClientId",
+                Client = new Client
+                {
+                    Id = "testClientId",
+                    UserId = "testUserId",
+                    FullName = "TestName"
+                }
+            };
+
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            var result = controller.Details(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<ViewResult>()
+                .Which
+                .Model
+                .Should()
+                .BeOfType<PetDetailsServiceModel>();
+        }
+
+        [Test]
+        public void DetailsShouldReturnBadRequestWhenPetNotExist()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var pet = new Pet
+            {
+                Id = "TestPetId",
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "testClientId"
+            };
+
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id)
+            };
+
+            var result = controller.Details("NotExistingPet");
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<BadRequestResult>();
         }
 
         [Test]
@@ -1090,6 +1198,491 @@ namespace VetClinic.Test.ControllerTests
             };
 
             var result = controller.Details(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<RedirectToActionResult>();
+        }
+
+        [Test]
+        public void DetailsShouldReturnUnauthorizedWhenClientIsNotOwner()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+            };
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "NewTestClientId",
+                Client = new Client
+                {
+                    Id = "NewTestClientId",
+                    UserId = "NewTestUserId",
+                    FullName = "NewTestName"
+                }
+            };
+
+            dbContext.Clients.Add(client);
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+            };
+
+            var result = controller.Details(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<UnauthorizedResult>();
+        }
+
+        [Test]
+        public void DeleteShouldReturnBadRequestWhenPetNotExist()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var pet = new Pet
+            {
+                Id = "TestPetId",
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "testClientId"
+            };
+
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id)
+            };
+
+            var result = controller.Delete("NotExistingPet");
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<BadRequestResult>();
+        }
+
+        [Test]
+        public void DeleteShouldRedirectToActionWhenUserIsNotClient()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "NewTestClientId",
+                Client = new Client
+                {
+                    Id = "NewTestClientId",
+                    UserId = "NewTestUserId",
+                    FullName = "NewTestName"
+                }
+            };
+
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id)
+            };
+
+            var result = controller.Delete(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<RedirectToActionResult>();
+        }
+
+        [Test]
+        public void DeleteShouldReturnUnauthorizedWhenClientIsNotOwner()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+            };
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "NewTestClientId",
+                Client = new Client
+                {
+                    Id = "NewTestClientId",
+                    UserId = "NewTestUserId",
+                    FullName = "NewTestName"
+                }
+            };
+
+            dbContext.Clients.Add(client);
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+            };
+
+            var result = controller.Delete(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<UnauthorizedResult>();
+        }
+
+        [Test]
+        public void DeleteShouldReturnViewWhenUserIsOwner()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            //Task
+            //    .Run(async () =>
+            //    {
+            //        await userManager.CreateAsync
+            //    (user, "password");
+
+            //        await userManager.AddToRoleAsync(user, ClientRoleName);
+            //    })
+            //    .GetAwaiter()
+            //    .GetResult();
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+            };
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "testClientId",
+                Client = client
+            };
+
+            client.Pets.Add(pet);
+            dbContext.Clients.Add(client);
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
+            };
+
+            var result = controller.Delete(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<ViewResult>()
+                .Which
+                .Model
+                .Should()
+                .BeOfType<PetDeleteServiceModel>();
+        }
+
+        [Test]
+        public void DeletePetShouldRedirectToActionWhenUserIsNotClient()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "NewTestClientId",
+                Client = new Client
+                {
+                    Id = "NewTestClientId",
+                    UserId = "NewTestUserId",
+                    FullName = "NewTestName"
+                }
+            };
+
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id)
+            };
+
+            var result = controller.DeletePet(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<RedirectToActionResult>();
+        }
+
+        [Test]
+        public void DeletePetShouldReturnUnauthorizedWhenClientIsNotOwner()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+            };
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "NewTestClientId",
+                Client = new Client
+                {
+                    Id = "NewTestClientId",
+                    UserId = "NewTestUserId",
+                    FullName = "NewTestName"
+                }
+            };
+
+            dbContext.Clients.Add(client);
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+            };
+
+            var result = controller.DeletePet(pet.Id);
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<UnauthorizedResult>();
+        }
+
+        [Test]
+        public void DeletePetShouldReturnBadRequestWhenPetIsNotDeleted()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+            };
+
+            dbContext.Clients.Add(client);
+            dbContext.SaveChanges();
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
+            };
+
+            var result = controller.DeletePet("NotExistingPetId");
+            result
+                .Should()
+                .NotBeNull()
+                .And
+                .BeOfType<BadRequestResult>(); //Redirect to "Index", "Home", User is not recognized as Client!!!
+        }
+
+        [Test]
+        public void DeletePetShouldReturnRedirectToActionWhenUserIsOwner()
+        {
+            var user = new User
+            {
+                Id = "testUserId",
+                Email = "test@test.com",
+                UserName = "test@test.com",
+                PhoneNumber = "0888777111",
+                FullName = "TestName"
+            };
+
+            dbContext.Users.Add(user);
+
+            var client = new Client
+            {
+                Id = "testClientId",
+                UserId = user.Id,
+                FullName = user.FullName,
+            };
+
+            var pet = new Pet
+            {
+                Name = "TestPet",
+                DateOfBirth = DateTime.Now.AddYears(-2),
+                Breed = "Persian",
+                PetTypeId = 1,
+                PetType = new PetType
+                {
+                    Id = 1,
+                    Name = "Cat"
+                },
+                Gender = Data.Enums.Gender.Male,
+                ClientId = "testClientId",
+                Client = client
+            };
+
+            client.Pets.Add(pet);
+            dbContext.Clients.Add(client);
+            dbContext.Pets.Add(pet);
+            dbContext.SaveChanges();
+
+            controller.TempData = TempDataMock.Instance;
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
+            };
+            // Redirect to "Index", "Home", not to Pets/Mine when pet is deleted; User is not recognized as Client!!!
+            var result = controller.DeletePet(pet.Id);  
+            //var expectedPetsCount = dbContext.Pets.Count();
+            //Assert.That(expectedPetsCount, Is.EqualTo(0));
+            Assert.That(() => service.Delete(pet.Id, client.Id), Is.True);
             result
                 .Should()
                 .NotBeNull()
