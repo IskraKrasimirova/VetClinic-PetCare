@@ -1,12 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using VetClinic.Controllers;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Core.Models.PetTypes;
@@ -26,7 +24,6 @@ namespace VetClinic.Test.ControllerTests
         private PetTypeService petTypeService;
         private ClientService clientService;
         private PetsController controller;
-        private UserManager<User> userManager;
 
         [SetUp]
         public void Setup()
@@ -36,7 +33,6 @@ namespace VetClinic.Test.ControllerTests
             clientService = new ClientService(dbContext);
             service = new PetService(dbContext);
             controller = new PetsController(service, petTypeService, clientService);
-            userManager = UserManagerMock.Instance;
         }
 
         [TearDown]
@@ -71,7 +67,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
             var result = controller.Add();
             result
@@ -102,7 +98,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Add();
@@ -130,7 +126,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
             var petFormModel = new PetFormModel
             {
@@ -182,7 +178,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
             var petFormModel = new PetFormModel
             {
@@ -228,13 +224,6 @@ namespace VetClinic.Test.ControllerTests
             };
 
             dbContext.Clients.Add(client);
-            dbContext.SaveChanges();
-
-            controller.TempData = TempDataMock.Instance;
-            controller.ControllerContext.HttpContext = new DefaultHttpContext
-            {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
-            };
 
             var petTypes = new List<PetType>
             {
@@ -251,6 +240,13 @@ namespace VetClinic.Test.ControllerTests
             };
 
             dbContext.PetTypes.AddRange(petTypes);
+            dbContext.SaveChanges();
+
+            controller.TempData = TempDataMock.Instance;
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+            {
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
+            };
 
             var petFormModel = new PetFormModel
             {
@@ -286,6 +282,16 @@ namespace VetClinic.Test.ControllerTests
         [Test]
         public void AllShouldReturnViewWithModelWhenUserIsDoctor()
         {
+            var user = new User
+            {
+                Id = "TestUserId",
+                Email = "testDoctor@vetclinic.com",
+                UserName = "testDoctor@vetclinic.com",
+                FullName = "TestDoctorFullName"
+            };
+
+            dbContext.Users.Add(user);
+
             var doctor = new Doctor
             {
                 Id = "TestDoctorId",
@@ -296,7 +302,7 @@ namespace VetClinic.Test.ControllerTests
                     Id = 1,
                     Name = "TestDepartment"
                 },
-                UserId = "TestUserId",
+                UserId = user.Id,
                 Description = "some description",
                 Email = "testDoctor@petcare.com",
                 PhoneNumber = "0888555666",
@@ -307,7 +313,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(DoctorRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, DoctorRoleName)
             };
 
             var petTypes = new List<string>();
@@ -370,7 +376,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
 
             var result = controller.Mine();
@@ -402,7 +408,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Mine();
@@ -505,7 +511,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(DoctorRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, DoctorRoleName)
             };
 
             var pet = new Pet
@@ -586,7 +592,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Edit(pet.Id);
@@ -645,7 +651,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance( user.Id, ClientRoleName)
             };
 
             var result = controller.Edit(pet.Id);
@@ -673,7 +679,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Edit("NotExistingPet");
@@ -812,7 +818,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
 
             var petFormModel = new PetFormModel
@@ -867,7 +873,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var petFormModel = new PetFormModel
@@ -948,7 +954,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
 
             var petFormModel = new PetFormModel
@@ -1073,7 +1079,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(DoctorRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, DoctorRoleName)
             };
 
             var pet = new Pet
@@ -1143,7 +1149,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Details("NotExistingPet");
@@ -1194,7 +1200,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Details(pet.Id);
@@ -1253,7 +1259,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
 
             var result = controller.Details(pet.Id);
@@ -1294,7 +1300,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Delete("NotExistingPet");
@@ -1345,7 +1351,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Delete(pet.Id);
@@ -1404,7 +1410,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
 
             var result = controller.Delete(pet.Id);
@@ -1427,16 +1433,6 @@ namespace VetClinic.Test.ControllerTests
                 FullName = "TestName"
             };
 
-            //Task
-            //    .Run(async () =>
-            //    {
-            //        await userManager.CreateAsync
-            //    (user, "password");
-
-            //        await userManager.AddToRoleAsync(user, ClientRoleName);
-            //    })
-            //    .GetAwaiter()
-            //    .GetResult();
             dbContext.Users.Add(user);
 
             var client = new Client
@@ -1524,7 +1520,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.DeletePet(pet.Id);
@@ -1583,7 +1579,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
 
             var result = controller.DeletePet(pet.Id);
@@ -1592,43 +1588,6 @@ namespace VetClinic.Test.ControllerTests
                 .NotBeNull()
                 .And
                 .BeOfType<UnauthorizedResult>();
-        }
-
-        [Test]
-        public void DeletePetShouldReturnBadRequestWhenPetIsNotDeleted()
-        {
-            var user = new User
-            {
-                Id = "testUserId",
-                Email = "test@test.com",
-                UserName = "test@test.com",
-                PhoneNumber = "0888777111",
-                FullName = "TestName"
-            };
-
-            dbContext.Users.Add(user);
-
-            var client = new Client
-            {
-                Id = "testClientId",
-                UserId = user.Id,
-                FullName = user.FullName,
-            };
-
-            dbContext.Clients.Add(client);
-            dbContext.SaveChanges();
-
-            controller.ControllerContext.HttpContext = new DefaultHttpContext
-            {
-                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
-            };
-
-            var result = controller.DeletePet("NotExistingPetId");
-            result
-                .Should()
-                .NotBeNull()
-                .And
-                .BeOfType<BadRequestResult>(); //Redirect to "Index", "Home", User is not recognized as Client!!!
         }
 
         [Test]
@@ -1664,7 +1623,7 @@ namespace VetClinic.Test.ControllerTests
                     Name = "Cat"
                 },
                 Gender = Data.Enums.Gender.Male,
-                ClientId = "testClientId",
+                ClientId = client.Id,
                 Client = client
             };
 
@@ -1678,11 +1637,10 @@ namespace VetClinic.Test.ControllerTests
             {
                 User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
-            // Redirect to "Index", "Home", not to Pets/Mine when pet is deleted; User is not recognized as Client!!!
-            var result = controller.DeletePet(pet.Id);  
-            //var expectedPetsCount = dbContext.Pets.Count();
-            //Assert.That(expectedPetsCount, Is.EqualTo(0));
-            Assert.That(() => service.Delete(pet.Id, client.Id), Is.True);
+
+            var result = controller.DeletePet(pet.Id);
+            var expectedPetsCount = dbContext.Pets.Count();
+            Assert.That(expectedPetsCount, Is.EqualTo(0));
             result
                 .Should()
                 .NotBeNull()

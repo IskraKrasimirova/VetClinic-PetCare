@@ -43,7 +43,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(user.Id)
+                User = ClaimsPrincipalMock.Instance(user.Id, "")
             };
 
             var result = controller.Index();
@@ -51,10 +51,7 @@ namespace VetClinic.Test.ControllerTests
                 .Should()
                 .NotBeNull()
                 .And
-                .BeOfType<ViewResult>()
-                .Which
-                .ToString()
-                .Equals(result.GetType().Name);
+                .BeOfType<ViewResult>();
         }
 
         [Test]
@@ -83,7 +80,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(ClientRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, ClientRoleName)
             };
             var result = controller.Index();
             result
@@ -123,17 +120,14 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(DoctorRoleName),
+                User = ClaimsPrincipalMock.Instance(user.Id, DoctorRoleName),
             };
             var result = controller.Index();
             result
                 .Should()
                 .NotBeNull()
                 .And
-                .BeOfType<RedirectToActionResult>()
-                .Which
-                .ToString()
-                .Equals(result.GetType().Name);
+                .BeOfType<RedirectToActionResult>();
         }
 
         [Test]
@@ -153,7 +147,7 @@ namespace VetClinic.Test.ControllerTests
 
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
-                User = ClaimsPrincipalMock.Instance(AdminRoleName)
+                User = ClaimsPrincipalMock.Instance(user.Id, AdminRoleName)
             };
 
             var result = controller.Index();
@@ -161,10 +155,7 @@ namespace VetClinic.Test.ControllerTests
                 .Should()
                 .NotBeNull()
                 .And
-                .BeOfType<RedirectToActionResult>()
-                .Which
-                .ToString()
-                .Equals(result.GetType().Name);
+                .BeOfType<RedirectToActionResult>();
         }
 
         [Test]

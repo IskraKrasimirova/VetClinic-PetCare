@@ -220,11 +220,14 @@ namespace VetClinic.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var clientId = clientService.GetClientId(this.User.GetId());
-
-            if (pet.ClientId != clientId && !this.User.IsDoctor())
+            if (this.User.IsClient())
             {
-                return Unauthorized();
+                var clientId = clientService.GetClientId(this.User.GetId());
+
+                if (pet.ClientId != clientId)
+                {
+                    return Unauthorized();
+                }
             }
 
             return View(pet);
