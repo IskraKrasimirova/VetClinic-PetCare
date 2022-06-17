@@ -32,6 +32,8 @@ builder.Services.AddDefaultIdentity<User>(options =>
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<VetClinicDbContext>();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddAuthentication()
     .AddFacebook(options =>
     {

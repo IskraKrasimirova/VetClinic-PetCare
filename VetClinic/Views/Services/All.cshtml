@@ -34,8 +34,9 @@
     <h2 class="text-center">No services found by the given criteria!</h2>
     ViewBag.Title = null;
 }
-
-<div class="row">
+else
+{
+    <div class="row">
     <div class="col-12 bgcolor-orange">
         <div class="card bgcolor-orange">
             <h2 class="heading-margin mb-3 mt-3 text-center">@ViewBag.Title</h2>
@@ -81,3 +82,4 @@
         </div>
     </div>
 </div>
+}
