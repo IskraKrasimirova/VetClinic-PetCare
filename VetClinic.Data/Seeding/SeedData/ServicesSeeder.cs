@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Data.Models;
+﻿using VetClinic.Data.Models;
 using VetClinic.Data.Seeding.Contracts;
 
 namespace VetClinic.Data.Seeding.SeedData
@@ -40,35 +35,35 @@ namespace VetClinic.Data.Seeding.SeedData
                     },
                     new Service
                     {
-                        Name = "Vaccine Pure Vax RCP",
+                        Name = "Vaccine Pure Vax RCP - cat",
                         Description = "For cats",
                         DepartmentId = 1,
                         Price = 45.00M
                     },
                     new Service
                     {
-                        Name = "Vaccine Pure Vax FeLV",
+                        Name = "Vaccine Pure Vax FeLV - cat",
                         Description = "For cats",
                         DepartmentId = 1,
                         Price = 45.00M
                     },
                     new Service
                     {
-                        Name = "Vaccine Pure Vax Rabies",
+                        Name = "Vaccine Pure Vax Rabies - cat",
                         Description = "For cats",
                         DepartmentId = 1,
                         Price = 45.00M
                     },
                     new Service
                     {
-                        Name = "Vaccine Pure Vax RCPCHFeLV",
+                        Name = "Vaccine Pure Vax RCPCHFeLV - cat",
                         Description = "For cats (viral rhinotracheitis, calicivirus, chlamydia, panleukopenia and feline leukemia)",
                         DepartmentId = 1,
                         Price = 65.00M
                     },
                     new Service
                     {
-                        Name = "Vaccine Pestorin",
+                        Name = "Vaccine Pestorin - rabbit",
                         Description = "For rabbits",
                         DepartmentId = 1,
                         Price = 17.00M
@@ -89,7 +84,7 @@ namespace VetClinic.Data.Seeding.SeedData
                     },
                     new Service
                     {
-                        Name = "Vaccine Nobivac DP+",
+                        Name = "Vaccine Nobivac DP+ - dog",
                         Description = "For dogs",
                         DepartmentId = 1,
                         Price = 38.00M
@@ -182,28 +177,28 @@ namespace VetClinic.Data.Seeding.SeedData
                     },
                     new Service
                     {
-                        Name = "Castration of a male dog",
+                        Name = "Castration of a male dog - Up to 20 kg",
                         Description = "Up to 20 kg",
                         DepartmentId = 3,
                         Price = 80.0M
                     },
                     new Service
                     {
-                        Name = "Castration of a male dog",
+                        Name = "Castration of a male dog - Over 20 kg",
                         Description = "Over 20 kg",
                         DepartmentId = 3,
                         Price = 120.0M
                     },
                     new Service
                     {
-                        Name = "Castration of a female dog",
+                        Name = "Castration of a female dog - Up to 20 kg",
                         Description = "Up to 20 kg",
                         DepartmentId = 3,
                         Price = 150.0M
                     },
                     new Service
                     {
-                        Name = "Castration of a female dog",
+                        Name = "Castration of a female dog - Over 20 kg",
                         Description = "Over 20 kg",
                         DepartmentId = 3,
                         Price = 200.0M
@@ -297,14 +292,14 @@ namespace VetClinic.Data.Seeding.SeedData
                     },
                     new Service
                     {
-                        Name = "Sanitary clipping - dogs",
+                        Name = "Sanitary clipping - dogs, up to 25 kg",
                         Description = "Аlso applies to other pets up to 25 kg",
                         DepartmentId = 7,
                         Price = 45.0M
                     },
                     new Service
                     {
-                        Name = "Sanitary clipping - dogs",
+                        Name = "Sanitary clipping - dogs, over 25 kg",
                         Description = "Аlso applies to other pets over 25 kg",
                         DepartmentId = 7,
                         Price = 70.0M
@@ -318,21 +313,21 @@ namespace VetClinic.Data.Seeding.SeedData
                     },
                     new Service
                     {
-                        Name = "Bathing and drying",
+                        Name = "Bathing and drying - up to 10 kg",
                         Description = "For cats/dogs and other pets up to 10 kg",
                         DepartmentId = 7,
                         Price = 30.0M
                     },
                     new Service
                     {
-                        Name = "Bathing and drying",
+                        Name = "Bathing and drying - dogs from 11 to 30 kg",
                         Description = "For dogs from 11 to 30 kg",
                         DepartmentId = 7,
                         Price = 40.0M
                     },
                     new Service
                     {
-                        Name = "Bathing and drying",
+                        Name = "Bathing and drying - dogs more than 30 kg",
                         Description = "For dogs more than 30 kg",
                         DepartmentId = 7,
                         Price = 60.0M

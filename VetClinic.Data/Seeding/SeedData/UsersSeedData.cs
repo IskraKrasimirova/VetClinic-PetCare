@@ -6,9 +6,9 @@
 
         public class Doctor
         {
-            public const string Email = "doctor@vetclinic.com";
+            public const string Email = "doctor@petcare.com";
             public const string FullName = "DoctorFullName";
-            public const string Username = "doctor@vetclinic.com";
+            public const string Username = "doctor@petcare.com";
             public const string PhoneNumber = "0888888888";
             public const string Password = DefaultPassword;
             public const string Description = "Vet Clinic Consultations";
@@ -26,8 +26,8 @@
 
         public class Admin
         {
-            public const string Email = "admin@vetclinic.com";
-            public const string Username = "admin@vetclinic.com";
+            public const string Email = "admin@petcare.com";
+            public const string Username = "admin@petcare.com";
             public const string FullName = "Administrator";
             public const string PhoneNumber = "0999999999";
             public const string Password = DefaultPassword;

@@ -8,7 +8,8 @@ namespace VetClinic.Data.Seeding
         public void Seed(VetClinicDbContext data, IServiceProvider serviceProvider)
         {
             var seeders = new List<ISeeder>()
-                { new PetTypesSeeder(),
+                { 
+                    new PetTypesSeeder(),
                     new DepartmentsSeeder(),
                     new RolesSeeder(),
                     new UsersSeeder(),

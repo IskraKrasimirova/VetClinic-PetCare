@@ -11,7 +11,7 @@ namespace VetClinic.Data.Seeding
             if (!data.PetTypes.Any())
             {
                 var allPetTypes = new List<PetType>();
-                var petTypesData = new PetTypesSeedData();
+
                 foreach (var petTypeName in PetTypesSeedData.PetTypes)
                 {
                     var petType = new PetType() { Name = petTypeName };
