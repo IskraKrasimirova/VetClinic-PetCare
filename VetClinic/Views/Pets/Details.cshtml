@@ -6,16 +6,16 @@
 
 <div class="col-md-4 offset-md-4">
     <div class="card mt-3 mb-3" style="width: 24rem">
-        <div class="card-body text-center bgcolor-orange">
+        <div class="card-body text-center color-blue">
             <h5 class="card-title text-center">@Model.Name</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item color-blue">Pet Type: @Model.PetType</li>
-                <li class="list-group-item color-blue">Breed: @Model.Breed</li>
-                <li class="list-group-item color-blue">Date of Birth: @Model.DateOfBirth</li>
-                <li class="list-group-item color-blue">Gender: @Model.Gender</li>
-                <li class="list-group-item color-blue">Description: @Model.Description</li>
-                <li class="list-group-item color-blue">Owner: @Model.ClientName</li>
-                <li class="list-group-item color-blue"><span class="fas fa-phone fa-lg text-dark"></span> @Model.ClientPhoneNumber</li>
+                <li class="list-group-item bgcolor-blue">Pet Type: @Model.PetType</li>
+                <li class="list-group-item bgcolor-blue">Breed: @Model.Breed</li>
+                <li class="list-group-item bgcolor-blue">Date of Birth: @Model.DateOfBirth</li>
+                <li class="list-group-item bgcolor-blue">Gender: @Model.Gender</li>
+                <li class="list-group-item bgcolor-blue">Description: @Model.Description</li>
+                <li class="list-group-item bgcolor-blue">Owner: @Model.ClientName</li>
+                <li class="list-group-item bgcolor-blue"><span class="fas fa-phone fa-lg text-dark"></span> @Model.ClientPhoneNumber</li>
 
             </ul>
             <a asp-controller="Prescriptions" asp-action="ByPet" asp-route-petId="@Model.Id" class="btn btn-outline-primary mb-3 mt-3">Prescriptions</a>
