@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using VetClinic.Controllers;
 using VetClinic.Core.Models.Departments;
@@ -19,6 +21,7 @@ namespace VetClinic.Test.ControllerTests
         private DoctorService doctorService;
         private ServiceService serviceService;
         private DepartmentsController controller;
+        private IMemoryCache memoryCache;
 
         [SetUp]
         public void Setup()
@@ -27,7 +30,8 @@ namespace VetClinic.Test.ControllerTests
             doctorService = new DoctorService(UserManagerMock.Instance, dbContext);
             serviceService = new ServiceService(dbContext);
             service = new DepartmentService(dbContext, doctorService, serviceService);
-            controller = new DepartmentsController(service);
+            memoryCache = new MemoryCache(optionsAccessor: new MemoryCacheOptions());
+            controller = new DepartmentsController(service, memoryCache);
         }
 
         [Test]
