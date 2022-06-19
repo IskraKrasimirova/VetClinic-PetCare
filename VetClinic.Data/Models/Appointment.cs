@@ -20,10 +20,12 @@ namespace VetClinic.Data.Models
         [Required]
         public string Hour { get; set; }
 
+        [Required]
         [ForeignKey(nameof(Doctor))]
         public string DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 
+        [Required]
         [ForeignKey(nameof(Client))]
         public string ClientId { get; set; }
         public Client Client { get; set; }
@@ -32,6 +34,7 @@ namespace VetClinic.Data.Models
         public int ServiceId { get; set; }
         public Service Service { get; set; }
 
+        [Required]
         [ForeignKey(nameof(Pet))]
         public string PetId { get; set; }
         public Pet Pet { get; set; }
