@@ -20,13 +20,6 @@ namespace VetClinic.Data.Models
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
 
-        //[Required]
-        //public string Email { get; set; }
-
-        //[Required]
-        //[MaxLength(PhoneNumberMaxLength)]
-        //public string PhoneNumber { get; set; }
-
         [Required]
         public string UserId { get; set; }
 

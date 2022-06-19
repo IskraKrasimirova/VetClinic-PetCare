@@ -109,6 +109,8 @@ namespace VetClinic.Test.ServicesTests
             {
                 Id = 1,
                 Name = "TestDepartmentName",
+                Image = "TestDepartmentImg.png",
+
             };
 
             dbContext.Departments.Add(department);

@@ -126,8 +126,7 @@ namespace VetClinic.Areas.Identity.Pages.Account
                         FullName = this.Input.FulltName
                     };
 
-                    IdentityResult result = await this._userManager
-                        .CreateAsync(user, this.Input.Password);
+                    IdentityResult result = await this._userManager.CreateAsync(user, this.Input.Password);
 
                     if (result.Succeeded)
                     {

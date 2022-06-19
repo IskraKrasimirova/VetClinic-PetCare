@@ -6,6 +6,11 @@ namespace VetClinic.Data.Models
 {
     public class Prescription
     {
+        public Prescription()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [Key]
         [Required]
         public string Id { get; set; }

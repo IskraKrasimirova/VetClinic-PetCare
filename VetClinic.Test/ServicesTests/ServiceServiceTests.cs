@@ -224,6 +224,7 @@ namespace VetClinic.Test.ServicesTests
             {
                 Id = 1,
                 Name = "TestDepartment",
+                Image = "TestDepartmentImg.png",
                 Services = new List<Service>
                 {
                     new Service

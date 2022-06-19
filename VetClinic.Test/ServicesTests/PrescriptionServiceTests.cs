@@ -33,7 +33,7 @@ namespace VetClinic.Test.ServicesTests
             DateTime.TryParseExact(dateAsString, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime appointmentDate);
             service.Create(appointmentDate, "Test description", "NewTestAppointmentId2");
             var prescriptionsCount = dbContext.Prescriptions.Count();
-            Assert.That(prescriptionsCount == 4);
+            Assert.That(prescriptionsCount, Is.EqualTo(4));
         }
 
         [Test]
@@ -45,16 +45,16 @@ namespace VetClinic.Test.ServicesTests
             Assert.That(() => service.Create(appointmentDate, "Test description", "NotExistingAppointmentId"), Throws.Exception);
         }
 
-        //[Test]
-        //public void CreateShouldNotCreatePrescriptionWhenPrescriptionAlreadyExists()
-        //{
-        //    GetDbContextWithAllEntities();
-        //    var dateAsString = DateTime.Now.ToString(DateFormat);
-        //    DateTime.TryParseExact(dateAsString, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime appointmentDate);
-        //    service.Create(appointmentDate, "description", "NewTestAppointmentId1");
-        //    var prescriptionsCount = dbContext.Prescriptions.Count();
-        //    Assert.That(prescriptionsCount, Is.EqualTo(3));
-        //}
+        [Test]
+        public void CreateShouldNotCreatePrescriptionWhenPrescriptionAlreadyExists()
+        {
+            GetDbContextWithAllEntities();
+            var dateAsString = DateTime.Now.ToString(DateFormat);
+            DateTime.TryParseExact(dateAsString, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime appointmentDate);
+            service.Create(appointmentDate, "description", "NewTestAppointmentId1");
+            var prescriptionsCount = dbContext.Prescriptions.Count();
+            Assert.That(prescriptionsCount, Is.EqualTo(3));
+        }
 
         [Test]
         public void DetailsShouldReturnPrescriptionInCorrectType()
@@ -118,6 +118,7 @@ namespace VetClinic.Test.ServicesTests
             {
                 Id = 1,
                 Name = "TestDepartmentName",
+                Image = "DepartmentImg.png",
                 Services = new List<Service>
                 {
                     new Service
@@ -289,29 +290,26 @@ namespace VetClinic.Test.ServicesTests
             doctor.Appointments = appointments;
             doctor.Prescriptions = prescriptions;
 
-
-            var appointments2 = new List<Appointment>
+            var appointment = new Appointment
             {
-                new Appointment
-                {
-                    Id = "NewTestAppointmentId1",
-                    Date = appointmentDate,
-                    Hour = "11:00",
-                    Doctor = doctor2,
-                    Client = client,
-                    PetId = "NewTestPet1",
-                    ServiceId = 1
-                },
-                new Appointment
-                {
-                    Id = "NewTestAppointmentId2",
-                    Date = appointmentDate,
-                    Hour = "12:00",
-                    Doctor = doctor2,
-                    Client = client,
-                    PetId = "NewTestPet2",
-                    ServiceId = 2
-                },
+                Id = "NewTestAppointmentId1",
+                Date = appointmentDate,
+                Hour = "11:00",
+                Doctor = doctor2,
+                Client = client,
+                PetId = "NewTestPet1",
+                ServiceId = 1
+            };
+
+            var appointment2 = new Appointment
+            {
+                Id = "NewTestAppointmentId2",
+                Date = appointmentDate,
+                Hour = "12:00",
+                Doctor = doctor2,
+                Client = client,
+                PetId = "NewTestPet1",
+                ServiceId = 1
             };
 
             var prescription = new Prescription
@@ -324,10 +322,12 @@ namespace VetClinic.Test.ServicesTests
                 PetId = "NewTestPet1"
             };
 
-            dbContext.Appointments.AddRange(appointments2);
+            dbContext.Appointments.Add(appointment);
+            dbContext.Appointments.Add(appointment2);
             dbContext.Prescriptions.Add(prescription);
-            doctor2.Appointments = appointments2;
+            doctor2.Appointments.Add(appointment);
             doctor2.Prescriptions.Add(prescription);
+            appointment.PrescriptionId = prescription.Id;
 
             dbContext.SaveChanges();
         }

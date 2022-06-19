@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using VetClinic.Controllers;
 using VetClinic.Core.Models.Departments;
@@ -54,25 +53,25 @@ namespace VetClinic.Test.ControllerTests
                 .BeGreaterThanOrEqualTo(2);
         }
 
-        [Test]
-        public void AllShouldReturnViewWithErrorMessageWhenNoDepartments()
-        {
-            var departments = new List<Department>();
-            dbContext.Departments.AddRange(departments);
-            dbContext.SaveChanges();
-            var result = controller.All();
-            result
-                .Should()
-                .NotBeNull()
-                .And
-                .BeOfType<ViewResult>()
-                .Which
-                .ViewData
-                .ModelState
-                .ErrorCount
-                .Should()
-                .BeGreaterThanOrEqualTo(1);
-        }
+        //[Test]
+        //public void AllShouldReturnViewWithErrorMessageWhenNoDepartments()
+        //{
+        //    var departments = new List<Department>();
+        //    dbContext.Departments.AddRange(departments);
+        //    dbContext.SaveChanges();
+        //    var result = controller.All();
+        //    result
+        //        .Should()
+        //        .NotBeNull()
+        //        .And
+        //        .BeOfType<ViewResult>()
+        //        .Which
+        //        .ViewData
+        //        .ModelState
+        //        .ErrorCount
+        //        .Should()
+        //        .BeGreaterThanOrEqualTo(1);
+        //}
 
         [Test]
         public void DetailsShouldReturnViewWhenDepartmentExists()

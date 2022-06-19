@@ -21,6 +21,7 @@ namespace VetClinic.Data.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
+        [Required]
         public string Image { get; set; }
 
         public ICollection<Service> Services { get; set; }

@@ -24,12 +24,12 @@ namespace VetClinic.Data.Models
         public string FullName { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [MaxLength(PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
-
 
         [Required]
         public string ProfileImage { get; set; }
@@ -41,6 +41,7 @@ namespace VetClinic.Data.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public ICollection<DoctorService> DoctorServices { get; set; }

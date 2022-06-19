@@ -101,7 +101,8 @@ namespace VetClinic.Test.ControllerTests
                 Department = new Department
                 {
                     Id = 1,
-                    Name = "TestDepartment"
+                    Name = "TestDepartment",
+                    Image = "TestDepartmentImg.png",
                 },
                 UserId = "TestUserId",
                 Description = "some description",

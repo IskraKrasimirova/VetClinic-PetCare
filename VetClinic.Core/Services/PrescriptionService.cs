@@ -25,7 +25,6 @@ namespace VetClinic.Core.Services
             {
                 var prescription = new Prescription
                 {
-                    Id = Guid.NewGuid().ToString(),//Ако не подам - гърми!!!
                     PetId = appointment.PetId,
                     Pet = appointment.Pet,
                     Description = description,

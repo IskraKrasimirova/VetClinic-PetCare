@@ -23,13 +23,12 @@ namespace VetClinic.Controllers
             if (allDepartments == null)
             {
                 allDepartments = this.departmentService.GetAllDepartments().ToList();
-
-                if (allDepartments == null)
-                {
-                    this.ModelState.AddModelError(String.Empty, "No departments are found.");
-                }
-
                 this.memoryCache.Set("AllDepartmentsCacheKey", allDepartments, TimeSpan.FromMinutes(5));
+                //    if (allDepartments == null)
+                //    {
+                //        this.ModelState.AddModelError(String.Empty, "No departments are found.");
+                //    }
+
             }
 
             return View(allDepartments);
