@@ -3,6 +3,7 @@
     public class UsersSeedData
     {
         public const string DefaultPassword = "123456";
+        public const string AdminPassword = "admin12";
 
         public class Doctor
         {
@@ -12,6 +13,7 @@
             public const string PhoneNumber = "0888888888";
             public const string Password = DefaultPassword;
             public const string Description = "Vet Clinic Consultations";
+            public const string ProfileImage = "~/img/start6.jpg";
             public const int DepartmentId = 1;
         }
 
@@ -30,7 +32,7 @@
             public const string Username = "admin@petcare.com";
             public const string FullName = "Administrator";
             public const string PhoneNumber = "0999999999";
-            public const string Password = DefaultPassword;
+            public const string Password = AdminPassword;
         }
     }
 }

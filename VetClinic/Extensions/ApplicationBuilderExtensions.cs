@@ -13,7 +13,7 @@ namespace VetClinic.Extensions
             var data = scopedServices.ServiceProvider
                 .GetService<VetClinicDbContext>();
 
-            //data.Database.Migrate();
+            data.Database.Migrate();
 
             var seeder = new Seeder();
             seeder.Seed(data, services);

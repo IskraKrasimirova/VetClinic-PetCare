@@ -3,9 +3,9 @@
     public class DoctorsSeedData
     {
         public const string DefaultPassword = "123456";
-        public const string DefaultDescription1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-        public const string DefaultDescription2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed nisi turpis. Sed vulputate lectus nulla, ac ultrices enim sollicitudin ac.";
-        public const string DefaultDescription3 = "Mauris bibendum pellentesque cursus. In ut augue sagittis, lacinia nulla id, lobortis nunc. Nam ultrices diam ligula, ut ullamcorper magna semper et.";
+        public const string DefaultDescription1 = " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+        public const string DefaultDescription2 = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed nisi turpis. Sed vulputate lectus nulla, ac ultrices enim sollicitudin ac.";
+        public const string DefaultDescription3 = " Mauris bibendum pellentesque cursus. In ut augue sagittis, lacinia nulla id, lobortis nunc. Nam ultrices diam ligula, ut ullamcorper magna semper et.";
         public class ConsultationDoctor1
         {
             public const string Email = "ivanov@petcare.com";

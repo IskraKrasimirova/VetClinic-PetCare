@@ -1,7 +1,7 @@
 ﻿using VetClinic.Data.Models;
 using VetClinic.Data.Seeding.Contracts;
 
-namespace VetClinic.Data.Seeding.SeedData
+namespace VetClinic.Data.Seeding
 {
     public class ServicesSeeder : ISeeder
     {

@@ -12,8 +12,8 @@ using VetClinic.Data;
 namespace VetClinic.Data.Migrations
 {
     [DbContext(typeof(VetClinicDbContext))]
-    [Migration("20220619105810_AddSomeAttributes")]
-    partial class AddSomeAttributes
+    [Migration("20220622140059_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,12 +167,14 @@ namespace VetClinic.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ClientId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("date");
 
                     b.Property<string>("DoctorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Hour")
@@ -180,6 +182,7 @@ namespace VetClinic.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PetId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PrescriptionId")
@@ -589,15 +592,21 @@ namespace VetClinic.Data.Migrations
                 {
                     b.HasOne("VetClinic.Data.Models.Client", "Client")
                         .WithMany("Appointments")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("VetClinic.Data.Models.Doctor", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("VetClinic.Data.Models.Pet", "Pet")
                         .WithMany("Appointments")
-                        .HasForeignKey("PetId");
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("VetClinic.Data.Models.Prescription", "Prescription")
                         .WithMany()

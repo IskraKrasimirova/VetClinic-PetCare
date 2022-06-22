@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VetClinic.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,7 @@ namespace VetClinic.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -212,7 +212,7 @@ namespace VetClinic.Data.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -240,7 +240,7 @@ namespace VetClinic.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -280,40 +280,6 @@ namespace VetClinic.Data.Migrations
                         name: "FK_Pets_PetTypes_PetTypeId",
                         column: x => x.PetTypeId,
                         principalTable: "PetTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Appointments",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Hour = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Doctors_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "Doctors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -391,18 +357,67 @@ namespace VetClinic.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "date", nullable: false),
+                    Hour = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    PetId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PrescriptionId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Pets_PetId",
+                        column: x => x.PetId,
+                        principalTable: "Pets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prescriptions",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Date = table.Column<DateTime>(type: "date", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "date", nullable: false),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PetId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PetId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AppointmentId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prescriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prescriptions_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Prescriptions_Doctors_DoctorId",
                         column: x => x.DoctorId,
@@ -426,6 +441,16 @@ namespace VetClinic.Data.Migrations
                 name: "IX_Appointments_DoctorId",
                 table: "Appointments",
                 column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PetId",
+                table: "Appointments",
+                column: "PetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PrescriptionId",
+                table: "Appointments",
+                column: "PrescriptionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_ServiceId",
@@ -514,6 +539,11 @@ namespace VetClinic.Data.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Prescriptions_AppointmentId",
+                table: "Prescriptions",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Prescriptions_DoctorId",
                 table: "Prescriptions",
                 column: "DoctorId");
@@ -527,12 +557,44 @@ namespace VetClinic.Data.Migrations
                 name: "IX_Services_DepartmentId",
                 table: "Services",
                 column: "DepartmentId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Appointments_Prescriptions_PrescriptionId",
+                table: "Appointments",
+                column: "PrescriptionId",
+                principalTable: "Prescriptions",
+                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Appointments");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Appointments_Clients_ClientId",
+                table: "Appointments");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Pets_Clients_ClientId",
+                table: "Pets");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Appointments_Doctors_DoctorId",
+                table: "Appointments");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Prescriptions_Doctors_DoctorId",
+                table: "Prescriptions");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Appointments_Pets_PetId",
+                table: "Appointments");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Prescriptions_Pets_PetId",
+                table: "Prescriptions");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Appointments_Prescriptions_PrescriptionId",
+                table: "Appointments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -559,31 +621,34 @@ namespace VetClinic.Data.Migrations
                 name: "PetServices");
 
             migrationBuilder.DropTable(
-                name: "Prescriptions");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Services");
-
-            migrationBuilder.DropTable(
-                name: "Doctors");
-
-            migrationBuilder.DropTable(
-                name: "Pets");
-
-            migrationBuilder.DropTable(
-                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "PetTypes");
+                name: "Doctors");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Pets");
+
+            migrationBuilder.DropTable(
+                name: "PetTypes");
+
+            migrationBuilder.DropTable(
+                name: "Prescriptions");
+
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
+                name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
         }
     }
 }

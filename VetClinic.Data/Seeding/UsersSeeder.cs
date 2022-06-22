@@ -17,17 +17,17 @@ namespace VetClinic.Data.Seeding
             Task
                 .Run(async () =>
                 {
-                    if (!data.Users.Any(u => u.UserName == UsersSeedData.Admin.Username))
+                    if (!data.Users.Any(u => u.Email == UsersSeedData.Admin.Email))
                     {
                         await SeedAdmin(userManager);
                     }
 
-                    if (!data.Users.Any(u => u.UserName == UsersSeedData.Client.Username))
+                    if (!data.Users.Any(u => u.Email == UsersSeedData.Client.Email))
                     {
                         await SeedClient(data, userManager);
                     }
 
-                    if (!data.Users.Any(u => u.UserName == UsersSeedData.Doctor.Username))
+                    if (!data.Users.Any(u => u.Email == UsersSeedData.Doctor.Email))
                     {
                         await SeedDoctor(data, userManager);
                     }
@@ -99,9 +99,12 @@ namespace VetClinic.Data.Seeding
             var newDoctor = new Doctor()
             {
                 UserId = doctor.Id,
-                FullName = UsersSeedData.Doctor.FullName,
+                FullName = doctor.FullName,
+                Email = doctor.Email,
+                PhoneNumber = doctor.PhoneNumber,
                 Description = UsersSeedData.Doctor.Description,
-                DepartmentId = UsersSeedData.Doctor.DepartmentId
+                DepartmentId = UsersSeedData.Doctor.DepartmentId,
+                ProfileImage = UsersSeedData.Doctor.ProfileImage
             };
 
             data.Doctors.Add(newDoctor);

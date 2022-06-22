@@ -26,7 +26,9 @@ namespace VetClinic.Core.CustomAttributes
             }
 
             if (HourScheduleAsString == null)
+            {
                 SeedHourScheduleAsString();
+            }
 
             if (!HourScheduleAsString.Contains(hourAsString.Trim()))
             {
