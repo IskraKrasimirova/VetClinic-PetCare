@@ -5,18 +5,6 @@
         public const string DefaultPassword = "123456";
         public const string AdminPassword = "admin12";
 
-        public class Doctor
-        {
-            public const string Email = "doctor@petcare.com";
-            public const string FullName = "DoctorFullName";
-            public const string Username = "doctor@petcare.com";
-            public const string PhoneNumber = "0888888888";
-            public const string Password = DefaultPassword;
-            public const string Description = "Vet Clinic Consultations";
-            public const string ProfileImage = "~/img/start6.jpg";
-            public const int DepartmentId = 1;
-        }
-
         public class Client
         {
             public const string Email = "client@client.com";

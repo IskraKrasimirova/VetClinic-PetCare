@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Linq;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Appointments;
 using VetClinic.Core.Models.Services;
@@ -247,15 +248,15 @@ namespace VetClinic.Core.Services
             var serviceId = appointment.ServiceId;
             var clientId = appointment.ClientId;
 
-            if (clientId == null || petId == null || doctorId == null || serviceId == 0)
-            {
-                return null;
-            }
-
             var pet = this.data.Pets.Find(petId);
             var doctor = this.data.Doctors.Find(doctorId);
             var service = this.data.Services.Find(serviceId);
             var client = this.data.Clients.Find(clientId);
+
+            if (client == null || pet == null || doctor == null || service == null)
+            {
+                return null;
+            }
 
             var canceledAppointment = new CancelAppointmentServiceModel
             {

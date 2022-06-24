@@ -27,11 +27,6 @@ namespace VetClinic.Data.Seeding
                         await SeedClient(data, userManager);
                     }
 
-                    if (!data.Users.Any(u => u.Email == UsersSeedData.Doctor.Email))
-                    {
-                        await SeedDoctor(data, userManager);
-                    }
-
                     await data.SaveChangesAsync();
                 })
                 .GetAwaiter()
@@ -78,36 +73,6 @@ namespace VetClinic.Data.Seeding
             };
 
             data.Clients.Add(newClient);
-        }
-
-        private static async Task SeedDoctor
-            (VetClinicDbContext data, UserManager<User> userManager)
-        {
-            var doctor = new User()
-            {
-                Email = UsersSeedData.Doctor.Email,
-                UserName = UsersSeedData.Doctor.Username,
-                PhoneNumber = UsersSeedData.Doctor.PhoneNumber,
-                FullName = UsersSeedData.Doctor.FullName,
-            };
-
-            await userManager.CreateAsync
-                (doctor, UsersSeedData.Doctor.Password);
-
-            await userManager.AddToRoleAsync(doctor, DoctorRoleName);
-
-            var newDoctor = new Doctor()
-            {
-                UserId = doctor.Id,
-                FullName = doctor.FullName,
-                Email = doctor.Email,
-                PhoneNumber = doctor.PhoneNumber,
-                Description = UsersSeedData.Doctor.Description,
-                DepartmentId = UsersSeedData.Doctor.DepartmentId,
-                ProfileImage = UsersSeedData.Doctor.ProfileImage
-            };
-
-            data.Doctors.Add(newDoctor);
         }
     }
 }

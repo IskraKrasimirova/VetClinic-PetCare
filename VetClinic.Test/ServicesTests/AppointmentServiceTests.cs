@@ -145,7 +145,10 @@ namespace VetClinic.Test.ServicesTests
             GetDbContextWithAllEntities();
             var result = service.GetUpcomingAppointments("testClientId");
             var expectedUpcomingAppointmentsCount = dbContext.Appointments
-                .Where(a => a.ClientId == "testClientId" && a.Date >= DateTime.Now.Date && a.ServiceId !=0)
+                .Where(a => a.ClientId == "testClientId" && a.Date >= DateTime.Now.Date 
+                            && a.Doctor != null 
+                            && a.Pet != null 
+                            && a.Service != null)
                 .Count();
             Assert.That(result.GetType, Is.EqualTo(typeof(List<UpcomingAppointmentServiceModel>)));
             Assert.That(result.Count, Is.EqualTo(expectedUpcomingAppointmentsCount));
@@ -355,7 +358,7 @@ namespace VetClinic.Test.ServicesTests
 
             var userDoctor2 = new User
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "TestUserId2",
                 Email = "testDoctor2@vetclinic.com",
                 UserName = "testDoctor2@vetclinic.com",
                 FullName = "TestDoctor FullName2"
@@ -380,7 +383,7 @@ namespace VetClinic.Test.ServicesTests
 
             var user = new User
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "TestUserId3",
                 Email = "test@test.com",
                 UserName = "test@test.com",
                 PhoneNumber = "0888777111",
@@ -435,7 +438,9 @@ namespace VetClinic.Test.ServicesTests
                 Id = "NewTestAppointmentId",
                 Date = appointmentDate,
                 Hour = "10:00",
+                DoctorId = doctor.Id,
                 Doctor = doctor,
+                ClientId = client.Id,
                 Client = client,
                 PetId = "NewTestPet2",
                 ServiceId = 1
@@ -462,7 +467,9 @@ namespace VetClinic.Test.ServicesTests
                 Id = "TestAppointmentId2",
                 Date = DateTime.Now.Date.AddDays(-2),
                 Hour = "10:00",
+                DoctorId = doctor.Id,
                 Doctor = doctor,
+                ClientId = client.Id,
                 Client = client,
                 PetId = "NewTestPet2",
                 ServiceId = 1
@@ -478,7 +485,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId1",
                     Date = appointmentDate,
                     Hour = "09:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet2",
                     ServiceId = 2
@@ -488,7 +497,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId2",
                     Date = appointmentDate,
                     Hour = "10:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet2",
                     ServiceId = 2
@@ -498,7 +509,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId3",
                     Date = appointmentDate,
                     Hour = "11:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 2
@@ -508,7 +521,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId4",
                     Date = appointmentDate,
                     Hour = "12:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 2
@@ -518,7 +533,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId5",
                     Date = appointmentDate,
                     Hour = "13:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 2
@@ -528,7 +545,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId6",
                     Date = appointmentDate,
                     Hour = "14:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 1
@@ -538,7 +557,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId7",
                     Date = appointmentDate,
                     Hour = "15:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 1
@@ -548,7 +569,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId8",
                     Date = appointmentDate,
                     Hour = "16:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 1
@@ -558,7 +581,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId9",
                     Date = appointmentDate,
                     Hour = "17:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 1
@@ -568,7 +593,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "NewTestAppointmentId10",
                     Date = appointmentDate,
                     Hour = "18:00",
+                    DoctorId=doctor2.Id,
                     Doctor = doctor2,
+                    ClientId = client.Id,
                     Client = client,
                     PetId = "NewTestPet1",
                     ServiceId = 1
@@ -584,8 +611,8 @@ namespace VetClinic.Test.ServicesTests
                     Id = "AppointmentId1",
                     Date = appointmentDate.AddDays(1),
                     Hour = "09:00",
-                    Doctor = null,
-                    Client = client,
+                    DoctorId = "NotExisting",
+                    ClientId = client.Id,
                     PetId = "NewTestPet2",
                     ServiceId = 2
                 },
@@ -594,8 +621,8 @@ namespace VetClinic.Test.ServicesTests
                     Id = "AppointmentId2",
                     Date = appointmentDate.AddDays(1),
                     Hour = "10:00",
-                    Doctor = doctor2,
-                    Client = null,
+                    DoctorId = doctor2.Id,
+                    ClientId = "NotExisting",
                     PetId = "NewTestPet2",
                     ServiceId = 2
                 },
@@ -604,9 +631,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "AppointmentId3",
                     Date = appointmentDate.AddDays(1),
                     Hour = "11:00",
-                    Doctor = doctor2,
-                    Client = client,
-                    PetId = null,
+                    DoctorId = doctor2.Id,
+                    ClientId = client.Id,
+                    PetId = "NotExisting",
                     ServiceId = 2
                 },
                 new Appointment
@@ -614,8 +641,8 @@ namespace VetClinic.Test.ServicesTests
                     Id = "AppointmentId4",
                     Date = appointmentDate.AddDays(1),
                     Hour = "12:00",
-                    Doctor = doctor2,
-                    Client = client,
+                    DoctorId = doctor2.Id,
+                    ClientId = client.Id,
                     PetId = "NewTestPet1",
                     ServiceId = 0
                 },
@@ -624,9 +651,9 @@ namespace VetClinic.Test.ServicesTests
                     Id = "AppointmentId5",
                     Date = appointmentDate.AddDays(1),
                     Hour = "13:00",
-                    Doctor = null,
-                    Client = null,
-                    PetId = null,
+                    DoctorId = "NotExisting",
+                    ClientId = "NotExisting",
+                    PetId = "NotExisting",
                     ServiceId = 0
                 }
             };
