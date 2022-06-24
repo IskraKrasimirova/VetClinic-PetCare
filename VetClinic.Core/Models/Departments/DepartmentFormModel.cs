@@ -10,6 +10,7 @@ namespace VetClinic.Core.Models.Departments
         public string Name { get; set; }
 
         [Url]
+        [Required]
         public string Image { get; set; }
 
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]

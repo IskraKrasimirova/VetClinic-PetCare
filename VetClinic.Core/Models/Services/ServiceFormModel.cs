@@ -17,7 +17,7 @@ namespace VetClinic.Core.Models.Services
 
         [Display(Name = "Department")]
         public int DepartmentId { get; set; }
-        public IEnumerable<DepartmentListingViewModel>? Departments { get; set; }
+        public IEnumerable<DepartmentListingViewModel> Departments { get; set; }
 
         
     }
