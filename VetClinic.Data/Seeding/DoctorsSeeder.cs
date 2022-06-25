@@ -9,7 +9,7 @@ namespace VetClinic.Data.Seeding
 {
     public class DoctorsSeeder : ISeeder
     {
-        public async void Seed(VetClinicDbContext data, IServiceProvider serviceProvider)
+        public void Seed(VetClinicDbContext data, IServiceProvider serviceProvider)
         {
             var userManager =
                 serviceProvider.GetRequiredService<UserManager<User>>();
@@ -35,7 +35,7 @@ namespace VetClinic.Data.Seeding
                         await SeedEmergencyDoctor2(userManager, allDoctors);
                         await SeedGroomingDoctor1(userManager, allDoctors);
 
-                        data.Doctors.AddRange(allDoctors);
+                        await data.Doctors.AddRangeAsync(allDoctors);
                     }
 
                     await data.SaveChangesAsync();
