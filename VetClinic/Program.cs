@@ -39,6 +39,7 @@ builder.Services.AddAuthentication()
     {
         options.AppId = builder.Configuration.GetValue<string>("Facebook:AppId");
         options.AppSecret = builder.Configuration.GetValue<string>("Facebook:AppSecret");
+        options.Scope.Add("public_profile");
     });
 
 builder.Services.Configure<CookiePolicyOptions>(options =>

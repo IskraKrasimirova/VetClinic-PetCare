@@ -40,13 +40,21 @@ body {
     background-color: #a3bfdc;
 }
 
-.bg-image {
-    background-image: url('~/img/start4.jpg');
+/*.bg-image {
+    background-image: url('/img/start4.jpg');
     position: relative;
     background-size: 100%;
     background-repeat: no-repeat;
     margin-top: 5rem;
-}
+}*/
+
+/*.bg-image {
+    min-height: 100vh;
+    background:*/ /*linear-gradient(0deg, #a3bfdc, #dae6f1), *//*url('/img/start4.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 5rem;
+}*/
 
 
 button.accept-policy {

@@ -91,8 +91,7 @@ namespace VetClinic.Areas.Doctor.Controllers
             html.AppendLine($"<h3>Phone Number: +359 888 123456</h3>");
             html.AppendLine($"<h3>Email: vetclinic@petcare.com</h3>");
             //await this.emailSender.SendEmailAsync("vetclinic@petcare.com", "Vet Clinic PetCare", $"{appointment.ClientEmail}", "Canceled appointment", html.ToString());
-            await this.emailSender.SendEmailAsync("iskra_krasimirova@abv.bg", "Vet Clinic PetCare", "riroje9946@exoacre.com", "Canceled appointment", html.ToString()); //Изпраща, но много бавно.
-           //await this.emailSender.SendEmailAsync("vetclinic@petcare.com", "Vet Clinic PetCare", "riroje9946@exoacre.com", "Canceled appointment", html.ToString());  //Не изпраща.
+            await this.emailSender.SendEmailAsync("iskra_krasimirova@abv.bg", "Vet Clinic PetCare", $"{appointment.ClientEmail}", "Canceled appointment", html.ToString()); 
             return this.RedirectToAction("Cancel", new { appointmentId });
         }
     }
