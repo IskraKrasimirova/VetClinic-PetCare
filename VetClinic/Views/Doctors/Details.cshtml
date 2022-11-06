@@ -24,6 +24,13 @@
                 {
                     <a asp-controller="Appointments" asp-action="Book" asp-route-doctorId="@Model.Id" class="btn btn-outline-primary">Book</a>
                 }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item mb-5">* First you should register and add your pet. Then you will be able to make an appointment.</li>
+                    </ul>
+
+                }
                 @if (User.IsAdmin())
                 {
                     <a asp-area="Admin" asp-controller="Doctors" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Edit</a>

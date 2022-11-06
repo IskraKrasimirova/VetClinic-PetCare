@@ -86,7 +86,7 @@ namespace VetClinic.Areas.Identity.Pages.Account
             [StringLength(FullNameMaxLength,
                 MinimumLength = FullNameMinLength,
                 ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-            public string FulltName { get; set; }
+            public string FullName { get; set; }
 
             [Required]
             [RegularExpression
@@ -123,7 +123,7 @@ namespace VetClinic.Areas.Identity.Pages.Account
                         Email = this.Input.Email,
                         UserName = this.Input.Email,
                         PhoneNumber = this.Input.PhoneNumber,
-                        FullName = this.Input.FulltName
+                        FullName = this.Input.FullName
                     };
 
                     IdentityResult result = await this._userManager.CreateAsync(user, this.Input.Password);
@@ -134,7 +134,7 @@ namespace VetClinic.Areas.Identity.Pages.Account
                             .AddAsync(new Client()
                             {
                                 UserId = user.Id,
-                                FullName = this.Input.FulltName,
+                                FullName = this.Input.FullName,
                             });
                         await this._userManager.AddToRoleAsync(user, ClientRoleName);
                         await this._signInManager.SignInAsync(user, isPersistent: false);
