@@ -20,4 +20,27 @@ VetClinic PetCare is a Web application for making appointments of your pets. It 
      - send cancelation email to pet owner
  ### Admin
  - Only Admin can add, edit and delete information about departments, doctors and services the vet clinic offers.
- 
+ ## Accounts
+ ### Client:
+   - Email: client@client.com
+   - Password: 123456
+ ### Admin:
+   - Email: admin@petcare.com
+   - Password: admin12
+ ### Doctor:
+   - Email: {doctorFamily}@petcare.com
+      - (For example: petkov@petcare.com)
+   - Password: 123456
+ ## Built with:
+ - ASP.NET Core 6.0
+ - ASP.NET Core areas
+ - Entity Framework Core 6.0
+ - MSSQL Server
+ - nUnit
+ - Moq
+ - Bootstrap
+ - Font Awesome
+ - HTML&CSS
+ - Cloudinary
+ - SendGrid
+ - jQuery and JS
