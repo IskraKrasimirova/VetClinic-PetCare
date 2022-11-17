@@ -15,6 +15,10 @@ body {
 
 .card { box-shadow: 0px 4px 8px 0px #6074bf; }
 
+.card-body {
+    background-color: #e6e6e6
+}
+
 input {
     padding: 10px 20px !important;
     border: 1px solid #616161 !important;
@@ -109,11 +113,15 @@ thead tr:nth-child(3) th {
 
 .cell {
     border: 1px solid #BDBDBD;
+    background-color: #e6e6e6;
     margin: 2px;
     cursor: pointer
 }
 
-.cell:hover { border: 1px solid #6074bf }
+    .cell:hover {
+        border: 1px solid #6074bf;
+        background-color: #6074bf
+    }
 
 .cell.select {
     background-color: #6074bf;
