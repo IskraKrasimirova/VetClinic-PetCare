@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using VetClinic.Core.Contracts;
-using VetClinic.Core.Models;
 using VetClinic.Extensions;
 using static VetClinic.Common.GlobalConstants;
 

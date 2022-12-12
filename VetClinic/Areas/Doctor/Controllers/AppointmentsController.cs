@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Messaging;
 using VetClinic.Core.Models.Appointments;
@@ -91,7 +91,9 @@ namespace VetClinic.Areas.Doctor.Controllers
             html.AppendLine($"<h3>Phone Number: +359 888 123456</h3>");
             html.AppendLine($"<h3>Email: vetclinic@petcare.com</h3>");
             //await this.emailSender.SendEmailAsync("vetclinic@petcare.com", "Vet Clinic PetCare", $"{appointment.ClientEmail}", "Canceled appointment", html.ToString());
-            await this.emailSender.SendEmailAsync("iskra_krasimirova@abv.bg", "Vet Clinic PetCare", $"{appointment.ClientEmail}", "Canceled appointment", html.ToString()); 
+            await this.emailSender.SendEmailAsync("iskra_krasimirova@abv.bg", "Vet Clinic PetCare", $"{appointment.ClientEmail}", "Canceled appointment", html.ToString());
+
+            this.TempData[GlobalMessageKey] = "Successfully send cancelation email.";
             return this.RedirectToAction("Cancel", new { appointmentId });
         }
     }

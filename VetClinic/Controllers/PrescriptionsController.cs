@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Prescriptions;
 using VetClinic.Extensions;
 using static VetClinic.Common.GlobalConstants;
-using static VetClinic.Common.GlobalConstants.FormattingConstants;
 
 namespace VetClinic.Controllers
 {

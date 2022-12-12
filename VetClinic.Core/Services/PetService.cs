@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Globalization;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Data;

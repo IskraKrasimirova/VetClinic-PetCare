@@ -17,7 +17,7 @@ namespace VetClinic.Core.Models.Pets
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
         [IsBeforeAttribute(MaxDate, ErrorMessage = "The Date of Birth must be before the current date")]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; } = DateTime.UtcNow.Date;
 
         [Required]
         [StringLength (BreedMaxLength,MinimumLength = BreedMinLength)]

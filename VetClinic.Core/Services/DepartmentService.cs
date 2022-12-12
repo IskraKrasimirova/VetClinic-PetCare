@@ -118,9 +118,6 @@ namespace VetClinic.Core.Services
                 return false;
             }
 
-            //department.Doctors.Clear();
-            //department.Services.Clear();
-
             var doctorIds = this.data.Doctors
                 .Where(d => d.DepartmentId == id)
                 .Select(d => new {d.Id})

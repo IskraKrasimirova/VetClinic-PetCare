@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Data.Enums;

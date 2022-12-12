@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using VetClinic.Core.Contracts;
 using VetClinic.Core.Models.Appointments;
 using VetClinic.Core.Models.Services;

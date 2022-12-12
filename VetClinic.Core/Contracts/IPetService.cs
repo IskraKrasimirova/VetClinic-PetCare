@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VetClinic.Core.Models.Pets;
+﻿using VetClinic.Core.Models.Pets;
 
 namespace VetClinic.Core.Contracts
 {
