@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using NUnit.Framework;
 using VetClinic.Core.Models.Appointments;
 using VetClinic.Core.Models.Services;
 using VetClinic.Core.Services;

@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using VetClinic.Core.Models.Doctors;
 using VetClinic.Data;
 using VetClinic.Data.Models;

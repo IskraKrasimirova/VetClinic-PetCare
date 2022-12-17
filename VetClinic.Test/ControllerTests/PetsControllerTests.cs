@@ -1,10 +1,10 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using FluentAssertions;
+using NUnit.Framework;
 using VetClinic.Controllers;
 using VetClinic.Core.Models.Pets;
 using VetClinic.Core.Models.PetTypes;

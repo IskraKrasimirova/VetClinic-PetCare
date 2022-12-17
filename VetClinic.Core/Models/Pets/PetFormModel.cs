@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using VetClinic.Core.CustomAttributes;
-using VetClinic.Data.Enums;
-using static VetClinic.Data.ModelConstants.Pet;
-using static VetClinic.Common.GlobalConstants.FormattingConstants;
 using VetClinic.Core.Models.PetTypes;
-using System.Globalization;
+using VetClinic.Data.Enums;
+using static VetClinic.Common.GlobalConstants.FormattingConstants;
+using static VetClinic.Data.ModelConstants.Pet;
 
 namespace VetClinic.Core.Models.Pets
 {

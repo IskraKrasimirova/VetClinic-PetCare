@@ -1,5 +1,4 @@
 ﻿using VetClinic.Data.Seeding.Contracts;
-using VetClinic.Data.Seeding.SeedData;
 
 namespace VetClinic.Data.Seeding
 {
