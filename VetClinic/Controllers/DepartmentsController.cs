@@ -24,11 +24,6 @@ namespace VetClinic.Controllers
             {
                 allDepartments = this.departmentService.GetAllDepartments().ToList();
                 this.memoryCache.Set("AllDepartmentsCacheKey", allDepartments, TimeSpan.FromMinutes(5));
-                //    if (allDepartments == null)
-                //    {
-                //        this.ModelState.AddModelError(String.Empty, "No departments are found.");
-                //    }
-
             }
 
             return View(allDepartments);

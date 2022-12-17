@@ -132,10 +132,6 @@ namespace VetClinic.Core.Services
                 return false;
             }
 
-            //doctor.Prescriptions.Clear();
-            //doctor.Appointments.Clear();
-            //this.data.SaveChanges();
-
             var prescriptions = doctor.Prescriptions.ToArray();
             this.data.Prescriptions.RemoveRange(prescriptions);
             this.data.SaveChanges();

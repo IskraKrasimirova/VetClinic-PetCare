@@ -52,8 +52,7 @@ namespace VetClinic.Areas.Admin.Controllers
 
             this.TempData[GlobalMessageKey] = "Successfully added a service.";
 
-            return RedirectToAction("All", "Services", new {Area = ""});
-            //return RedirectToAction("Details", new { id = serviceId });
+            return RedirectToAction("Details", "Services", new { id = serviceId });
         }
 
         public IActionResult Edit(int id)

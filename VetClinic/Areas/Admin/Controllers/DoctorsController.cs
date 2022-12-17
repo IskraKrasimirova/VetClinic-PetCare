@@ -57,7 +57,6 @@ namespace VetClinic.Areas.Admin.Controllers
 
             this.TempData[GlobalMessageKey] = $"Successfully added doctor {doctorModel.FullName}.";
 
-            //return RedirectToAction("All", "Doctors", new { Area = "" });
             return RedirectToAction("Details", new { Area = "", id = doctorId });
         }
 
