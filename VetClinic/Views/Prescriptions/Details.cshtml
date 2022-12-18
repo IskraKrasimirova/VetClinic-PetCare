@@ -29,9 +29,9 @@
 @section scripts{
     <script>
         $("#printPDF").click(function() {
-            var element = document.getElementById('parentDiv');
+            let element = document.getElementById('parentDiv');
             let pdfName = '@Model.PetName/@Model.CreatedOn';
-            var opt = {
+            let opt = {
                 margin: 1,
                 filename: `${pdfName}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },

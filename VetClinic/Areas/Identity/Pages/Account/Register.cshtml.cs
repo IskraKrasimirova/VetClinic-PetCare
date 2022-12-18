@@ -96,17 +96,17 @@ namespace VetClinic.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            string phoneNumberFromDB = this._data
+            string emailFromDB = this._data
                 .Users
-                .Select(u => u.PhoneNumber)
-                .FirstOrDefault(pn => pn.Trim() == this.Input.PhoneNumber.Trim());
+                .Select(u => u.Email)
+                .FirstOrDefault(e => e.Trim() == this.Input.Email.Trim());
 
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (this.ModelState.IsValid)
             {
-                if (phoneNumberFromDB == null)
+                if (emailFromDB == null)
                 {
                     User user = new()
                     {
