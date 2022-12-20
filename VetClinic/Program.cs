@@ -10,6 +10,7 @@ using VetClinic.Data.Models;
 using static VetClinic.Common.GlobalConstants;
 using DoctorService = VetClinic.Core.Services.DoctorService;
 using PetService = VetClinic.Core.Services.PetService;
+using VetClinic.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,7 +71,7 @@ builder.Services.AddRazorPages()
 
 var app = builder.Build();
 
-//app.PrepareDatabase();
+app.PrepareDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
