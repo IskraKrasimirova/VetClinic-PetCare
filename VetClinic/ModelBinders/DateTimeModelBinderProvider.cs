@@ -11,7 +11,7 @@ namespace VetClinic.ModelBinders
             this.customDateFormat = customDateFormat;
         }
 
-        public IModelBinder? GetBinder(ModelBinderProviderContext context)
+        public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             if (context == null)
             {

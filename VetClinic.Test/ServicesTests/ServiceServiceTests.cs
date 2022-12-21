@@ -166,6 +166,12 @@ namespace VetClinic.Test.ServicesTests
             Assert.That(result.GetType(), Is.EqualTo(typeof(List<ServiceViewModel>)));
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
+
         private void GetDbContextWithServices()
         {
             var testDepartment = new Department

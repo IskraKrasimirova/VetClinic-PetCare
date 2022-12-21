@@ -91,5 +91,11 @@ namespace VetClinic.Test.ControllerTests
                 .Should()
                 .BeOfType<AvailableServicesViewModel>();
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
     }
 }

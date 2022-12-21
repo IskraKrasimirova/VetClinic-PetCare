@@ -102,6 +102,12 @@ namespace VetClinic.Test.ControllerTests
                 .BeOfType<NotFoundResult>();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
+
         private void GetDbContextWithDepartments()
         {
             var departments = new List<Department>()

@@ -53,7 +53,8 @@ namespace VetClinic.Controllers
             {
                 this.ModelState.AddModelError(nameof(pet.PetTypeId), "Pet type does not exist.");
             }
-            //Валидационният атрибут не работи, защото трябва да се зададе const MaxDate.
+
+            //Валидационният атрибут не работи, защото трябва да се зададе const MaxDate!?
             //if (DateTime.Compare(DateTime.UtcNow.Date, pet.DateOfBirth.Date) < 0)
             //{
             //    this.ModelState.AddModelError(String.Empty, "The Date of Birth must be before the current date.");

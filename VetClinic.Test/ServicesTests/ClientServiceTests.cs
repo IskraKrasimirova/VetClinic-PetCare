@@ -73,5 +73,12 @@ namespace VetClinic.Test.ServicesTests
             var result = service.GetClientId("NotExistingUserId");
             Assert.IsTrue(result == null);
         }
+
+
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
     }
 }

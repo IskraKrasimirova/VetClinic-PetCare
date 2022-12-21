@@ -112,6 +112,12 @@ namespace VetClinic.Test.ServicesTests
             Assert.IsNull(result);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
+
         private void GetDbContextWithAllEntities()
         {
             var department = new Department

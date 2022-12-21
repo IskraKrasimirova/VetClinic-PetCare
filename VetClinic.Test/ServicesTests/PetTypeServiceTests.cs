@@ -46,5 +46,11 @@ namespace VetClinic.Test.ServicesTests
             Assert.That(result.Count(), Is.EqualTo(expectedPetTypesCount));
             Assert.That(result.GetType(), Is.EqualTo(typeof(List<PetTypeServiceModel>)));
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
     }
 }

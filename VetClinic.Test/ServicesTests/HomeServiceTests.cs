@@ -103,6 +103,12 @@ namespace VetClinic.Test.ServicesTests
             Assert.That(expectedCount == 0);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
+
         private void GetDbContextWithUsers()
         {
             var department = new Department

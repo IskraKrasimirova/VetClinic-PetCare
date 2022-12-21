@@ -219,6 +219,12 @@ namespace VetClinic.Test.ServicesTests
             Assert.That(actualDoctorsCount, Is.EqualTo(1));
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
+
         private void GetDbContextWithDoctors()
         {
             var department = new Department

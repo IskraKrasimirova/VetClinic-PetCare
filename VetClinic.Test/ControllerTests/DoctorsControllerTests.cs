@@ -134,5 +134,11 @@ namespace VetClinic.Test.ControllerTests
                 .And
                 .BeOfType<NotFoundResult>();
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
     }
 }

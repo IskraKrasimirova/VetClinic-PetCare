@@ -174,5 +174,11 @@ namespace VetClinic.Test.ControllerTests
                 .And
                 .BeOfType<ViewResult>();
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
     }
 }

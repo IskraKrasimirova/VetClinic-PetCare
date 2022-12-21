@@ -153,6 +153,13 @@ namespace VetClinic.Test.ServicesTests
             Assert.That(actualDepartmentsCount, Is.EqualTo(0));
         }
 
+
+        [TearDown]
+        public void TearDown()
+        {
+            dbContext.Dispose();
+        }
+
         private void GetDbContextWithDepartments()
         {
             var testDepartment = new Department
@@ -201,6 +208,7 @@ namespace VetClinic.Test.ServicesTests
 
             dbContext.SaveChanges();
         }
+
         private void GetDbContextWithDepartmentsAndDoctors()
         {
             var department = new Department
